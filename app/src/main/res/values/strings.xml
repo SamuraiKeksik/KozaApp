@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">KozaApp</string>
+
+    <string name="registration_label">Регистрация</string>
+    <string name="registration_info_request">Введите свою электронную почту и личные данные для регистрации</string>
+    <string name="registration_info_request_second">Введите свой пароль и примите соглашение после прочтения</string>
+    <string name="email_label">Email:</string>
+    <string name="email_example">example.mail@gmail.com</string>
+    <string name="name_label">Имя:</string>
+    <string name="name_example">Иванов Иван Иванович</string>
+    <string name="phone_label">Телефон</string>
+    <string name="phone_example">+79371234567</string>
+    <string name="address_label">Адрес:</string>
+    <string name="address_example">г. Волжский, Волгоградская обл.</string>
+    <string name="password_label">Пароль:</string>
+    <string name="password_example">********</string>
+    <string name="password_confirmation_label">Подтверждение пароля:</string>
+    <string name="password_confirmation_example">YghehY64!</string>
+    <string name="after_registration_text">На вашу электронную почту отправлена ссылка для подтверждения почты. Если вы не подтвердите ее в течение 7 дней, то ваш аккаунт будет удален (информация о ваших животных останется на телефоне)</string>
+
+    <string name="login_label">Вход</string>
+    <string name="login_info_request">Введите свою почту или логин и пароль для входа в свой аккаунт</string>
+    <string name="forgot_password_label">Забыли пароль?</string>
+
+    <string name="password_recovery_label">Восстановление пароля</string>
+    <string name="password_recovery_info_request">Введите свою почту для восстановления пароля от своего аккаунта</string>
+    <string name="password_recovery_info_request_second">На вашу почту прийдет код длявосстановления доступа, введите его в поле</string>
+    <string name="password_recovery_info_request_third">Доступ к аккаунту восстановлен. Смените старый пароль на новый</string>
+    <string name="login_if_remember_password">Вспомнили пароль? Войти</string>
+    <string name="confirmation_code_label">Код подтверждения</string>
+    <string name="confirmation_code_example">597613</string>
+
+
+
+
+    <string name="continue_button_label">Продолжить</string>
+    <string name="login_button_label">Вход</string>
+    <string name="registration_button_label">Зарегистрироваться</string>
+    <string name="recovery_button_label">Восстановить</string>
+    <string name="change_password_button_label">Сменить пароль</string>
+
+    <string name="continue_without_login_label">Продолжить без авторизации</string>
+    <string name="login_if_already_registered_label">Уже зарегистрированы? Войти</string>
+    <string name="register_if_havent_yet_label">Еще нет аккаунта? Зарегистрироваться</string>
+
+
+    <string name="greetings_screen_header">Ваша ферма под контролем</string>
+    <string name="greetings_screen_text_1">• Учет скота</string>
+    <string name="greetings_screen_text_2">• Планирование рациона</string>
+    <string name="greetings_screen_text_3">• Дневник ветеринара с фотофиксацией</string>
+    <string name="greetings_screen_text_4">• Диагностика заболеваний с использованием ИИ</string>
+
+
+</resources>
