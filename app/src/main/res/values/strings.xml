@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">KozaApp</string>
+    <string name="empty_string"></string>
 
     <string name="registration_label">Регистрация</string>
     <string name="registration_info_request">Введите свою электронную почту и личные данные для регистрации</string>
@@ -31,6 +32,11 @@
     <string name="confirmation_code_example">597613</string>
 
 
+    <string name="email_validation_error">Email указан неправильно</string>
+    <string name="email_occupied_error">Данный Email уже зарегистрирован</string>
+    <string name="email_not_registered_error">Данный Email не зарегистрирован</string>
+    <string name="password_validation_error">Пароль должен содержать минимум 8 символов</string>
+    <string name="password_confirmation_validation_error">Пароли должны совпадать</string>
 
 
     <string name="continue_button_label">Продолжить</string>

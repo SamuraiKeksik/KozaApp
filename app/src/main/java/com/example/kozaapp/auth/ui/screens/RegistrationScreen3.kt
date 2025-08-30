@@ -27,7 +27,7 @@ fun RegistrationScreen3() {
         modifier = Modifier.padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Column (
+        Column(
             verticalArrangement = Arrangement.Top
         ) {
             Text(
@@ -37,16 +37,13 @@ fun RegistrationScreen3() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 30.dp),
-
-
-                )
+            )
             Text(
                 text = stringResource(R.string.after_registration_text),
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Justify
             )
-
         }
 
         Column(
@@ -61,8 +58,9 @@ fun RegistrationScreen3() {
                     .fillMaxWidth()
                     .padding(bottom = 5.dp),
                 shape = MaterialTheme.shapes.small,
-                onClick = {}
-            ) {
+                onClick = {
+                    //Todo: Сделать переход на следующий экран
+                }) {
                 Text(
                     style = MaterialTheme.typography.bodyLarge,
                     text = stringResource(R.string.continue_button_label)
@@ -75,10 +73,9 @@ fun RegistrationScreen3() {
 }
 
 
-
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun RegistrationScreen3Preview(){
+fun RegistrationScreen3Preview() {
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             RegistrationScreen3(
@@ -89,7 +86,7 @@ fun RegistrationScreen3Preview(){
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun RegistrationScreen3DarkThemePreview(){
+fun RegistrationScreen3DarkThemePreview() {
     AppTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
             RegistrationScreen3(
