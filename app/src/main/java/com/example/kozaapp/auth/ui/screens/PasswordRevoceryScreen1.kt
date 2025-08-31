@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kozaapp.R
 import com.example.kozaapp.auth.data.AuthViewModel
+import com.example.kozaapp.ui.ErrorText
+import com.example.kozaapp.ui.StandardOutlineTextField
 import com.example.kozaapp.ui.theme.AppTheme
 
 @Composable

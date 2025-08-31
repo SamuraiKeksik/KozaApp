@@ -1,6 +1,5 @@
 package com.example.kozaapp.auth.ui.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kozaapp.R
 import com.example.kozaapp.auth.data.AuthViewModel
+import com.example.kozaapp.ui.ErrorText
+import com.example.kozaapp.ui.StandardOutlineTextField
 import com.example.kozaapp.ui.theme.AppTheme
 
 @Composable

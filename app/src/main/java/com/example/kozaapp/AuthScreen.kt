@@ -25,43 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kozaapp.R
-
-
-@Composable
-fun StandardOutlineTextField(
-    label: String,
-    @StringRes placeholder: Int,
-    value: String,
-    onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier,
-    isInputWrong: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-){
-    Spacer(modifier = Modifier.height(15.dp))
-    OutlinedTextField(
-        label = { Text(text = label, fontSize = 16.sp) },
-        placeholder = {Text(text = stringResource(placeholder))},
-        value = value,
-        onValueChange = {onValueChange(it)},
-        modifier = modifier.fillMaxWidth(),
-        textStyle = TextStyle.Default.copy(fontSize = 20.sp),
-        isError = isInputWrong,
-        keyboardOptions = keyboardOptions,
-    )
-}
-
-@Composable
-fun ErrorText(
-    @StringRes text: Int?,
-){
-    Text(
-        text = stringResource(text ?: R.string.empty_string),
-        style = MaterialTheme.typography.bodyMedium.copy(
-            color = MaterialTheme.colorScheme.error
-        )
-    )
-}
-
+/*
 enum class AuthScreenEnum(){
     GreetingScreen,
     LoginScreen,
@@ -72,7 +36,7 @@ enum class AuthScreenEnum(){
     PasswordRecoveryScreen2,
     PasswordRecoveryScreen3,
 }
-/*
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KozaAppTopBar(

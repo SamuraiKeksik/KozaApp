@@ -1,6 +1,5 @@
 package com.example.kozaapp.auth.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,7 +18,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -29,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kozaapp.R
 import com.example.kozaapp.auth.data.AuthViewModel
+import com.example.kozaapp.ui.ErrorText
+import com.example.kozaapp.ui.StandardOutlineTextField
 import com.example.kozaapp.ui.theme.AppTheme
 
 @Composable
