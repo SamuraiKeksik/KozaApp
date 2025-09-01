@@ -20,10 +20,13 @@ import com.example.kozaapp.R
 import com.example.kozaapp.ui.theme.AppTheme
 
 @Composable
-fun RegistrationScreen3() {
+fun RegistrationScreen3(
+    onContinueButtonClicked: () -> Unit,
+) {
     Column(
         modifier = Modifier.padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(
             verticalArrangement = Arrangement.Top
@@ -57,7 +60,7 @@ fun RegistrationScreen3() {
                     .padding(bottom = 5.dp),
                 shape = MaterialTheme.shapes.small,
                 onClick = {
-                    //Todo: Сделать переход на следующий экран
+                    onContinueButtonClicked()
                 }) {
                 Text(
                     style = MaterialTheme.typography.bodyLarge,
@@ -76,7 +79,8 @@ fun RegistrationScreen3() {
 fun RegistrationScreen3Preview() {
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            RegistrationScreen3(
+            _root_ide_package_.com.example.kozaapp.AuthScreen(
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.RegistrationScreen3
             )
         }
     }
@@ -87,7 +91,8 @@ fun RegistrationScreen3Preview() {
 fun RegistrationScreen3DarkThemePreview() {
     AppTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            RegistrationScreen3(
+            _root_ide_package_.com.example.kozaapp.AuthScreen(
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.RegistrationScreen3
             )
         }
     }

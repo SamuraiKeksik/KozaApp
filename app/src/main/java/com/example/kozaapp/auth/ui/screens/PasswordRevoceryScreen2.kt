@@ -34,11 +34,14 @@ import com.example.kozaapp.ui.theme.AppTheme
 @Composable
 fun PasswordRecoveryScreen2(
     viewModel: AuthViewModel = viewModel(),
+    onRecoverPasswordButtonClicked: () -> Unit,
+    onLoginButtonClicked: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     Column(
         modifier = Modifier.padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(
             verticalArrangement = Arrangement.Top,
@@ -86,7 +89,7 @@ fun PasswordRecoveryScreen2(
                 shape = MaterialTheme.shapes.small,
                 onClick = {
                     if (viewModel.isConfirmationCodeValid()) {
-                        //ToDo: Сделать переход на следующий экран
+                        onRecoverPasswordButtonClicked()
                     }
                 }
             ) {
@@ -98,7 +101,7 @@ fun PasswordRecoveryScreen2(
             Text(
                 text = stringResource(R.string.login_if_remember_password),
                 modifier = Modifier.clickable {
-                    //TODO("Смена экрана")
+                    onLoginButtonClicked()
                 })
         }
 
@@ -112,7 +115,8 @@ fun PasswordRecoveryScreen2(
 fun PasswordRecoveryScreen2Preview() {
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            PasswordRecoveryScreen2(
+            _root_ide_package_.com.example.kozaapp.AuthScreen(
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.PasswordRecoveryScreen2
             )
         }
     }
@@ -123,7 +127,8 @@ fun PasswordRecoveryScreen2Preview() {
 fun PasswordRecoveryScreen2DarkThemePreview() {
     AppTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            PasswordRecoveryScreen2(
+            _root_ide_package_.com.example.kozaapp.AuthScreen(
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.PasswordRecoveryScreen2
             )
         }
     }

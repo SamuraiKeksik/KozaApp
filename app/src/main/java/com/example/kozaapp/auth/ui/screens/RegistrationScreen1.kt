@@ -33,12 +33,15 @@ import com.example.kozaapp.ui.theme.AppTheme
 
 @Composable
 fun RegistrationScreen1(
-    viewModel: AuthViewModel = viewModel()
+    viewModel: AuthViewModel = viewModel(),
+    onContinueButtonClicked: () -> Unit,
+    onLoginButtonClicked: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     Column(
         modifier = Modifier.padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(
             verticalArrangement = Arrangement.Top,
@@ -119,7 +122,7 @@ fun RegistrationScreen1(
                 shape = MaterialTheme.shapes.small,
                 onClick = {
                     if (viewModel.isEmailValidForRegistration()) {
-                        //ToDo: Переход на следующий экран
+                        onContinueButtonClicked()
                     }
                 }
             ) {
@@ -129,13 +132,11 @@ fun RegistrationScreen1(
                 )
             }
             Text(
-                text = stringResource(R.string.continue_without_login_label),
+                text = stringResource(R.string.login_if_already_registered_label),
                 modifier = Modifier.clickable {
-                    //TODO("Смена экрана")
+                    onLoginButtonClicked()
                 })
         }
-
-
     }
 }
 
@@ -144,7 +145,8 @@ fun RegistrationScreen1(
 fun RegistrationScreen1Preview() {
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            RegistrationScreen1(
+            _root_ide_package_.com.example.kozaapp.AuthScreen(
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.RegistrationScreen1
             )
         }
     }
@@ -155,7 +157,8 @@ fun RegistrationScreen1Preview() {
 fun RegistrationScreen1DarkThemePreview() {
     AppTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            RegistrationScreen1(
+            _root_ide_package_.com.example.kozaapp.AuthScreen(
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.RegistrationScreen1
             )
         }
     }

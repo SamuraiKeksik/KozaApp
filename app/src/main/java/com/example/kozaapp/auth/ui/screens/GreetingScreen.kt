@@ -25,10 +25,15 @@ import com.example.kozaapp.ui.theme.AppTheme
 @Composable
 fun GreetingScreen(
     viewModel: AuthViewModel = viewModel(),
+    onRegistrationButtonClicked: () -> Unit,
+    onLoginButtonClicked: () -> Unit,
+    onContinueWithoutLoginButtonClicked: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(30.dp),
+        modifier = Modifier.padding(30.dp)
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(
             verticalArrangement = Arrangement.Top
@@ -75,7 +80,7 @@ fun GreetingScreen(
                     .padding(bottom = 5.dp),
                 shape = MaterialTheme.shapes.small,
                 onClick = {
-                    //ToDo: Сделать переход на следующий экран
+                    onRegistrationButtonClicked()
                 }
             ) {
                 Text(
@@ -89,7 +94,7 @@ fun GreetingScreen(
                     .padding(bottom = 5.dp),
                 shape = MaterialTheme.shapes.small,
                 onClick = {
-                    //ToDo: Сделать переход на следующий экран
+                    onLoginButtonClicked()
                 }
             ) {
                 Text(
@@ -101,11 +106,10 @@ fun GreetingScreen(
                 text = stringResource(R.string.continue_without_login_label),
                 modifier = Modifier.clickable
                 {
-                    //ToDo: Сделать переход на следующий экран
+                    onContinueWithoutLoginButtonClicked()
                 }
             )
         }
-
     }
 }
 
@@ -115,7 +119,8 @@ fun GreetingScreen(
 fun GreetingScreenPreview() {
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            GreetingScreen(
+            _root_ide_package_.com.example.kozaapp.AuthScreen(
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.GreetingScreen
             )
         }
     }
@@ -126,7 +131,8 @@ fun GreetingScreenPreview() {
 fun GreetingScreenDarkThemePreview() {
     AppTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            GreetingScreen(
+            _root_ide_package_.com.example.kozaapp.AuthScreen(
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.GreetingScreen
             )
         }
     }

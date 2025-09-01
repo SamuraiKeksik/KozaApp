@@ -34,11 +34,14 @@ import com.example.kozaapp.ui.theme.AppTheme
 @Composable
 fun PasswordRecoveryScreen1(
     viewModel: AuthViewModel = viewModel(),
+    onContinueButtonClicked: () -> Unit,
+    onLoginButtonClicked: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     Column(
         modifier = Modifier.padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(
             verticalArrangement = Arrangement.Top,
@@ -85,8 +88,8 @@ fun PasswordRecoveryScreen1(
                     .padding(bottom = 5.dp),
                 shape = MaterialTheme.shapes.small,
                 onClick = {
-                    if (viewModel.isEmailValidForPasswordRecovery()) {
-                        //todo: Сделать переход на следующий экран
+                    if (viewModel.tryToRecoverPassword()) {
+                        onContinueButtonClicked()
                     }
                 }
             ) {
@@ -98,7 +101,7 @@ fun PasswordRecoveryScreen1(
             Text(
                 text = stringResource(R.string.login_if_remember_password),
                 modifier = Modifier.clickable {
-                    //TODO("Смена экрана")
+                    onLoginButtonClicked()
                 })
         }
 
@@ -112,7 +115,8 @@ fun PasswordRecoveryScreen1(
 fun PasswordRecoveryScreen1Preview() {
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            PasswordRecoveryScreen1(
+            _root_ide_package_.com.example.kozaapp.AuthScreen(
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.PasswordRecoveryScreen1
             )
         }
     }
@@ -123,7 +127,8 @@ fun PasswordRecoveryScreen1Preview() {
 fun PasswordRecoveryScreen1DarkThemePreview() {
     AppTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            PasswordRecoveryScreen1(
+            _root_ide_package_.com.example.kozaapp.AuthScreen(
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.PasswordRecoveryScreen1
             )
         }
     }

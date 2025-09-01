@@ -33,12 +33,15 @@ import com.example.kozaapp.ui.theme.AppTheme
 
 @Composable
 fun RegistrationScreen2(
-    viewModel: AuthViewModel = viewModel()
+    viewModel: AuthViewModel = viewModel(),
+    onRegistrationButtonClicked: () -> Unit,
+    onLoginButtonClicked: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     Column(
         modifier = Modifier.padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(
             verticalArrangement = Arrangement.Top,
@@ -98,7 +101,7 @@ fun RegistrationScreen2(
                 shape = MaterialTheme.shapes.small,
                 onClick = {
                     if (viewModel.isPasswordValid()) {
-                        //ToDo: Переход на следующий экран
+                        onRegistrationButtonClicked()
                     }
                 }
             ) {
@@ -110,7 +113,7 @@ fun RegistrationScreen2(
             Text(
                 text = stringResource(R.string.login_if_already_registered_label),
                 modifier = Modifier.clickable {
-                    //TODO("Смена экрана")
+                    onLoginButtonClicked()
                 })
         }
 
@@ -124,7 +127,8 @@ fun RegistrationScreen2(
 fun RegistrationScreen2Preview() {
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            RegistrationScreen2(
+            _root_ide_package_.com.example.kozaapp.AuthScreen(
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.RegistrationScreen2
             )
         }
     }
@@ -135,7 +139,8 @@ fun RegistrationScreen2Preview() {
 fun RegistrationScreen2DarkThemePreview() {
     AppTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            RegistrationScreen2(
+            _root_ide_package_.com.example.kozaapp.AuthScreen(
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.RegistrationScreen2
             )
         }
     }

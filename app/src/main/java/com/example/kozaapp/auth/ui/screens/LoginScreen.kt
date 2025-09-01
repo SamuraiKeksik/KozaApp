@@ -34,11 +34,15 @@ import com.example.kozaapp.ui.theme.AppTheme
 @Composable
 fun LoginScreen(
     viewModel: AuthViewModel = viewModel(),
+    onLoginButtonClicked: () -> Unit,
+    onRegistrationButtonClicked: () -> Unit,
+    onForgotPasswordButtonClicked: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     Column(
         modifier = Modifier.padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(
             verticalArrangement = Arrangement.Top,
@@ -83,7 +87,7 @@ fun LoginScreen(
             Text(
                 text = stringResource(R.string.forgot_password_label),
                 modifier = Modifier.clickable {
-                    //TODO("Смена экрана")
+                    onForgotPasswordButtonClicked()
                 }
             )
             Spacer(modifier = Modifier.height(15.dp))
@@ -102,7 +106,11 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .padding(bottom = 5.dp),
                 shape = MaterialTheme.shapes.small,
-                onClick = {}
+                onClick = {
+                    if (viewModel.tryToLogin()) {
+                        onLoginButtonClicked()
+                    }
+                }
             ) {
                 Text(
                     style = MaterialTheme.typography.bodyLarge,
@@ -112,12 +120,10 @@ fun LoginScreen(
             Text(
                 text = stringResource(R.string.register_if_havent_yet_label),
                 modifier = Modifier.clickable {
-                    //TODO("Смена экрана")
+                    onRegistrationButtonClicked()
                 }
             )
         }
-
-
     }
 }
 
@@ -127,7 +133,8 @@ fun LoginScreen(
 fun LoginScreenPreview() {
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            LoginScreen(
+            _root_ide_package_.com.example.kozaapp.AuthScreen(
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.LoginScreen
             )
         }
     }
@@ -138,7 +145,8 @@ fun LoginScreenPreview() {
 fun LoginScreenDarkThemePreview() {
     AppTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            LoginScreen(
+            _root_ide_package_.com.example.kozaapp.AuthScreen(
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.LoginScreen
             )
         }
     }

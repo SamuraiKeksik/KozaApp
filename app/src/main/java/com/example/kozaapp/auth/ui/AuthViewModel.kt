@@ -59,8 +59,7 @@ class AuthViewModel : ViewModel() {
     }
 
     fun isEmailValidForRegistration(): Boolean {
-        val emailRegex = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$".toRegex()
-        if (!emailRegex.matches(email)) {
+        if (!isEmailValid()) {
             updateUiStateError(
                 error = R.string.email_validation_error,
                 isEmailWrong = true,
@@ -75,13 +74,13 @@ class AuthViewModel : ViewModel() {
             return false
         }
         else {
-            updateUiStateError()
+            resetUiStateError()
             return true
         }
     }
+
     fun isEmailValidForPasswordRecovery(): Boolean {
-        val emailRegex = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$".toRegex()
-        if (!emailRegex.matches(email)) {
+        if (!isEmailValid()) {
             updateUiStateError(
                 error = R.string.email_validation_error,
                 isEmailWrong = true,
@@ -96,11 +95,25 @@ class AuthViewModel : ViewModel() {
             return false
         }
         else {
-            updateUiStateError()
+            resetUiStateError()
             return true
         }
     }
 
+    fun isEmailValidForLogin(): Boolean {
+        if (isEmailValidForPasswordRecovery())
+            return true
+        else
+            return false
+    }
+
+    private fun isEmailValid(): Boolean{
+        val emailRegex = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$".toRegex()
+        if (!emailRegex.matches(email))
+            return false
+        else
+            return true
+    }
     fun isEmailRegistered(): Boolean {
             return true
         //ToDo: Сделать проверку через сервер
@@ -113,27 +126,59 @@ class AuthViewModel : ViewModel() {
                 isPasswordWrong = true,
             )
             return false
-        } else if (password == passwordConfirmation) {
-            updateUiStateError(
-                error = R.string.password_confirmation_validation_error,
-                isPasswordConfirmationWrong = true,
-            )
-            return false
         } else {
-            updateUiStateError()
+            resetUiStateError()
             return true
         }
     }
 
-    fun sendRegistrationRequest() {
+    fun tryToRegister():Boolean {
         //ToDo: Сделать запрос на регистрацию на сервер
-    }
-
-    fun isConfirmationCodeValid(): Boolean {
-        //ToDo: Сделать запрос на проверку кода на сервер
         return true
     }
 
+    fun tryToLogin():Boolean{
+        if (isEmailValidForLogin() && isPasswordValid())
+            return true
+        else
+            return false
+        //ToDo: Сделать запрос на логин на сервер
+
+    }
+
+    fun tryToRecoverPassword():Boolean{
+        if (isEmailValidForPasswordRecovery())
+            return true
+        else
+            return false
+        //ToDo: Сделать запрос на отправку кода подтверждения на сервер
+    }
+
+    fun tryToChangePassword():Boolean{
+        if (isPasswordValid()){
+            if (password != passwordConfirmation) {
+                updateUiStateError(
+                    error = R.string.password_confirmation_validation_error,
+                    isPasswordConfirmationWrong = true,
+                )
+                return false
+            }
+            return true
+        }
+        else
+            return false
+
+        //ToDo: Сделать запрос на смену пароля на сервер
+    }
+
+    fun isConfirmationCodeValid(): Boolean {
+        //ToDo: Сделать запрос на проверку кода на серверы
+        return true
+    }
+
+    fun resetUiStateError(){
+        updateUiStateError()
+    }
     private fun updateUiStateError(
         isLoading: Boolean = false,
         @StringRes error: Int? = null,

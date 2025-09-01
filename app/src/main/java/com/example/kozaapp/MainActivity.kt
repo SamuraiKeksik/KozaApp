@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.kozaapp.AuthScreen
 import com.example.kozaapp.auth.ui.screens.GreetingScreen
 import com.example.kozaapp.auth.ui.screens.RegistrationScreen1
 import com.example.kozaapp.ui.theme.AppTheme
@@ -21,9 +22,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppTheme {
-                RegistrationScreen1(
-                )
-
+                AuthScreen()
             }
         }
     }

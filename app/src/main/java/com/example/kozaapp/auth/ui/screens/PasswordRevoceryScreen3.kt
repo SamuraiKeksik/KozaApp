@@ -33,11 +33,13 @@ import com.example.kozaapp.ui.theme.AppTheme
 @Composable
 fun PasswordRecoveryScreen3(
     viewModel: AuthViewModel = viewModel(),
+    onChangePasswordButtonClicked: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     Column(
         modifier = Modifier.padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(
             verticalArrangement = Arrangement.Top,
@@ -94,8 +96,8 @@ fun PasswordRecoveryScreen3(
                     .padding(bottom = 5.dp),
                 shape = MaterialTheme.shapes.small,
                 onClick = {
-                    if (viewModel.isPasswordValid()) {
-                        //todo: Сделать переход на следующий экран
+                    if (viewModel.tryToChangePassword()) {
+                        onChangePasswordButtonClicked()
                     }
                 }
             ) {
@@ -114,7 +116,8 @@ fun PasswordRecoveryScreen3(
 fun PasswordRecoveryScreen3Preview() {
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            PasswordRecoveryScreen3(
+            _root_ide_package_.com.example.kozaapp.AuthScreen(
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.PasswordRecoveryScreen3
             )
         }
     }
@@ -125,7 +128,8 @@ fun PasswordRecoveryScreen3Preview() {
 fun PasswordRecoveryScreen3DarkThemePreview() {
     AppTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            PasswordRecoveryScreen3(
+            _root_ide_package_.com.example.kozaapp.AuthScreen(
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.PasswordRecoveryScreen3
             )
         }
     }
