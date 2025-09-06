@@ -73,10 +73,11 @@ fun RegistrationScreen1(
                 )
             )
             StandardOutlineTextField(
-                label = stringResource(R.string.name_label),
-                placeholder = R.string.name_example,
-                value = viewModel.name,
-                onValueChange = { viewModel.updateName(it) },
+                label = stringResource(R.string.nickname_label),
+                placeholder = R.string.nickname_example,
+                value = viewModel.nickname,
+                onValueChange = { viewModel.updateNickname(it) },
+                isInputWrong = uiState.isNicknameWrong,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next,
@@ -121,7 +122,7 @@ fun RegistrationScreen1(
                     .padding(bottom = 5.dp),
                 shape = MaterialTheme.shapes.small,
                 onClick = {
-                    if (viewModel.isEmailValidForRegistration()) {
+                    if (viewModel.isEmailValid() && viewModel.isNicknameValid()) {
                         onContinueButtonClicked()
                     }
                 }
@@ -146,7 +147,7 @@ fun RegistrationScreen1Preview() {
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             _root_ide_package_.com.example.kozaapp.AuthScreen(
-                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.RegistrationScreen1
+                startScreen = com.example.kozaapp.AuthScreenEnum.RegistrationScreen1
             )
         }
     }
@@ -158,7 +159,7 @@ fun RegistrationScreen1DarkThemePreview() {
     AppTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
             _root_ide_package_.com.example.kozaapp.AuthScreen(
-                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.RegistrationScreen1
+                startScreen = com.example.kozaapp.AuthScreenEnum.RegistrationScreen1
             )
         }
     }

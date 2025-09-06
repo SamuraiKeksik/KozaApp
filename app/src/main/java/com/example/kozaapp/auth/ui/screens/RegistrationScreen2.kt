@@ -100,7 +100,7 @@ fun RegistrationScreen2(
                     .padding(bottom = 5.dp),
                 shape = MaterialTheme.shapes.small,
                 onClick = {
-                    if (viewModel.isPasswordValid()) {
+                    if (viewModel.tryToRegister()) {
                         onRegistrationButtonClicked()
                     }
                 }

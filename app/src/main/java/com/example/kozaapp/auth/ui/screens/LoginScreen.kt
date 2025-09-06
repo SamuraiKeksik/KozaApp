@@ -63,13 +63,13 @@ fun LoginScreen(
                 textAlign = TextAlign.Justify
             )
             StandardOutlineTextField(
-                label = stringResource(R.string.email_label),
-                placeholder = R.string.email_example,
-                value = viewModel.email,
-                onValueChange = { viewModel.updateEmail(it) },
-                isInputWrong = uiState.isEmailWrong,
+                label = stringResource(R.string.nickname_label),
+                placeholder = R.string.nickname_example,
+                value = viewModel.nickname,
+                onValueChange = { viewModel.updateNickname(it) },
+                isInputWrong = uiState.isNicknameWrong,
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Email,
+                    keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next,
                 )
             )

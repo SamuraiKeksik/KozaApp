@@ -24,7 +24,7 @@ class AuthViewModel : ViewModel() {
         private set
     var confirmationCode by mutableStateOf("")
         private set
-    var name by mutableStateOf("")
+    var nickname by mutableStateOf("")
         private set
     var phone by mutableStateOf("")
         private set
@@ -46,8 +46,8 @@ class AuthViewModel : ViewModel() {
         confirmationCode = newConfirmationCode
     }
 
-    fun updateName(newName: String) {
-        name = newName
+    fun updateNickname(newNickname: String) {
+        nickname = newNickname
     }
 
     fun updatePhone(newPhone: String) {
@@ -58,61 +58,22 @@ class AuthViewModel : ViewModel() {
         address = newAddress
     }
 
-    fun isEmailValidForRegistration(): Boolean {
-        if (!isEmailValid()) {
-            updateUiStateError(
-                error = R.string.email_validation_error,
-                isEmailWrong = true,
-            )
-            return false
-        }
-        else if (isEmailRegistered()) {
-            updateUiStateError(
-                error = R.string.email_occupied_error,
-                isEmailWrong = true,
-            )
-            return false
-        }
-        else {
-            resetUiStateError()
-            return true
-        }
-    }
-
-    fun isEmailValidForPasswordRecovery(): Boolean {
-        if (!isEmailValid()) {
-            updateUiStateError(
-                error = R.string.email_validation_error,
-                isEmailWrong = true,
-            )
-            return false
-        }
-        else if (!isEmailRegistered()) {
-            updateUiStateError(
-                error = R.string.email_not_registered_error,
-                isEmailWrong = true,
-            )
-            return false
-        }
-        else {
-            resetUiStateError()
-            return true
-        }
-    }
-
-    fun isEmailValidForLogin(): Boolean {
-        if (isEmailValidForPasswordRecovery())
-            return true
-        else
-            return false
-    }
-
-    private fun isEmailValid(): Boolean{
+    fun isEmailValid(): Boolean{
         val emailRegex = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$".toRegex()
         if (!emailRegex.matches(email))
+        {
+            updateUiStateError(
+                isEmailWrong = true,
+                error = R.string.email_validation_error,
+            )
             return false
+        }
         else
+        {
+            resetUiStateError()
             return true
+        }
+
     }
     fun isEmailRegistered(): Boolean {
             return true
@@ -137,8 +98,23 @@ class AuthViewModel : ViewModel() {
         return true
     }
 
+    fun isNicknameValid(): Boolean{
+        if (nickname.length < 3){
+            updateUiStateError(
+                isNicknameWrong = true,
+                error = R.string.nickname_validation_error
+            )
+            return false
+        }
+        else
+        {
+            resetUiStateError()
+            return true
+        }
+    }
+
     fun tryToLogin():Boolean{
-        if (isEmailValidForLogin() && isPasswordValid())
+        if (isNicknameValid() && isPasswordValid())
             return true
         else
             return false
@@ -147,7 +123,7 @@ class AuthViewModel : ViewModel() {
     }
 
     fun tryToRecoverPassword():Boolean{
-        if (isEmailValidForPasswordRecovery())
+        if (isEmailValid())
             return true
         else
             return false
@@ -183,6 +159,7 @@ class AuthViewModel : ViewModel() {
         isLoading: Boolean = false,
         @StringRes error: Int? = null,
         isEmailWrong: Boolean = false,
+        isNicknameWrong: Boolean = false,
         isPasswordWrong: Boolean = false,
         isPasswordConfirmationWrong: Boolean = false,
     ) {
@@ -191,13 +168,10 @@ class AuthViewModel : ViewModel() {
                 isLoading = isLoading,
                 error = error,
                 isEmailWrong = isEmailWrong,
+                isNicknameWrong = isNicknameWrong,
                 isPasswordWrong = isPasswordWrong,
                 isPasswordConfirmationWrong = isPasswordConfirmationWrong,
             )
         }
     }
-
-
-
-
 }

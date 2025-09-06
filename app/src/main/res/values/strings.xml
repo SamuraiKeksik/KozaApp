@@ -7,8 +7,8 @@
     <string name="registration_info_request_second">Введите свой пароль и примите соглашение после прочтения</string>
     <string name="email_label">Email:</string>
     <string name="email_example">example.mail@gmail.com</string>
-    <string name="name_label">Имя:</string>
-    <string name="name_example">Иванов Иван Иванович</string>
+    <string name="nickname_label">Никнейм:</string>
+    <string name="nickname_example">someFarmer</string>
     <string name="phone_label">Телефон</string>
     <string name="phone_example">+79371234567</string>
     <string name="address_label">Адрес:</string>
@@ -35,6 +35,7 @@
     <string name="email_validation_error">Email указан неправильно</string>
     <string name="email_occupied_error">Данный Email уже зарегистрирован</string>
     <string name="email_not_registered_error">Данный Email не зарегистрирован</string>
+    <string name="nickname_validation_error">Никнейм должен содержать как минимум 3 символа</string>
     <string name="password_validation_error">Пароль должен содержать минимум 8 символов</string>
     <string name="password_confirmation_validation_error">Пароли должны совпадать</string>
 
