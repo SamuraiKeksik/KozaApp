@@ -14,13 +14,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navigation
 import com.example.kozaapp.AuthScreen
 import com.example.kozaapp.auth.ui.screens.GreetingScreen
 import com.example.kozaapp.auth.ui.screens.RegistrationScreen1
 import com.example.kozaapp.mainApp.ui.screens.MainScreen
 import com.example.kozaapp.ui.theme.AppTheme
-import kotlinx.serialization.Serializable
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,23 +32,26 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Serializable object Auth
-@Serializable object Main
 @Composable
 fun KozaApp(){
     val navController = rememberNavController()
-
     NavHost(
         navController = navController,
         startDestination = AppScreensEnum.AuthScreen.name
     ){
-        navigation<Auth>(startDestination = AuthScreenEnum.GreetingScreen.name){
-            composable(AuthScreenEnum.GreetingScreen.name){
-                GreetingScreen(
-                    onRegistrationButtonClicked = {},
-                    onLoginButtonClicked = {},
-                    onContinueWithoutLoginButtonClicked = {})
-            }
+        composable(AppScreensEnum.AuthScreen.name){
+            AuthScreen(
+                onLoginSuccess = {
+                    navController.navigate(AppScreensEnum.MainScreen.name){
+                        popUpTo(AppScreensEnum.AuthScreen.name){
+                            inclusive = true
+                        }
+                    }
+                }
+            )
+        }
+        composable(AppScreensEnum.MainScreen.name){
+            MainScreen()
         }
     }
 }
