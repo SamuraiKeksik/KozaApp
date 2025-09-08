@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kozaapp.R
 import com.example.kozaapp.AuthScreenEnum
+import com.example.kozaapp.mainApp.ui.screens.MainScreenEnum
 
 @Composable
 fun StandardOutlineTextField(
@@ -59,8 +60,32 @@ fun ErrorText(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun KozaAppBar(
+fun AuthAppBar(
     currentScreen: AuthScreenEnum,
+    canNavigateBack: Boolean,
+    modifier: Modifier = Modifier,
+    navigateUp: () -> Unit = {},
+){
+    TopAppBar(
+        title = { Text(stringResource(currentScreen.title))},
+        modifier = modifier,
+        navigationIcon = {
+            if (canNavigateBack){
+                IconButton(onClick = navigateUp) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = null
+                    )
+                }
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MainAppBar(
+    currentScreen: MainScreenEnum,
     canNavigateBack: Boolean,
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},

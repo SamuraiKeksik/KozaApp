@@ -23,6 +23,6 @@ sealed class BottomNavItem(
     object HomeScreen : BottomNavItem(
         icon = Icons.Default.Home,
         labelRes = R.string.app_name,
-        route = MainScreenEnum.MainScreen,
+        route = MainScreenEnum.AnimalCardsScreen,
     )
 }

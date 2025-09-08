@@ -19,7 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.kozaapp.auth.data.AuthViewModel
-import com.example.kozaapp.ui.KozaAppBar
+import com.example.kozaapp.ui.AuthAppBar
 import com.example.kozaapp.ui.theme.AppTheme
 
 enum class AuthScreenEnum(@StringRes val title: Int) {
@@ -41,7 +41,8 @@ fun AuthScreen(
     modifier: Modifier = Modifier,
     viewModel: AuthViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
-    startScreen: AuthScreenEnum = AuthScreenEnum.GreetingScreen
+    startScreen: AuthScreenEnum = AuthScreenEnum.GreetingScreen,
+    onLoginSuccess: () -> Unit = {},
 ) {
 
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -51,7 +52,7 @@ fun AuthScreen(
 
     Scaffold(
         topBar = {
-            KozaAppBar(
+            AuthAppBar(
                 currentScreen = currentScreen,
                 canNavigateBack = navController.previousBackStackEntry != null,
                 navigateUp = { navController.navigateUp() }
@@ -70,10 +71,7 @@ fun AuthScreen(
                 _root_ide_package_.com.example.kozaapp.auth.ui.screens.GreetingScreen(
                     onLoginButtonClicked = { navController.navigate(AuthScreenEnum.LoginScreen.name) },
                     onRegistrationButtonClicked = { navController.navigate(AuthScreenEnum.RegistrationScreen1.name) },
-                    onContinueWithoutLoginButtonClicked = {
-                        navController.navigate(AuthScreenEnum.GreetingScreen.name)
-                        //ToDo: Сделать экран основного приложения
-                    },
+                    onContinueWithoutLoginButtonClicked = onLoginSuccess
                 )
             }
             composable(AuthScreenEnum.LoginScreen.name) {

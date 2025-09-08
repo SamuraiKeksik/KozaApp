@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,7 +40,8 @@ fun AnimalInfoCard(
         modifier = modifier
             .width(175.dp)
             .height(200.dp),
-        border = BorderStroke(1.dp, color = Color.Black)
+        border = BorderStroke(1.dp, color = Color.Black),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
