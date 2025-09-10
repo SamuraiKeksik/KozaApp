@@ -8,8 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -40,6 +43,14 @@ fun LoginScreen(
     onForgotPasswordButtonClicked: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    if (uiState.isLoading){
+        CircularProgressIndicator(
+            modifier = Modifier.size(64.dp)
+                .wrapContentSize(Alignment.Center)
+        )
+    }
+
     LaunchedEffect(uiState.isLoginSuccess) {
         if (uiState.isLoginSuccess) {
             onLoginButtonClicked()
@@ -112,6 +123,7 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .padding(bottom = 5.dp),
                 shape = MaterialTheme.shapes.small,
+                enabled = !uiState.isLoading,
                 onClick = {
                     viewModel.tryToLogin()
                     if (uiState.isLoginSuccess) {
@@ -127,7 +139,8 @@ fun LoginScreen(
             Text(
                 text = stringResource(R.string.register_if_havent_yet_label),
                 modifier = Modifier.clickable {
-                    onRegistrationButtonClicked()
+                    if (!uiState.isLoading)
+                        onRegistrationButtonClicked()
                 }
             )
         }

@@ -8,8 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -39,6 +42,14 @@ fun RegistrationScreen2(
     onLoginButtonClicked: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    if (uiState.isLoading){
+        CircularProgressIndicator(
+            modifier = Modifier.size(64.dp)
+                .wrapContentSize(Alignment.Center)
+        )
+    }
+
     LaunchedEffect(uiState.isRegistrationSuccess) {
         if (uiState.isRegistrationSuccess) {
             onRegistrationButtonClicked()
@@ -106,6 +117,7 @@ fun RegistrationScreen2(
                     .fillMaxWidth()
                     .padding(bottom = 5.dp),
                 shape = MaterialTheme.shapes.small,
+                enabled = !uiState.isLoading,
                 onClick = {
                     viewModel.tryToRegister()
                 }
@@ -118,7 +130,8 @@ fun RegistrationScreen2(
             Text(
                 text = stringResource(R.string.login_if_already_registered_label),
                 modifier = Modifier.clickable {
-                    onLoginButtonClicked()
+                    if(!uiState.isLoading)
+                        onLoginButtonClicked()
                 })
         }
 

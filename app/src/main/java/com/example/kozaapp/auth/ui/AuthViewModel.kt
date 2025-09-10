@@ -122,6 +122,7 @@ class AuthViewModel @Inject constructor(
     fun tryToLogin():Boolean{
         if (isNicknameValid() && isPasswordValid()) {
             viewModelScope.launch {
+                updateUiState(isLoading = true)
                 val result = authRepository.login(nickname, password)
                 if (result == true){
                     updateUiState(isLoginSuccess = true)
@@ -144,6 +145,7 @@ class AuthViewModel @Inject constructor(
             region = address,
             )
         viewModelScope.launch {
+            updateUiState(isLoading = true)
             val result = authRepository.registration(request)
             if (result == true){
                 updateUiState(isRegistrationSuccess = true)
