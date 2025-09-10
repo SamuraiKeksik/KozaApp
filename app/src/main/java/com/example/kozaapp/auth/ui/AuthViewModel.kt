@@ -5,14 +5,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.kozaapp.R
+import com.example.kozaapp.data.AuthRepository
+import com.example.kozaapp.data.network.RegistrationRequest
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.Boolean
 
-class AuthViewModel : ViewModel() {
+@HiltViewModel
+class AuthViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
+) : ViewModel() {
     private val _uiState = MutableStateFlow(AuthUiState())
     val uiState: StateFlow<AuthUiState> = _uiState.asStateFlow()
 
@@ -62,7 +71,7 @@ class AuthViewModel : ViewModel() {
         val emailRegex = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$".toRegex()
         if (!emailRegex.matches(email))
         {
-            updateUiStateError(
+            updateUiState(
                 isEmailWrong = true,
                 error = R.string.email_validation_error,
             )
@@ -82,7 +91,7 @@ class AuthViewModel : ViewModel() {
 
     fun isPasswordValid(): Boolean {
         if (password.length < 8) {
-            updateUiStateError(
+            updateUiState(
                 error = R.string.password_validation_error,
                 isPasswordWrong = true,
             )
@@ -93,14 +102,11 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    fun tryToRegister():Boolean {
-        //ToDo: Сделать запрос на регистрацию на сервер
-        return true
-    }
+
 
     fun isNicknameValid(): Boolean{
         if (nickname.length < 3){
-            updateUiStateError(
+            updateUiState(
                 isNicknameWrong = true,
                 error = R.string.nickname_validation_error
             )
@@ -114,12 +120,36 @@ class AuthViewModel : ViewModel() {
     }
 
     fun tryToLogin():Boolean{
-        if (isNicknameValid() && isPasswordValid())
+        if (isNicknameValid() && isPasswordValid()) {
+            viewModelScope.launch {
+                val result = authRepository.login(nickname, password)
+                if (result == true){
+                    updateUiState(isLoginSuccess = true)
+                }
+            }
             return true
+        }
         else
             return false
         //ToDo: Сделать запрос на логин на сервер
 
+    }
+
+    fun tryToRegister():Boolean {
+        val request = RegistrationRequest(
+            email = email,
+            password = password,
+            username = nickname,
+            phone = phone,
+            region = address,
+            )
+        viewModelScope.launch {
+            val result = authRepository.registration(request)
+            if (result == true){
+                updateUiState(isRegistrationSuccess = true)
+            }
+        }
+        return true
     }
 
     fun tryToRecoverPassword():Boolean{
@@ -133,7 +163,7 @@ class AuthViewModel : ViewModel() {
     fun tryToChangePassword():Boolean{
         if (isPasswordValid()){
             if (password != passwordConfirmation) {
-                updateUiStateError(
+                updateUiState(
                     error = R.string.password_confirmation_validation_error,
                     isPasswordConfirmationWrong = true,
                 )
@@ -153,10 +183,12 @@ class AuthViewModel : ViewModel() {
     }
 
     fun resetUiStateError(){
-        updateUiStateError()
+        updateUiState()
     }
-    private fun updateUiStateError(
+    private fun updateUiState(
         isLoading: Boolean = false,
+        isLoginSuccess: Boolean = false,
+        isRegistrationSuccess: Boolean = false,
         @StringRes error: Int? = null,
         isEmailWrong: Boolean = false,
         isNicknameWrong: Boolean = false,
@@ -166,6 +198,8 @@ class AuthViewModel : ViewModel() {
         _uiState.update { currentState ->
             currentState.copy(
                 isLoading = isLoading,
+                isLoginSuccess = isLoginSuccess,
+                isRegistrationSuccess = isRegistrationSuccess,
                 error = error,
                 isEmailWrong = isEmailWrong,
                 isNicknameWrong = isNicknameWrong,

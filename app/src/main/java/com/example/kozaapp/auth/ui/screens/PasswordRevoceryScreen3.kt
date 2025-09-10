@@ -32,7 +32,7 @@ import com.example.kozaapp.ui.theme.AppTheme
 
 @Composable
 fun PasswordRecoveryScreen3(
-    viewModel: AuthViewModel = viewModel(),
+    viewModel: AuthViewModel,
     onChangePasswordButtonClicked: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()

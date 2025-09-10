@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -33,11 +34,17 @@ import com.example.kozaapp.ui.theme.AppTheme
 
 @Composable
 fun RegistrationScreen2(
-    viewModel: AuthViewModel = viewModel(),
+    viewModel: AuthViewModel,
     onRegistrationButtonClicked: () -> Unit,
     onLoginButtonClicked: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    LaunchedEffect(uiState.isRegistrationSuccess) {
+        if (uiState.isRegistrationSuccess) {
+            onRegistrationButtonClicked()
+        }
+    }
+
     Column(
         modifier = Modifier.padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -100,9 +107,7 @@ fun RegistrationScreen2(
                     .padding(bottom = 5.dp),
                 shape = MaterialTheme.shapes.small,
                 onClick = {
-                    if (viewModel.tryToRegister()) {
-                        onRegistrationButtonClicked()
-                    }
+                    viewModel.tryToRegister()
                 }
             ) {
                 Text(

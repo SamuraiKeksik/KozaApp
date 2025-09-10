@@ -24,7 +24,7 @@ import com.example.kozaapp.ui.theme.AppTheme
 
 @Composable
 fun GreetingScreen(
-    viewModel: AuthViewModel = viewModel(),
+    viewModel: AuthViewModel,
     onRegistrationButtonClicked: () -> Unit,
     onLoginButtonClicked: () -> Unit,
     onContinueWithoutLoginButtonClicked: () -> Unit,

@@ -4,6 +4,9 @@ import androidx.annotation.StringRes
 
 data class AuthUiState (
     val isLoading: Boolean = false,
+    val isLoginSuccess: Boolean = false,
+    val isRegistrationSuccess: Boolean = false,
+
     @StringRes val error: Int? = null,
     val isEmailWrong: Boolean = false,
     val isNicknameWrong: Boolean = false,

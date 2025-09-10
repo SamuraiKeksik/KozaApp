@@ -1,5 +1,6 @@
 package com.example.kozaapp
 
+import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,6 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -39,16 +43,16 @@ enum class AuthScreenEnum(@StringRes val title: Int) {
 @Composable
 fun AuthScreen(
     modifier: Modifier = Modifier,
-    viewModel: AuthViewModel = viewModel(),
+    viewModel: AuthViewModel = hiltViewModel(),
     navController: NavHostController = rememberNavController(),
     startScreen: AuthScreenEnum = AuthScreenEnum.GreetingScreen,
     onLoginSuccess: () -> Unit = {},
 ) {
-
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = AuthScreenEnum.valueOf(
         backStackEntry?.destination?.route ?: AuthScreenEnum.GreetingScreen.name
     )
+
 
     Scaffold(
         topBar = {
@@ -69,19 +73,17 @@ fun AuthScreen(
         ) {
             composable(AuthScreenEnum.GreetingScreen.name) {
                 _root_ide_package_.com.example.kozaapp.auth.ui.screens.GreetingScreen(
+                    viewModel = viewModel,
                     onLoginButtonClicked = { navController.navigate(AuthScreenEnum.LoginScreen.name) },
                     onRegistrationButtonClicked = { navController.navigate(AuthScreenEnum.RegistrationScreen1.name) },
-                    onContinueWithoutLoginButtonClicked = onLoginSuccess
+                    onContinueWithoutLoginButtonClicked = onLoginSuccess,
                 )
             }
             composable(AuthScreenEnum.LoginScreen.name) {
                 viewModel.resetUiStateError()
                 _root_ide_package_.com.example.kozaapp.auth.ui.screens.LoginScreen(
                     viewModel = viewModel,
-                    onLoginButtonClicked = {
-                        navController.navigate(AuthScreenEnum.GreetingScreen.name)
-                        //ToDo: Сделать экран основного приложения
-                    },
+                    onLoginButtonClicked = onLoginSuccess,
                     onRegistrationButtonClicked = { navController.navigate(AuthScreenEnum.RegistrationScreen1.name) },
                     onForgotPasswordButtonClicked = { navController.navigate(AuthScreenEnum.PasswordRecoveryScreen1.name) }
                 )
@@ -104,10 +106,7 @@ fun AuthScreen(
             }
             composable(AuthScreenEnum.RegistrationScreen3.name) {
                 _root_ide_package_.com.example.kozaapp.auth.ui.screens.RegistrationScreen3(
-                    onContinueButtonClicked = {
-                        //ToDo: Сделать основной экран приложения
-                        navController.navigate(AuthScreenEnum.GreetingScreen.name)
-                    }
+                    onContinueButtonClicked = onLoginSuccess,
                 )
             }
             composable(AuthScreenEnum.PasswordRecoveryScreen1.name) {

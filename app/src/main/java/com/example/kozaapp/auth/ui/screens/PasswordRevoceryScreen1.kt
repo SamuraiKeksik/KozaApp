@@ -33,7 +33,7 @@ import com.example.kozaapp.ui.theme.AppTheme
 
 @Composable
 fun PasswordRecoveryScreen1(
-    viewModel: AuthViewModel = viewModel(),
+    viewModel: AuthViewModel,
     onContinueButtonClicked: () -> Unit,
     onLoginButtonClicked: () -> Unit,
 ) {
