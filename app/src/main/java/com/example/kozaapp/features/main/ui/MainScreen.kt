@@ -1,38 +1,47 @@
 package com.example.kozaapp.features.main.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.kozaapp.AuthScreen
 import com.example.kozaapp.animals.ui.screens.AnimalsScreen
 
-private enum class AppScreensEnum(){
+enum class MainScreensEnum(){
     AuthScreen,
     MainScreen,
 }
 
 @Composable
-fun MainScreen(){
+fun MainScreen(viewModel: MainViewModel = hiltViewModel()){
     val navController = rememberNavController()
-    NavHost(
-        navController = navController,
-        startDestination = AppScreensEnum.AuthScreen.name
-    ){
-        composable(AppScreensEnum.AuthScreen.name){
-            AuthScreen(
-                onLoginSuccess = {
-                    navController.navigate(AppScreensEnum.MainScreen.name){
-                        popUpTo(AppScreensEnum.AuthScreen.name){
-                            inclusive = true
+    val startDestination by viewModel.startDestination.collectAsState()
+
+    if(startDestination != null){
+        NavHost(
+            navController = navController,
+            startDestination = startDestination!!
+        ){
+            composable(MainScreensEnum.AuthScreen.name){
+                AuthScreen(
+                    onLoginSuccess = {
+                        navController.navigate(MainScreensEnum.MainScreen.name){
+                            popUpTo(MainScreensEnum.AuthScreen.name){
+                                inclusive = true
+                            }
                         }
                     }
-                }
-            )
-        }
-        composable(AppScreensEnum.MainScreen.name){
-            AnimalsScreen()
+                )
+            }
+            composable(MainScreensEnum.MainScreen.name){
+                AnimalsScreen()
+            }
         }
     }
+
 }
 

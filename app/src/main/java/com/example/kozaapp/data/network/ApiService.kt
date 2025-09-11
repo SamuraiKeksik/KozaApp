@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface ApiService {
     @GET("/users/me")
-    fun registration(): Response<User>
+    suspend fun getCurrentUser(): Response<User>
 }

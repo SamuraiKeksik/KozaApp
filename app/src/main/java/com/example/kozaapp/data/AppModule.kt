@@ -69,4 +69,11 @@ object AppModule {
         return AuthRepository(authService, tokenManager)
     }
 
+    @Provides
+    @Singleton
+    fun provideAnimalsRepository(
+        apiService: ApiService,
+    ): AnimalsRepository {
+        return AnimalsRepository(apiService)
+    }
 }
