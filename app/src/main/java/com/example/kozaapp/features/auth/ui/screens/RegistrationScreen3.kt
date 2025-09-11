@@ -1,4 +1,4 @@
-package com.example.kozaapp.auth.ui.screens
+package com.example.kozaapp.features.auth.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +16,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.kozaapp.AuthScreen
+import com.example.kozaapp.AuthScreenEnum
 import com.example.kozaapp.R
 import com.example.kozaapp.ui.theme.AppTheme
 
@@ -79,8 +81,8 @@ fun RegistrationScreen3(
 fun RegistrationScreen3Preview() {
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            _root_ide_package_.com.example.kozaapp.AuthScreen(
-                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.RegistrationScreen3
+            AuthScreen(
+                startScreen = AuthScreenEnum.RegistrationScreen3
             )
         }
     }
@@ -91,8 +93,8 @@ fun RegistrationScreen3Preview() {
 fun RegistrationScreen3DarkThemePreview() {
     AppTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            _root_ide_package_.com.example.kozaapp.AuthScreen(
-                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.RegistrationScreen3
+            AuthScreen(
+                startScreen = AuthScreenEnum.RegistrationScreen3
             )
         }
     }

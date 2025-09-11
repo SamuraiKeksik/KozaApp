@@ -1,6 +1,6 @@
 package com.example.kozaapp.data.network
 
-import com.example.kozaapp.auth.data.model.RegistrationResponse
+import com.example.kozaapp.features.auth.data.model.RegistrationResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field

@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.kozaapp.mainApp.ui.screens.MainScreen
+import com.example.kozaapp.animals.ui.screens.AnimalsScreen
 import com.example.kozaapp.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -44,7 +44,7 @@ private fun KozaNavigation(){
             )
         }
         composable(AppScreensEnum.MainScreen.name){
-            MainScreen()
+            AnimalsScreen()
         }
     }
 }

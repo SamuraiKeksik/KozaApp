@@ -1,4 +1,4 @@
-package com.example.kozaapp.auth.ui.screens
+package com.example.kozaapp.features.auth.ui.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -8,16 +8,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -28,7 +24,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kozaapp.R
 import com.example.kozaapp.auth.data.AuthViewModel
 import com.example.kozaapp.ui.ErrorText
@@ -36,26 +31,12 @@ import com.example.kozaapp.ui.StandardOutlineTextField
 import com.example.kozaapp.ui.theme.AppTheme
 
 @Composable
-fun LoginScreen(
+fun RegistrationScreen1(
     viewModel: AuthViewModel,
+    onContinueButtonClicked: () -> Unit,
     onLoginButtonClicked: () -> Unit,
-    onRegistrationButtonClicked: () -> Unit,
-    onForgotPasswordButtonClicked: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
-
-    if (uiState.isLoading){
-        CircularProgressIndicator(
-            modifier = Modifier.size(64.dp)
-                .wrapContentSize(Alignment.Center)
-        )
-    }
-
-    LaunchedEffect(uiState.isLoginSuccess) {
-        if (uiState.isLoginSuccess) {
-            onLoginButtonClicked()
-        }
-    }
     Column(
         modifier = Modifier.padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -63,10 +44,10 @@ fun LoginScreen(
     ) {
         Column(
             verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = stringResource(R.string.login_label),
+                text = stringResource(R.string.registration_label),
                 style = MaterialTheme.typography.displaySmall,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -74,10 +55,21 @@ fun LoginScreen(
                     .padding(bottom = 30.dp),
             )
             Text(
-                text = stringResource(R.string.login_info_request),
+                text = stringResource(R.string.registration_info_request),
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Justify
+            )
+            StandardOutlineTextField(
+                label = stringResource(R.string.email_label),
+                placeholder = R.string.email_example,
+                value = viewModel.email,
+                onValueChange = { viewModel.updateEmail(it) },
+                isInputWrong = uiState.isEmailWrong,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next,
+                )
             )
             StandardOutlineTextField(
                 label = stringResource(R.string.nickname_label),
@@ -88,24 +80,29 @@ fun LoginScreen(
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Text,
                     imeAction = ImeAction.Next,
+                    autoCorrect = true,
                 )
             )
             StandardOutlineTextField(
-                label = stringResource(R.string.password_label),
-                placeholder = R.string.password_example,
-                value = viewModel.password,
-                onValueChange = { viewModel.updatePassword(it) },
+                label = stringResource(R.string.phone_label),
+                placeholder = R.string.phone_example,
+                value = viewModel.phone,
+                onValueChange = { viewModel.updatePhone(it) },
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done,
+                    keyboardType = KeyboardType.Phone,
+                    imeAction = ImeAction.Next,
                 )
             )
-            Spacer(modifier = Modifier.height(15.dp))
-            Text(
-                text = stringResource(R.string.forgot_password_label),
-                modifier = Modifier.clickable {
-                    onForgotPasswordButtonClicked()
-                }
+            StandardOutlineTextField(
+                label = stringResource(R.string.address_label),
+                placeholder = R.string.address_example,
+                value = viewModel.address,
+                onValueChange = { viewModel.updateAddress(it) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done,
+                    autoCorrect = true,
+                )
             )
             Spacer(modifier = Modifier.height(15.dp))
             ErrorText(text = uiState.error)
@@ -123,38 +120,33 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .padding(bottom = 5.dp),
                 shape = MaterialTheme.shapes.small,
-                enabled = !uiState.isLoading,
                 onClick = {
-                    viewModel.tryToLogin()
-                    if (uiState.isLoginSuccess) {
-                        onLoginButtonClicked()
+                    if (viewModel.isEmailValid() && viewModel.isNicknameValid()) {
+                        onContinueButtonClicked()
                     }
                 }
             ) {
                 Text(
                     style = MaterialTheme.typography.bodyLarge,
-                    text = stringResource(R.string.login_button_label)
+                    text = stringResource(R.string.continue_button_label)
                 )
             }
             Text(
-                text = stringResource(R.string.register_if_havent_yet_label),
+                text = stringResource(R.string.login_if_already_registered_label),
                 modifier = Modifier.clickable {
-                    if (!uiState.isLoading)
-                        onRegistrationButtonClicked()
-                }
-            )
+                    onLoginButtonClicked()
+                })
         }
     }
 }
 
-
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun LoginScreenPreview() {
+fun RegistrationScreen1Preview() {
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             _root_ide_package_.com.example.kozaapp.AuthScreen(
-                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.LoginScreen
+                startScreen = com.example.kozaapp.AuthScreenEnum.RegistrationScreen1
             )
         }
     }
@@ -162,11 +154,11 @@ fun LoginScreenPreview() {
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun LoginScreenDarkThemePreview() {
+fun RegistrationScreen1DarkThemePreview() {
     AppTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
             _root_ide_package_.com.example.kozaapp.AuthScreen(
-                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.LoginScreen
+                startScreen = com.example.kozaapp.AuthScreenEnum.RegistrationScreen1
             )
         }
     }

@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.Boolean
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
@@ -51,6 +50,7 @@ class AuthViewModel @Inject constructor(
     fun updatePasswordConfirmation(newPasswordConfirmation: String) {
         passwordConfirmation = newPasswordConfirmation
     }
+
     fun updateConfirmationCode(newConfirmationCode: String) {
         confirmationCode = newConfirmationCode
     }
@@ -67,25 +67,23 @@ class AuthViewModel @Inject constructor(
         address = newAddress
     }
 
-    fun isEmailValid(): Boolean{
+    fun isEmailValid(): Boolean {
         val emailRegex = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$".toRegex()
-        if (!emailRegex.matches(email))
-        {
+        if (!emailRegex.matches(email)) {
             updateUiState(
                 isEmailWrong = true,
                 error = R.string.email_validation_error,
             )
             return false
-        }
-        else
-        {
+        } else {
             resetUiStateError()
             return true
         }
 
     }
+
     fun isEmailRegistered(): Boolean {
-            return true
+        return true
         //ToDo: Сделать проверку через сервер
     }
 
@@ -103,58 +101,54 @@ class AuthViewModel @Inject constructor(
     }
 
 
-
-    fun isNicknameValid(): Boolean{
-        if (nickname.length < 3){
+    fun isNicknameValid(): Boolean {
+        if (nickname.length < 3) {
             updateUiState(
                 isNicknameWrong = true,
                 error = R.string.nickname_validation_error
             )
             return false
-        }
-        else
-        {
+        } else {
             resetUiStateError()
             return true
         }
     }
 
-    fun tryToLogin():Boolean{
+    fun tryToLogin() {
         if (isNicknameValid() && isPasswordValid()) {
             viewModelScope.launch {
                 updateUiState(isLoading = true)
                 val result = authRepository.login(nickname, password)
-                if (result == true){
+                if (result == true) {
                     updateUiState(isLoginSuccess = true)
                 }
             }
-            return true
         }
-        else
-            return false
-        //ToDo: Сделать запрос на логин на сервер
+        //ToDo: Сделать обработку при исключении
 
     }
 
-    fun tryToRegister():Boolean {
-        val request = RegistrationRequest(
-            email = email,
-            password = password,
-            username = nickname,
-            phone = phone,
-            region = address,
+    fun tryToRegister() {
+        if (isEmailValid() && isPasswordValid() && password == passwordConfirmation) {
+            val request = RegistrationRequest(
+                email = email,
+                password = password,
+                username = nickname,
+                phone = phone,
+                region = address,
             )
-        viewModelScope.launch {
-            updateUiState(isLoading = true)
-            val result = authRepository.registration(request)
-            if (result == true){
-                updateUiState(isRegistrationSuccess = true)
+            viewModelScope.launch {
+                updateUiState(isLoading = true)
+                val result = authRepository.registration(request)
+                if (result == true) {
+                    updateUiState(isRegistrationSuccess = true)
+                }
             }
         }
-        return true
+        //ToDo: Сделать обработку при исключении
     }
 
-    fun tryToRecoverPassword():Boolean{
+    fun tryToRecoverPassword(): Boolean {
         if (isEmailValid())
             return true
         else
@@ -162,8 +156,8 @@ class AuthViewModel @Inject constructor(
         //ToDo: Сделать запрос на отправку кода подтверждения на сервер
     }
 
-    fun tryToChangePassword():Boolean{
-        if (isPasswordValid()){
+    fun tryToChangePassword(): Boolean {
+        if (isPasswordValid()) {
             if (password != passwordConfirmation) {
                 updateUiState(
                     error = R.string.password_confirmation_validation_error,
@@ -172,8 +166,7 @@ class AuthViewModel @Inject constructor(
                 return false
             }
             return true
-        }
-        else
+        } else
             return false
 
         //ToDo: Сделать запрос на смену пароля на сервер
@@ -184,9 +177,10 @@ class AuthViewModel @Inject constructor(
         return true
     }
 
-    fun resetUiStateError(){
+    fun resetUiStateError() {
         updateUiState()
     }
+
     private fun updateUiState(
         isLoading: Boolean = false,
         isLoginSuccess: Boolean = false,

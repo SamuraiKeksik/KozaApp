@@ -1,8 +1,4 @@
-package com.example.kozaapp.mainApp.model
-
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
-import com.example.kozaapp.mainApp.model.Goat
+package com.example.kozaapp.features.animals.model
 
 
 data class Goat(

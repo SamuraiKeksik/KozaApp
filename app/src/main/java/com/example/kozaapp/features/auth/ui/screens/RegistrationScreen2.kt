@@ -1,5 +1,6 @@
-package com.example.kozaapp.auth.ui.screens
+package com.example.kozaapp.features.auth.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -7,12 +8,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -23,7 +28,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.kozaapp.AuthScreen
+import com.example.kozaapp.AuthScreenEnum
 import com.example.kozaapp.R
 import com.example.kozaapp.auth.data.AuthViewModel
 import com.example.kozaapp.ui.ErrorText
@@ -31,11 +37,26 @@ import com.example.kozaapp.ui.StandardOutlineTextField
 import com.example.kozaapp.ui.theme.AppTheme
 
 @Composable
-fun PasswordRecoveryScreen3(
+fun RegistrationScreen2(
     viewModel: AuthViewModel,
-    onChangePasswordButtonClicked: () -> Unit,
+    onRegistrationButtonClicked: () -> Unit,
+    onLoginButtonClicked: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    if (uiState.isLoading){
+        CircularProgressIndicator(
+            modifier = Modifier.size(64.dp)
+                .wrapContentSize(Alignment.Center)
+        )
+    }
+
+    LaunchedEffect(uiState.isRegistrationSuccess) {
+        if (uiState.isRegistrationSuccess) {
+            onRegistrationButtonClicked()
+        }
+    }
+
     Column(
         modifier = Modifier.padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -46,7 +67,7 @@ fun PasswordRecoveryScreen3(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = stringResource(R.string.password_recovery_label),
+                text = stringResource(R.string.registration_label),
                 style = MaterialTheme.typography.displaySmall,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -54,7 +75,7 @@ fun PasswordRecoveryScreen3(
                     .padding(bottom = 30.dp),
             )
             Text(
-                text = stringResource(R.string.password_recovery_info_request_third),
+                text = stringResource(R.string.registration_info_request_second),
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Justify
@@ -64,6 +85,7 @@ fun PasswordRecoveryScreen3(
                 placeholder = R.string.password_example,
                 value = viewModel.password,
                 onValueChange = { viewModel.updatePassword(it) },
+                isInputWrong = uiState.isPasswordWrong,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Next,
@@ -74,6 +96,7 @@ fun PasswordRecoveryScreen3(
                 placeholder = R.string.password_confirmation_example,
                 value = viewModel.passwordConfirmation,
                 onValueChange = { viewModel.updatePasswordConfirmation(it) },
+                isInputWrong = uiState.isPasswordConfirmationWrong,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done,
@@ -95,29 +118,36 @@ fun PasswordRecoveryScreen3(
                     .fillMaxWidth()
                     .padding(bottom = 5.dp),
                 shape = MaterialTheme.shapes.small,
+                enabled = !uiState.isLoading,
                 onClick = {
-                    if (viewModel.tryToChangePassword()) {
-                        onChangePasswordButtonClicked()
-                    }
+                    viewModel.tryToRegister()
                 }
             ) {
                 Text(
                     style = MaterialTheme.typography.bodyLarge,
-                    text = stringResource(R.string.change_password_button_label)
+                    text = stringResource(R.string.registration_button_label)
                 )
             }
+            Text(
+                text = stringResource(R.string.login_if_already_registered_label),
+                modifier = Modifier.clickable {
+                    if(!uiState.isLoading)
+                        onLoginButtonClicked()
+                })
         }
+
+
     }
 }
 
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun PasswordRecoveryScreen3Preview() {
+fun RegistrationScreen2Preview() {
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            _root_ide_package_.com.example.kozaapp.AuthScreen(
-                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.PasswordRecoveryScreen3
+            AuthScreen(
+                startScreen = AuthScreenEnum.RegistrationScreen2
             )
         }
     }
@@ -125,11 +155,11 @@ fun PasswordRecoveryScreen3Preview() {
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun PasswordRecoveryScreen3DarkThemePreview() {
+fun RegistrationScreen2DarkThemePreview() {
     AppTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            _root_ide_package_.com.example.kozaapp.AuthScreen(
-                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.PasswordRecoveryScreen3
+            AuthScreen(
+                startScreen = AuthScreenEnum.RegistrationScreen2
             )
         }
     }

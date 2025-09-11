@@ -1,4 +1,4 @@
-package com.example.kozaapp.auth.ui.screens
+package com.example.kozaapp.features.auth.ui.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +28,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.kozaapp.AuthScreen
+import com.example.kozaapp.AuthScreenEnum
 import com.example.kozaapp.R
 import com.example.kozaapp.auth.data.AuthViewModel
 import com.example.kozaapp.ui.ErrorText
@@ -36,10 +37,11 @@ import com.example.kozaapp.ui.StandardOutlineTextField
 import com.example.kozaapp.ui.theme.AppTheme
 
 @Composable
-fun RegistrationScreen2(
+fun LoginScreen(
     viewModel: AuthViewModel,
-    onRegistrationButtonClicked: () -> Unit,
     onLoginButtonClicked: () -> Unit,
+    onRegistrationButtonClicked: () -> Unit,
+    onForgotPasswordButtonClicked: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -50,12 +52,11 @@ fun RegistrationScreen2(
         )
     }
 
-    LaunchedEffect(uiState.isRegistrationSuccess) {
-        if (uiState.isRegistrationSuccess) {
-            onRegistrationButtonClicked()
+    LaunchedEffect(uiState.isLoginSuccess) {
+        if (uiState.isLoginSuccess) {
+            onLoginButtonClicked()
         }
     }
-
     Column(
         modifier = Modifier.padding(30.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -63,10 +64,10 @@ fun RegistrationScreen2(
     ) {
         Column(
             verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.registration_label),
+                text = stringResource(R.string.login_label),
                 style = MaterialTheme.typography.displaySmall,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -74,32 +75,38 @@ fun RegistrationScreen2(
                     .padding(bottom = 30.dp),
             )
             Text(
-                text = stringResource(R.string.registration_info_request_second),
+                text = stringResource(R.string.login_info_request),
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Justify
+            )
+            StandardOutlineTextField(
+                label = stringResource(R.string.nickname_label),
+                placeholder = R.string.nickname_example,
+                value = viewModel.nickname,
+                onValueChange = { viewModel.updateNickname(it) },
+                isInputWrong = uiState.isNicknameWrong,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next,
+                )
             )
             StandardOutlineTextField(
                 label = stringResource(R.string.password_label),
                 placeholder = R.string.password_example,
                 value = viewModel.password,
                 onValueChange = { viewModel.updatePassword(it) },
-                isInputWrong = uiState.isPasswordWrong,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Next,
-                )
-            )
-            StandardOutlineTextField(
-                label = stringResource(R.string.password_confirmation_label),
-                placeholder = R.string.password_confirmation_example,
-                value = viewModel.passwordConfirmation,
-                onValueChange = { viewModel.updatePasswordConfirmation(it) },
-                isInputWrong = uiState.isPasswordConfirmationWrong,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done,
                 )
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+            Text(
+                text = stringResource(R.string.forgot_password_label),
+                modifier = Modifier.clickable {
+                    onForgotPasswordButtonClicked()
+                }
             )
             Spacer(modifier = Modifier.height(15.dp))
             ErrorText(text = uiState.error)
@@ -119,34 +126,36 @@ fun RegistrationScreen2(
                 shape = MaterialTheme.shapes.small,
                 enabled = !uiState.isLoading,
                 onClick = {
-                    viewModel.tryToRegister()
+                    viewModel.tryToLogin()
+                    if (uiState.isLoginSuccess) {
+                        onLoginButtonClicked()
+                    }
                 }
             ) {
                 Text(
                     style = MaterialTheme.typography.bodyLarge,
-                    text = stringResource(R.string.registration_button_label)
+                    text = stringResource(R.string.login_button_label)
                 )
             }
             Text(
-                text = stringResource(R.string.login_if_already_registered_label),
+                text = stringResource(R.string.register_if_havent_yet_label),
                 modifier = Modifier.clickable {
-                    if(!uiState.isLoading)
-                        onLoginButtonClicked()
-                })
+                    if (!uiState.isLoading)
+                        onRegistrationButtonClicked()
+                }
+            )
         }
-
-
     }
 }
 
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun RegistrationScreen2Preview() {
+fun LoginScreenPreview() {
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
-            _root_ide_package_.com.example.kozaapp.AuthScreen(
-                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.RegistrationScreen2
+            AuthScreen(
+                startScreen = AuthScreenEnum.LoginScreen
             )
         }
     }
@@ -154,11 +163,11 @@ fun RegistrationScreen2Preview() {
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun RegistrationScreen2DarkThemePreview() {
+fun LoginScreenDarkThemePreview() {
     AppTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            _root_ide_package_.com.example.kozaapp.AuthScreen(
-                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.RegistrationScreen2
+            AuthScreen(
+                startScreen = AuthScreenEnum.LoginScreen
             )
         }
     }

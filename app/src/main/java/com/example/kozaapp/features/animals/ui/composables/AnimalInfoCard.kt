@@ -1,7 +1,5 @@
-package com.example.kozaapp.mainApp.ui.screens
+package com.example.kozaapp.features.animals.ui.screens
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -28,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kozaapp.R
-import com.example.kozaapp.mainApp.ui.screens.MainScreenEnum
 
 @Composable
 fun AnimalInfoCard(

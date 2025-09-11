@@ -1,6 +1,5 @@
-package com.example.kozaapp.auth.ui.screens
+package com.example.kozaapp.features.auth.ui.screens
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,7 +23,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kozaapp.R
 import com.example.kozaapp.auth.data.AuthViewModel
 import com.example.kozaapp.ui.ErrorText
@@ -32,10 +30,9 @@ import com.example.kozaapp.ui.StandardOutlineTextField
 import com.example.kozaapp.ui.theme.AppTheme
 
 @Composable
-fun RegistrationScreen1(
+fun PasswordRecoveryScreen3(
     viewModel: AuthViewModel,
-    onContinueButtonClicked: () -> Unit,
-    onLoginButtonClicked: () -> Unit,
+    onChangePasswordButtonClicked: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     Column(
@@ -48,7 +45,7 @@ fun RegistrationScreen1(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = stringResource(R.string.registration_label),
+                text = stringResource(R.string.password_recovery_label),
                 style = MaterialTheme.typography.displaySmall,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -56,53 +53,29 @@ fun RegistrationScreen1(
                     .padding(bottom = 30.dp),
             )
             Text(
-                text = stringResource(R.string.registration_info_request),
+                text = stringResource(R.string.password_recovery_info_request_third),
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Justify
             )
             StandardOutlineTextField(
-                label = stringResource(R.string.email_label),
-                placeholder = R.string.email_example,
-                value = viewModel.email,
-                onValueChange = { viewModel.updateEmail(it) },
-                isInputWrong = uiState.isEmailWrong,
+                label = stringResource(R.string.password_label),
+                placeholder = R.string.password_example,
+                value = viewModel.password,
+                onValueChange = { viewModel.updatePassword(it) },
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Email,
+                    keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Next,
                 )
             )
             StandardOutlineTextField(
-                label = stringResource(R.string.nickname_label),
-                placeholder = R.string.nickname_example,
-                value = viewModel.nickname,
-                onValueChange = { viewModel.updateNickname(it) },
-                isInputWrong = uiState.isNicknameWrong,
+                label = stringResource(R.string.password_confirmation_label),
+                placeholder = R.string.password_confirmation_example,
+                value = viewModel.passwordConfirmation,
+                onValueChange = { viewModel.updatePasswordConfirmation(it) },
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next,
-                    autoCorrect = true,
-                )
-            )
-            StandardOutlineTextField(
-                label = stringResource(R.string.phone_label),
-                placeholder = R.string.phone_example,
-                value = viewModel.phone,
-                onValueChange = { viewModel.updatePhone(it) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Phone,
-                    imeAction = ImeAction.Next,
-                )
-            )
-            StandardOutlineTextField(
-                label = stringResource(R.string.address_label),
-                placeholder = R.string.address_example,
-                value = viewModel.address,
-                onValueChange = { viewModel.updateAddress(it) },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
+                    keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done,
-                    autoCorrect = true,
                 )
             )
             Spacer(modifier = Modifier.height(15.dp))
@@ -122,32 +95,28 @@ fun RegistrationScreen1(
                     .padding(bottom = 5.dp),
                 shape = MaterialTheme.shapes.small,
                 onClick = {
-                    if (viewModel.isEmailValid() && viewModel.isNicknameValid()) {
-                        onContinueButtonClicked()
+                    if (viewModel.tryToChangePassword()) {
+                        onChangePasswordButtonClicked()
                     }
                 }
             ) {
                 Text(
                     style = MaterialTheme.typography.bodyLarge,
-                    text = stringResource(R.string.continue_button_label)
+                    text = stringResource(R.string.change_password_button_label)
                 )
             }
-            Text(
-                text = stringResource(R.string.login_if_already_registered_label),
-                modifier = Modifier.clickable {
-                    onLoginButtonClicked()
-                })
         }
     }
 }
 
+
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun RegistrationScreen1Preview() {
+fun PasswordRecoveryScreen3Preview() {
     AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             _root_ide_package_.com.example.kozaapp.AuthScreen(
-                startScreen = com.example.kozaapp.AuthScreenEnum.RegistrationScreen1
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.PasswordRecoveryScreen3
             )
         }
     }
@@ -155,11 +124,11 @@ fun RegistrationScreen1Preview() {
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun RegistrationScreen1DarkThemePreview() {
+fun PasswordRecoveryScreen3DarkThemePreview() {
     AppTheme(darkTheme = true) {
         Surface(modifier = Modifier.fillMaxSize()) {
             _root_ide_package_.com.example.kozaapp.AuthScreen(
-                startScreen = com.example.kozaapp.AuthScreenEnum.RegistrationScreen1
+                startScreen = _root_ide_package_.com.example.kozaapp.AuthScreenEnum.PasswordRecoveryScreen3
             )
         }
     }

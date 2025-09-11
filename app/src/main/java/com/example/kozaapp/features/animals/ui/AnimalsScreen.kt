@@ -1,4 +1,4 @@
-package com.example.kozaapp.mainApp.ui.screens
+package com.example.kozaapp.animals.ui.screens
 
 import android.content.res.Configuration
 import androidx.annotation.StringRes
@@ -24,11 +24,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.kozaapp.R
-import com.example.kozaapp.mainApp.model.GoatsRepository
+import com.example.kozaapp.features.animals.model.GoatsRepository
+import com.example.kozaapp.features.animals.ui.screens.AnimalCardsScreen
+import com.example.kozaapp.features.animals.ui.screens.BottomNavItems
+import com.example.kozaapp.features.animals.ui.screens.GoatListScreen
+import com.example.kozaapp.features.animals.ui.AnimalsViewModel
 import com.example.kozaapp.ui.MainAppBar
 import com.example.kozaapp.ui.theme.AppTheme
 
-enum class MainScreenEnum(
+enum class AnimalsScreenEnum(
     @StringRes val title: Int,
     val showBottomBar: Boolean = false,
     ) {
@@ -38,14 +42,14 @@ enum class MainScreenEnum(
 }
 
 @Composable
-fun MainScreen(
-    viewModel: MainViewModel = viewModel(),
+fun AnimalsScreen(
+    viewModel: AnimalsViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
-    startScreen: MainScreenEnum = MainScreenEnum.AnimalCardsScreen,
+    startScreen: AnimalsScreenEnum = AnimalsScreenEnum.AnimalCardsScreen,
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = MainScreenEnum.valueOf(
-        backStackEntry?.destination?.route ?: MainScreenEnum.AnimalCardsScreen.name
+    val currentScreen = AnimalsScreenEnum.valueOf(
+        backStackEntry?.destination?.route ?: AnimalsScreenEnum.AnimalCardsScreen.name
     )
     Scaffold(
         topBar = {
@@ -81,10 +85,10 @@ fun MainScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            composable(MainScreenEnum.AnimalCardsScreen.name) {
+            composable(AnimalsScreenEnum.AnimalCardsScreen.name) {
                 AnimalCardsScreen()
             }
-            composable(MainScreenEnum.GoatListScreen.name) {
+            composable(AnimalsScreenEnum.GoatListScreen.name) {
                 GoatListScreen(
                     GoatsRepository.goats,
                     modifier = Modifier.padding(
@@ -100,8 +104,8 @@ fun MainScreen(
 @Preview(showBackground = true, showSystemUi = true)
 @Preview(showBackground = true, showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun MainScreenPreview() {
+fun AnimalsScreenPreview() {
     AppTheme {
-        MainScreen()
+        AnimalsScreen()
     }
 }
