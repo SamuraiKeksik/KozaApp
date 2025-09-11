@@ -20,8 +20,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.kozaapp.R
 import com.example.kozaapp.AuthScreenEnum
+import com.example.kozaapp.R
 import com.example.kozaapp.animals.ui.screens.AnimalsScreenEnum
 
 @Composable

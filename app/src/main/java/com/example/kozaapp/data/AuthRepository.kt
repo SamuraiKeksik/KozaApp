@@ -2,7 +2,6 @@ package com.example.kozaapp.data
 
 import com.example.kozaapp.data.network.AuthService
 import com.example.kozaapp.data.network.RegistrationRequest
-import java.lang.Exception
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(

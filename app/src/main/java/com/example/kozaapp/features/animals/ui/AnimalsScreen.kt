@@ -25,10 +25,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.kozaapp.R
 import com.example.kozaapp.features.animals.model.GoatsRepository
+import com.example.kozaapp.features.animals.ui.AnimalsViewModel
 import com.example.kozaapp.features.animals.ui.screens.AnimalCardsScreen
 import com.example.kozaapp.features.animals.ui.screens.BottomNavItems
 import com.example.kozaapp.features.animals.ui.screens.GoatListScreen
-import com.example.kozaapp.features.animals.ui.AnimalsViewModel
 import com.example.kozaapp.ui.MainAppBar
 import com.example.kozaapp.ui.theme.AppTheme
 

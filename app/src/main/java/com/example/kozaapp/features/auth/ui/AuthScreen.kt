@@ -42,7 +42,6 @@ enum class AuthScreenEnum(@StringRes val title: Int) {
     PasswordRecoveryScreen3(title = R.string.password_recovery_label),
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthScreen(
