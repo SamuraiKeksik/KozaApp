@@ -5,8 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.kozaapp.features.animals.model.Goat
-import com.example.kozaapp.features.animals.data.model.GoatDao
-import kotlin.time.Instant
+import com.example.kozaapp.features.animals.goats.data.model.GoatDao
 
 @Database(entities = [Goat::class], version = 1, exportSchema = false)
 abstract class AnimalsDatabase : RoomDatabase() {

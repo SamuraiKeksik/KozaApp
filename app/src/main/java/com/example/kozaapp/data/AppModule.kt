@@ -3,6 +3,8 @@ package com.example.kozaapp.data
 import android.content.Context
 import com.example.kozaapp.data.network.ApiService
 import com.example.kozaapp.data.network.AuthService
+import com.example.kozaapp.features.animals.goats.data.GoatsRepository
+import com.example.kozaapp.features.animals.goats.data.OfflineGoatsRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -75,5 +77,15 @@ object AppModule {
         apiService: ApiService,
     ): MainRepository {
         return MainRepository(apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoatsRepository(
+        @ApplicationContext context: Context
+    ): GoatsRepository {
+        return OfflineGoatsRepository(
+            AnimalsDatabase.getDatabase(context).goatDao()
+        )
     }
 }
