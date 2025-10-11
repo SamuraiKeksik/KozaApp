@@ -15,6 +15,7 @@ lifecycleViewmodelCompose = "2.9.3"
 retrofit = "3.0.0"
 uiTextGoogleFonts = "1.9.0"
 navigationComposeAndroid = "2.9.3"
+room = "2.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

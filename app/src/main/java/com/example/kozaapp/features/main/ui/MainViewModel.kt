@@ -1,11 +1,9 @@
 package com.example.kozaapp.features.main.ui
 
 import android.util.Log
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kozaapp.data.AnimalsRepository
-import com.example.kozaapp.data.network.ApiService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,7 +30,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val result = animalsRepository.getCurrentUser()
             if (result != null){
-                _startDestination.value = MainScreensEnum.MainScreen.name
+                _startDestination.value = MainScreensEnum.AnimalsScreen.name
                 Log.d("MyNetwork", "Успешная проверка доступа к api")
             }
             else{

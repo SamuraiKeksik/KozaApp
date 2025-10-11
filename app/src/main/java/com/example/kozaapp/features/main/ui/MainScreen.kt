@@ -1,7 +1,6 @@
 package com.example.kozaapp.features.main.ui
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -13,7 +12,7 @@ import com.example.kozaapp.animals.ui.screens.AnimalsScreen
 
 enum class MainScreensEnum(){
     AuthScreen,
-    MainScreen,
+    AnimalsScreen,
 }
 
 @Composable
@@ -29,7 +28,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()){
             composable(MainScreensEnum.AuthScreen.name){
                 AuthScreen(
                     onLoginSuccess = {
-                        navController.navigate(MainScreensEnum.MainScreen.name){
+                        navController.navigate(MainScreensEnum.AnimalsScreen.name){
                             popUpTo(MainScreensEnum.AuthScreen.name){
                                 inclusive = true
                             }
@@ -37,7 +36,7 @@ fun MainScreen(viewModel: MainViewModel = hiltViewModel()){
                     }
                 )
             }
-            composable(MainScreensEnum.MainScreen.name){
+            composable(MainScreensEnum.AnimalsScreen.name){
                 AnimalsScreen()
             }
         }

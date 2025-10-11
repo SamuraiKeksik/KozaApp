@@ -8,7 +8,6 @@ import javax.inject.Inject
 class AnimalsRepository @Inject constructor(
     private val apiService: ApiService
 ) {
-
     suspend fun getCurrentUser(): User?{
         try{
             val response = apiService.getCurrentUser()

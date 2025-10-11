@@ -1,19 +1,23 @@
 package com.example.kozaapp.features.animals.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity(tableName = "goats")
 data class Goat(
-    val id: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
     val name: String,
     val gender: Gender,
     val birthDate: String,
-    val chip: String,
+    /*val chip: String,
     val breed: String,
     val purpose: String,
     val description: String,
     val lambings: List<Okot>,
     val milk_yield: String,
     val parents: String,
-    val children: String,
+    val children: String,*/
 )
 
 enum class Gender() {
@@ -24,7 +28,7 @@ enum class Gender() {
 
 class Okot() {}
 
-object GoatsRepository {
+/*object GoatsRepository {
     val goats = listOf(
         Goat(
             "",
@@ -69,4 +73,4 @@ object GoatsRepository {
             "",
         ),
     )
-}
+}*/
