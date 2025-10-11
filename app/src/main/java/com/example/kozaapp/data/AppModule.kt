@@ -71,9 +71,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAnimalsRepository(
+    fun provideMainRepository(
         apiService: ApiService,
-    ): AnimalsRepository {
-        return AnimalsRepository(apiService)
+    ): MainRepository {
+        return MainRepository(apiService)
     }
 }

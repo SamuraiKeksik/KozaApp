@@ -89,7 +89,7 @@ fun AnimalsScreen(
             }
             composable(AnimalsScreenEnum.GoatListScreen.name) {
                 GoatListScreen(
-                    GoatsRepository.goats,
+                    listOf(),
                     modifier = Modifier.padding(
                         top = innerPading.calculateTopPadding(),
                         bottom = innerPading.calculateBottomPadding(),

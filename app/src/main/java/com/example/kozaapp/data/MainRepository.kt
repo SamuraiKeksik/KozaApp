@@ -5,7 +5,7 @@ import com.example.kozaapp.data.network.ApiService
 import com.example.kozaapp.features.auth.data.model.User
 import javax.inject.Inject
 
-class AnimalsRepository @Inject constructor(
+class MainRepository @Inject constructor(
     private val apiService: ApiService
 ) {
     suspend fun getCurrentUser(): User?{

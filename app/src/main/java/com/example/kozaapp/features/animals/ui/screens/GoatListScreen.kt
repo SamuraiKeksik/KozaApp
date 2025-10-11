@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import com.example.kozaapp.R
 import com.example.kozaapp.animals.ui.screens.AnimalsScreen
 import com.example.kozaapp.animals.ui.screens.AnimalsScreenEnum
+import com.example.kozaapp.features.animals.model.Gender
 import com.example.kozaapp.features.animals.model.Goat
-import com.example.kozaapp.features.animals.model.GoatsRepository
 import com.example.kozaapp.ui.theme.AppTheme
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -107,7 +107,7 @@ fun GoatListItem(
 @Preview("Dark Theme", uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun GoatListItemPreview() {
-    val goat = GoatsRepository.goats.first()
+    val goat = Goat(1, "", Gender.Unknown, "", "")
     AppTheme {
         GoatListItem(goat = goat)
     }
