@@ -70,10 +70,10 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     // Room components
-    implementation("androidx.room:room-runtime:2.2.5")
-    ksp("androidx.room:room-compiler:2.2.5")
-    implementation("androidx.room:room-ktx:2.2.5")
-    androidTestImplementation("androidx.room:room-testing:2.2.5")
+    implementation("androidx.room:room-runtime:2.8.2")
+    ksp("androidx.room:room-compiler:2.8.2")
+    implementation("androidx.room:room-ktx:2.8.2")
+    androidTestImplementation("androidx.room:room-testing:2.8.2")
 
     //Preferences DataStore
     implementation(libs.androidx.datastore.preferences)

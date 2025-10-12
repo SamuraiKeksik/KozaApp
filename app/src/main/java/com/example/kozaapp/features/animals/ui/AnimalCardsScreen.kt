@@ -1,21 +1,36 @@
 package com.example.kozaapp.features.animals.ui.screens
 
 import android.content.res.Configuration
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,21 +63,90 @@ fun AnimalCardsScreen(
                 .fillMaxWidth()
                 .padding(bottom = 30.dp),
         )
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            modifier = Modifier.weight(1f)
-        ) {
-            items(AnimalNavItems.itemsList) { item ->
+        Column {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround,
+            ) {
                 AnimalInfoCard(
-                    navItem = item,
+                    labelRes = R.string.goats_label,
+                    backgroundRes = R.drawable.goats_background,
                     modifier = Modifier.height(250.dp),
-                    onButtonClick = {}
+                    onButtonClick = { navigateToGoatsScreen() }
+                )
+                AnimalInfoCard(
+                    labelRes = R.string.cows_label,
+                    backgroundRes = R.drawable.cows_background,
+                    modifier = Modifier.height(250.dp),
+                    onButtonClick = { navigateToCowsScreen() }
+                )
+            }
+        }
+
+    }
+}
+
+@Composable
+fun AnimalInfoCard(
+    @StringRes labelRes: Int,
+    @DrawableRes backgroundRes: Int,
+    modifier: Modifier = Modifier,
+    onButtonClick: () -> Unit
+) {
+    Card(
+        modifier = modifier
+            .width(175.dp)
+            .height(200.dp),
+        border = BorderStroke(1.dp, color = Color.Black),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            Image(
+                painter = painterResource(backgroundRes),
+                contentDescription = null,
+                modifier = modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+            //Invisible button
+            Button(
+                onClick = { onButtonClick() },
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .fillMaxSize()
+                    .alpha(0f),
+                shape = RoundedCornerShape(0.dp),
+            ) { }
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = stringResource(labelRes),
+                    modifier = Modifier.padding(15.dp),
+                    style = MaterialTheme.typography.headlineSmall,
+
+                    )
+                Text(
+                    text = stringResource(R.string.quantity_label, 0),
+                    modifier = Modifier.padding(15.dp),
+                    style = MaterialTheme.typography.headlineSmall,
                 )
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun AnimalInfoCardPreview() {
+    AnimalInfoCard(
+        labelRes = R.string.goats_label,
+        backgroundRes = R.drawable.goats_background,
+        modifier = Modifier,
+        onButtonClick = {}
+    )
 }
 
 @Preview(showBackground = true, showSystemUi = true)

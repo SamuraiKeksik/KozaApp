@@ -87,7 +87,11 @@ fun AnimalsScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             composable(AnimalsScreenEnum.AnimalCardsScreen.name) {
-                AnimalCardsScreen()
+                AnimalCardsScreen(
+                    navigateToGoatsScreen = { navController.navigate(AnimalsScreenEnum.GoatListScreen.name) },
+                    navigateToCowsScreen = {},
+                    navigateToChickenScreen = {}
+                )
             }
             composable(AnimalsScreenEnum.GoatListScreen.name) {
                 GoatsScreen(

@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.kozaapp.features.animals.goats.data.GoatsRepository
-import com.example.kozaapp.features.animals.model.Gender
 import com.example.kozaapp.features.animals.model.Goat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -52,7 +51,7 @@ data class GoatDetails(
 fun GoatDetails.toGoat(): Goat = Goat(
     id = id,
     name = name,
-    gender = enumValueOf<Gender>(gender),
+    gender = gender,
     birthDate = birthDate,
     description = description,
 )
@@ -64,7 +63,7 @@ fun Goat.toGoatUiState(isEntryValid: Boolean = false): GoatUiState = GoatUiState
 fun Goat.toGoatDetails(): GoatDetails = GoatDetails(
     id = id,
     name = name,
-    gender = gender.toString(),
+    gender = gender,
     birthDate = birthDate,
     description = description,
 )

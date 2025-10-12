@@ -3,8 +3,11 @@ package com.example.kozaapp.features.animals.goats.data
 import com.example.kozaapp.features.animals.goats.data.model.GoatDao
 import com.example.kozaapp.features.animals.model.Goat
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class OfflineGoatsRepository(private val goatDao: GoatDao): GoatsRepository {
+class OfflineGoatsRepository @Inject constructor(
+    private val goatDao: GoatDao
+): GoatsRepository {
     override fun getAllGoatsStream(): Flow<List<Goat>> = goatDao.getAllGoats()
 
     override fun getGoatStream(id: Int): Flow<Goat?> = goatDao.getGoat(id)

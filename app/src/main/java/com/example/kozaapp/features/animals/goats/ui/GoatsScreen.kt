@@ -44,7 +44,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kozaapp.R
 import com.example.kozaapp.features.animals.goats.ui.GoatsViewModel
-import com.example.kozaapp.features.animals.model.Gender
 import com.example.kozaapp.features.animals.model.Goat
 import com.example.kozaapp.ui.theme.AppTheme
 
@@ -60,26 +59,13 @@ fun GoatsScreen(
     val goatsUiState by viewModel.goatsUiState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    Scaffold(
-        floatingActionButton =
-            {
-                FloatingActionButton(
-                    onClick = navigateToGoatEntry,
-                    shape = MaterialTheme.shapes.medium,
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = null,
-
-                        )
-                }
-            }
-    ) { innerPadding ->
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
         GoatsBody(
             goatsUiState.goatsList,
             onGoatClick = navigateToItemUpdate,
             modifier = modifier.fillMaxSize(),
-            contentPadding = innerPadding,
         )
     }
 
@@ -215,9 +201,9 @@ private fun GoatCard(
 fun GoatsBodyPreview() {
     AppTheme {
         GoatsBody(listOf(
-            Goat(1, "Biba", Gender.Female, "empty", description = "Very good goat!"),
-            Goat(2, "Boba", Gender.Male, "empty", description = "Very nice goat!"),
-            Goat(3, "Buba", Gender.Unknown, "empty", description = "Very bad goat!")
+            Goat(1, "Biba", "Female", "empty", description = "Very good goat!"),
+            Goat(2, "Boba", "Male", "empty", description = "Very nice goat!"),
+            Goat(3, "Buba", "Unknown", "empty", description = "Very bad goat!")
         ), onGoatClick = {})
     }
 }
@@ -237,7 +223,7 @@ fun HomeBodyEmptyListPreview() {
 fun InventoryItemPreview() {
     AppTheme {
         GoatCard(
-            Goat(1, "Biba", Gender.Female, "empty", description = "Very good goat!"),
+            Goat(1, "Biba", "Female", "empty", description = "Very good goat!"),
         )
     }
 }

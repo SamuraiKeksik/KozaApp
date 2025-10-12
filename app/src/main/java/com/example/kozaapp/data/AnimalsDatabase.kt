@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.kozaapp.features.animals.model.Goat
 import com.example.kozaapp.features.animals.goats.data.model.GoatDao
 
-@Database(entities = [Goat::class], version = 1, exportSchema = false)
+@Database(entities = [Goat::class], version = 3, exportSchema = false)
 abstract class AnimalsDatabase : RoomDatabase() {
     abstract fun goatDao(): GoatDao
     companion object{
