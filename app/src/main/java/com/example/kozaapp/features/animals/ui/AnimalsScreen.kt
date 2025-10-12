@@ -84,7 +84,6 @@ fun AnimalsScreen(
             modifier = Modifier
                 .padding(innerPading)
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
         ) {
             composable(AnimalsScreenEnum.AnimalCardsScreen.name) {
                 AnimalCardsScreen(
@@ -97,10 +96,7 @@ fun AnimalsScreen(
                 GoatsScreen(
                     navigateToGoatEntry = {navController.navigate(AnimalsScreenEnum.GoatEntryScreen.name)},
                     navigateToItemUpdate = {},
-                    modifier = Modifier.padding(
-                        top = innerPading.calculateTopPadding(),
-                        bottom = innerPading.calculateBottomPadding(),
-                    )
+                    modifier = Modifier.fillMaxSize()
                 )
             }
             composable(AnimalsScreenEnum.GoatEntryScreen.name) {

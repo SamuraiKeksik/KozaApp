@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -59,14 +60,26 @@ fun GoatsScreen(
     val goatsUiState by viewModel.goatsUiState.collectAsState()
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    Column(
+    Box(
         modifier = Modifier.fillMaxSize()
     ) {
         GoatsBody(
-            goatsUiState.goatsList,
+            goatsList = goatsUiState.goatsList,
             onGoatClick = navigateToItemUpdate,
             modifier = modifier.fillMaxSize(),
         )
+        FloatingActionButton(
+            onClick = { navigateToGoatEntry() },
+            shape = MaterialTheme.shapes.medium,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(dimensionResource(R.dimen.padding_large))
+        ) {
+            Icon(
+                imageVector = Icons.Default.Add,
+                contentDescription = null
+            )
+        }
     }
 
 }
@@ -84,14 +97,18 @@ private fun GoatsBody(
     ) {
         if (goatsList.isEmpty()) {
             Text(
-                "EMPTY!" //ToDo: Сделать нормальную заглушку под пустой список
+                "EMPTY!", //ToDo: Сделать нормальную заглушку под пустой список
+                modifier = Modifier.fillMaxSize()
             )
         } else {
             GoatsList(
                 goatsList = goatsList,
                 onItemClick = { onGoatClick(it.id) },
                 contentPadding = contentPadding,
-                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
+                modifier = Modifier
+                    .padding(horizontal = dimensionResource(id = R.dimen.padding_small))
+                    .fillMaxHeight(),
+
             )
         }
     }
@@ -109,7 +126,8 @@ private fun GoatsList(
         contentPadding = contentPadding,
     ) {
         items(items = goatsList, key = { it.id }) {goat ->
-            GoatCard(goat = goat,
+            GoatCard(
+                goat = goat,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
                     .clickable { onItemClick(goat) })

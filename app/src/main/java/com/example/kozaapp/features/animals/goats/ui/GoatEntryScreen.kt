@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -39,15 +40,9 @@ fun GoatEntryScreen(
     viewModel: GoatEntryViewModel = hiltViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
-    Scaffold(
-        topBar = {
-            CommonTopAppBar(
-                title = stringResource(R.string.goat_entry_screen_label),
-                canNavigateBack = canNavigateBack,
-                navigateUp = onNavigateUp
-            )
-        }
-    ) { innerPadding ->
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
         GoatEntryBody(
             goatUiState = viewModel.goatUiState,
             onGoatValueChange = viewModel::updateUiState,
@@ -61,14 +56,6 @@ fun GoatEntryScreen(
                     navigateBack()
                 }
             },
-            modifier = Modifier
-                .padding(
-                    start = innerPadding.calculateStartPadding(LocalLayoutDirection.current),
-                    top = innerPadding.calculateTopPadding(),
-                    end = innerPadding.calculateEndPadding(LocalLayoutDirection.current),
-                )
-                .verticalScroll(rememberScrollState())
-                .fillMaxWidth()
         )
     }
 }
@@ -90,7 +77,7 @@ fun GoatEntryBody(
             modifier = Modifier.fillMaxWidth()
         )
         Button(
-            onClick = onSaveClick,
+            onClick = { onSaveClick() },
             enabled = goatUiState.isEntryValid,
             shape = MaterialTheme.shapes.small,
             modifier = Modifier.fillMaxWidth()
@@ -183,7 +170,6 @@ private fun GoatEntryScreenPreview() {
                 gender = "Female",
                 birthDate = "01.05.2020",
                 description = "Description"
-
             )
         ), onGoatValueChange = {}, onSaveClick = {})
     }
