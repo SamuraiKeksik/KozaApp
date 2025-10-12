@@ -24,6 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.kozaapp.R
+import com.example.kozaapp.features.animals.goats.ui.GoatEntryScreen
 import com.example.kozaapp.features.animals.ui.AnimalsViewModel
 import com.example.kozaapp.features.animals.ui.screens.AnimalCardsScreen
 import com.example.kozaapp.features.animals.ui.screens.BottomNavItems
@@ -38,6 +39,7 @@ enum class AnimalsScreenEnum(
     //ToDo: Поменять заголовки на соответствующие
     AnimalCardsScreen(title = R.string.empty_string, showBottomBar = true,),
     GoatListScreen(title = R.string.goats_label, showBottomBar = false,),
+    GoatEntryScreen(title = R.string.empty_string, showBottomBar = false)
 }
 
 @Composable
@@ -88,13 +90,20 @@ fun AnimalsScreen(
                 AnimalCardsScreen()
             }
             composable(AnimalsScreenEnum.GoatListScreen.name) {
-                /*GoatsScreen(
-                    listOf(),
+                GoatsScreen(
+                    navigateToGoatEntry = {navController.navigate(AnimalsScreenEnum.GoatEntryScreen.name)},
+                    navigateToItemUpdate = {},
                     modifier = Modifier.padding(
                         top = innerPading.calculateTopPadding(),
                         bottom = innerPading.calculateBottomPadding(),
                     )
-                )*/
+                )
+            }
+            composable(AnimalsScreenEnum.GoatEntryScreen.name) {
+                GoatEntryScreen(
+                    navigateBack = { navController.popBackStack() },
+                    onNavigateUp = { navController.navigateUp() }
+                )
             }
         }
     }

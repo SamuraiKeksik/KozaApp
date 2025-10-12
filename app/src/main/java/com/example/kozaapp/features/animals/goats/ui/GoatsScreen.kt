@@ -12,14 +12,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -41,13 +39,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kozaapp.R
-import com.example.kozaapp.animals.ui.screens.AnimalsScreen
-import com.example.kozaapp.animals.ui.screens.AnimalsScreenEnum
 import com.example.kozaapp.features.animals.goats.ui.GoatsViewModel
 import com.example.kozaapp.features.animals.model.Gender
 import com.example.kozaapp.features.animals.model.Goat
@@ -56,7 +51,7 @@ import com.example.kozaapp.ui.theme.AppTheme
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun GoatsScreen(
-    navigateToItemEntry: () -> Unit,
+    navigateToGoatEntry: () -> Unit,
     navigateToItemUpdate: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GoatsViewModel = hiltViewModel(),
@@ -69,7 +64,7 @@ fun GoatsScreen(
         floatingActionButton =
             {
                 FloatingActionButton(
-                    onClick = navigateToItemEntry,
+                    onClick = navigateToGoatEntry,
                     shape = MaterialTheme.shapes.medium,
                 ) {
                     Icon(

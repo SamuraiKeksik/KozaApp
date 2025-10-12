@@ -27,7 +27,10 @@ import com.example.kozaapp.ui.theme.AppTheme
 
 @Composable
 fun AnimalCardsScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToGoatsScreen: () -> Unit,
+    navigateToCowsScreen: () -> Unit,
+    navigateToChickenScreen: () -> Unit,
 ){
     Column(
         modifier = modifier.padding(
