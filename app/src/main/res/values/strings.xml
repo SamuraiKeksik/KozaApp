@@ -72,6 +72,11 @@
     <string name="goat_description_request_label">Описание</string>
     <string name="goat_required_fields_label">Заполните поля</string>
 
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="warning_label">Внимание!</string>
+    <string name="delete_warning">Вы уверены что хотите удалить %s %s? </string>
+
 
 
 

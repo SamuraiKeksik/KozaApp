@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
@@ -65,12 +64,8 @@ fun GoatDetailsScreen(
     Box( modifier = modifier,
     ) {
         GoatDetailsBody(
-            GoatDetailsUiState = uiState.value,
+            goatDetailsUiState = uiState.value,
             onDelete = {
-                // Note: If the user rotates the screen very fast, the operation may get cancelled
-                // and the Goat may not be deleted from the Database. This is because when config
-                // change occurs, the Activity will be recreated and the rememberCoroutineScope will
-                // be cancelled - since the scope is bound to composition.
                 coroutineScope.launch {
                     viewModel.deleteGoat()
                     navigateBack()
@@ -80,7 +75,7 @@ fun GoatDetailsScreen(
                 .verticalScroll(rememberScrollState())
         )
         FloatingActionButton(
-            onClick = { navigateToEditGoat(uiState.value.GoatDetails.id) },
+            onClick = { navigateToEditGoat(uiState.value.goatDetails.id) },
             shape = MaterialTheme.shapes.medium,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
@@ -96,7 +91,7 @@ fun GoatDetailsScreen(
 
 @Composable
 private fun GoatDetailsBody(
-    GoatDetailsUiState: GoatDetailsUiState,
+    goatDetailsUiState: GoatDetailsUiState,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -106,7 +101,7 @@ private fun GoatDetailsBody(
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
         GoatDetails(
-            Goat = GoatDetailsUiState.GoatDetails.toGoat(), modifier = Modifier.fillMaxWidth()
+            Goat = goatDetailsUiState.goatDetails.toGoat(), modifier = Modifier.fillMaxWidth()
         )
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
@@ -122,6 +117,7 @@ private fun GoatDetailsBody(
                     onDelete()
                 },
                 onDeleteCancel = { deleteConfirmationRequired = false },
+                goatName = goatDetailsUiState.goatDetails.name,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             )
         }
@@ -147,7 +143,7 @@ fun GoatDetails(
         ) {
             GoatDetailsRow(
                 labelResID = R.string.goats_label,
-                GoatDetail = Goat.name,
+                goatDetail = Goat.name,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -157,7 +153,7 @@ fun GoatDetails(
             )
             GoatDetailsRow(
                 labelResID = R.string.goat_gender_request_label,
-                GoatDetail = Goat.gender,
+                goatDetail = Goat.gender,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -167,7 +163,7 @@ fun GoatDetails(
             )
             GoatDetailsRow(
                 labelResID = R.string.goat_description_request_label,
-                GoatDetail = Goat.description,
+                goatDetail = Goat.description,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
                         id = R.dimen
@@ -182,31 +178,34 @@ fun GoatDetails(
 
 @Composable
 private fun GoatDetailsRow(
-    @StringRes labelResID: Int, GoatDetail: String, modifier: Modifier = Modifier
+    @StringRes labelResID: Int, goatDetail: String, modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
         Text(text = stringResource(labelResID))
         Spacer(modifier = Modifier.weight(1f))
-        Text(text = GoatDetail, fontWeight = FontWeight.Bold)
+        Text(text = goatDetail, fontWeight = FontWeight.Bold)
     }
 }
 
 @Composable
 private fun DeleteConfirmationDialog(
-    onDeleteConfirm: () -> Unit, onDeleteCancel: () -> Unit, modifier: Modifier = Modifier
+    onDeleteConfirm: () -> Unit,
+    onDeleteCancel: () -> Unit,
+    goatName: String,
+    modifier: Modifier = Modifier,
 ) {//ToDo: Доделать строки
     AlertDialog(onDismissRequest = { /* Do nothing */ },
-        title = { Text(stringResource(R.string.empty_string)) },
-        text = { Text(stringResource(R.string.empty_string)) },
+        title = { Text(stringResource(R.string.warning_label)) },
+        text = { Text(stringResource(R.string.delete_warning, "Козу", goatName)) },
         modifier = modifier,
         dismissButton = {
             TextButton(onClick = onDeleteCancel) {
-                Text(text = stringResource(R.string.empty_string))
+                Text(text = stringResource(R.string.no))
             }
         },
         confirmButton = {
             TextButton(onClick = onDeleteConfirm) {
-                Text(text = stringResource(R.string.empty_string))
+                Text(text = stringResource(R.string.yes))
             }
         })
 }
@@ -216,7 +215,7 @@ private fun DeleteConfirmationDialog(
 fun GoatDetailsScreenPreview() {
     AppTheme {
         GoatDetailsBody(GoatDetailsUiState(
-            GoatDetails = GoatDetails(1, "Pen", "$100", "10")
+            goatDetails = GoatDetails(1, "Pen", "$100", "10")
         ), onDelete = {})
     }
 }

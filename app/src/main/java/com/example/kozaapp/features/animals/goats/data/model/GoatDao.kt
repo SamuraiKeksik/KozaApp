@@ -24,6 +24,6 @@ interface GoatDao {
     fun getAllGoats(): Flow<List<Goat>>
 
     @Query("SELECT * FROM goats WHERE id = :id")
-    fun getGoat(id: Int): Flow<Goat>
+    fun getGoat(id: Int): Flow<Goat?>
 
 }

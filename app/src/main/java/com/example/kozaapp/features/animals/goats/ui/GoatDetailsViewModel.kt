@@ -10,21 +10,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class GoatDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val GoatsRepository: GoatsRepository,
+    private val goatsRepository: GoatsRepository,
 ) : ViewModel() {
-    private val GoatId: Int = checkNotNull(savedStateHandle[GoatDetailsDestination.goatIdArg])
+    private val goatId: Int = checkNotNull(savedStateHandle[GoatDetailsDestination.goatIdArg])
 
     val uiState: StateFlow<GoatDetailsUiState> =
-        GoatsRepository.getGoatStream(GoatId)
+        goatsRepository.getGoatStream(goatId)
             .filterNotNull()
             .map {
-                GoatDetailsUiState(GoatDetails = it.toGoatDetails())
+                GoatDetailsUiState(goatDetails = it.toGoatDetails())
             }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
@@ -32,12 +31,12 @@ class GoatDetailsViewModel @Inject constructor(
             )
 
     suspend fun deleteGoat() {
-        GoatsRepository.deleteGoat(uiState.value.GoatDetails.toGoat())
+        goatsRepository.deleteGoat(uiState.value.goatDetails.toGoat())
     }
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
     }
 }
 data class GoatDetailsUiState(
-    val GoatDetails: GoatDetails = GoatDetails()
+    val goatDetails: GoatDetails = GoatDetails()
 )
