@@ -24,6 +24,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.kozaapp.features.animals.goats.ui.GoatDetailsDestination
 import com.example.kozaapp.features.animals.goats.ui.GoatDetailsScreen
+import com.example.kozaapp.features.animals.goats.ui.GoatEditDestination
+import com.example.kozaapp.features.animals.goats.ui.GoatEditScreen
 import com.example.kozaapp.features.animals.goats.ui.GoatEntryDestination
 import com.example.kozaapp.features.animals.goats.ui.GoatEntryScreen
 import com.example.kozaapp.features.animals.ui.AnimalsViewModel
@@ -111,7 +113,15 @@ fun AnimalsScreen(
             ) {
                 GoatDetailsScreen(
                     navigateBack = { navController.popBackStack() },
-                    navigateToEditGoat = {},
+                    navigateToEditGoat = { navController.navigate("${GoatEditDestination.route}/${it}")},
+                )
+            }
+            composable(
+                route = GoatEditDestination.routeWithArgs,
+                arguments = listOf(navArgument(GoatEditDestination.goatIdArg) { type = NavType.IntType })
+            ) {
+                GoatEditScreen(
+                    navigateBack = { navController.popBackStack() },
                 )
             }
         }
