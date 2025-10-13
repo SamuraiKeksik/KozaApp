@@ -45,7 +45,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kozaapp.R
 import com.example.kozaapp.features.animals.goats.ui.GoatsViewModel
+import com.example.kozaapp.features.animals.model.Breed
+import com.example.kozaapp.features.animals.model.Gender
 import com.example.kozaapp.features.animals.model.Goat
+import com.example.kozaapp.features.animals.model.Status
 import com.example.kozaapp.ui.NavigationDestination
 import com.example.kozaapp.ui.theme.AppTheme
 
@@ -227,9 +230,14 @@ private fun GoatCard(
 fun GoatsBodyPreview() {
     AppTheme {
         GoatsBody(listOf(
-            Goat(1, "Biba", "Female", "empty", description = "Very good goat!"),
-            Goat(2, "Boba", "Male", "empty", description = "Very nice goat!"),
-            Goat(3, "Buba", "Unknown", "empty", description = "Very bad goat!")
+            Goat(id = 1,
+                "Biba",
+                gender = Gender.FEMALE,
+                breed = Breed.OTHER,
+                description = "Very good goat!",
+                status = Status.OTHER,
+                weight = 8,
+                birthDate = ""),
         ), onGoatClick = {})
     }
 }
@@ -249,7 +257,14 @@ fun HomeBodyEmptyListPreview() {
 fun InventoryItemPreview() {
     AppTheme {
         GoatCard(
-            Goat(1, "Biba", "Female", "empty", description = "Very good goat!"),
+            Goat(id = 1,
+                "Biba",
+                gender = Gender.FEMALE,
+                breed = Breed.OTHER,
+                description = "Very good goat!",
+                status = Status.OTHER,
+                weight = 8,
+                birthDate = ""),
         )
     }
 }

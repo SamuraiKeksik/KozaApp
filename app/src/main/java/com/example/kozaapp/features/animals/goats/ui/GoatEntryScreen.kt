@@ -1,36 +1,47 @@
 package com.example.kozaapp.features.animals.goats.ui
 
+import android.app.DatePickerDialog
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kozaapp.R
-import com.example.kozaapp.ui.CommonTopAppBar
+import com.example.kozaapp.features.animals.model.Breed
+import com.example.kozaapp.features.animals.model.Gender
+import com.example.kozaapp.features.animals.model.Status
 import com.example.kozaapp.ui.NavigationDestination
 import com.example.kozaapp.ui.theme.AppTheme
 import kotlinx.coroutines.launch
-import java.util.Currency
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 
 object GoatEntryDestination : NavigationDestination{
@@ -56,10 +67,6 @@ fun GoatEntryScreen(
             goatUiState = viewModel.goatUiState,
             onGoatValueChange = viewModel::updateUiState,
             onSaveClick = {
-                // Note: If the user rotates the screen very fast, the operation may get cancelled
-                // and the item may not be saved in the Database. This is because when config
-                // change occurs, the Activity will be recreated and the rememberCoroutineScope will
-                // be cancelled - since the scope is bound to composition.
                 coroutineScope.launch {
                     viewModel.saveItem()
                     navigateBack()
@@ -120,32 +127,30 @@ fun GoatInputForm(
             enabled = enabled,
             singleLine = true
         )
-        OutlinedTextField(
-            value = goatDetails.gender,
-            onValueChange = { onValueChange(goatDetails.copy(gender = it)) },
-            label = { Text(stringResource(R.string.goat_gender_request_label)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
-            leadingIcon = { Text(Currency.getInstance(Locale.getDefault()).symbol) },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
+        GenderSelector(
+            selectedGender = goatDetails.toGoat().gender,
+            onGenderSelected = { newGender ->
+                onValueChange(goatDetails.copy(gender = newGender.toString()))
+            },
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
         )
-        OutlinedTextField(
-            value = goatDetails.birthDate,
-            onValueChange = { onValueChange(goatDetails.copy(birthDate = it)) },
-            label = { Text(stringResource(R.string.goat_birth_date_request_label)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true
+        BreedSelector(
+            selectedBreed = goatDetails.toGoat().breed,
+            onBreedSelected = { newBreed ->
+                onValueChange(goatDetails.copy(breed = newBreed.toString()))
+            },
+        )
+        StatusSelector(
+            selectedStatus = goatDetails.toGoat().status,
+            onStatusSelected = { newStatus ->
+                onValueChange(goatDetails.copy(status = newStatus.toString()))
+            },
+        )
+        DatePickerField(
+            label = "Дата рождения",
+            date = goatDetails.birthDate,
+            onDateSelected = { onValueChange(goatDetails.copy(birthDate = it)) },
+            allowEmpty = false
         )
         OutlinedTextField(
             value = goatDetails.description,
@@ -165,6 +170,188 @@ fun GoatInputForm(
                 text = stringResource(R.string.goat_required_fields_label),
                 modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun GenderSelector(
+    selectedGender: Gender,
+    onGenderSelected: (Gender) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+        modifier = modifier
+    ) {
+        OutlinedTextField(
+            value = stringResource(selectedGender.labelResId),
+            onValueChange = { /* Не изменяем вручную, только через меню */ },
+            readOnly = true,
+            label = { Text(stringResource(R.string.gender_label)) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier.menuAnchor()
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            Gender.valuesList().forEach { gender ->
+                DropdownMenuItem(
+                    text = { Text(stringResource(gender.labelResId)) },
+                    onClick = {
+                        onGenderSelected(gender)
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BreedSelector(
+    selectedBreed: Breed,
+    onBreedSelected: (Breed) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+        modifier = modifier
+    ) {
+        OutlinedTextField(
+            value = stringResource(selectedBreed.labelResId),
+            onValueChange = { /* Не изменяем вручную, только через меню */ },
+            readOnly = true,
+            label = { Text(stringResource(R.string.breed_label)) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier.menuAnchor()
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            Breed.valuesList().forEach { breed ->
+                DropdownMenuItem(
+                    text = { Text(stringResource(breed.labelResId)) },
+                    onClick = {
+                        onBreedSelected(breed)
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun StatusSelector(
+    selectedStatus: Status,
+    onStatusSelected: (Status) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+        modifier = modifier
+    ) {
+        OutlinedTextField(
+            value = stringResource(selectedStatus.labelResId),
+            onValueChange = { /* Не изменяем вручную, только через меню */ },
+            readOnly = true,
+            label = { Text(stringResource(R.string.status_label)) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier.menuAnchor()
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            Status.valuesList().forEach { status ->
+                DropdownMenuItem(
+                    text = { Text(stringResource(status.labelResId)) },
+                    onClick = {
+                        onStatusSelected(status)
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
+            }
+        }
+    }
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DatePickerField(
+    label: String,
+    date: String,
+    onDateSelected: (String) -> Unit,
+    allowEmpty: Boolean = false,
+) {
+    val context = LocalContext.current
+    val calendar = Calendar.getInstance()
+
+    if (date.isNotBlank()) {
+        try {
+            val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+            val parsedDate = sdf.parse(date)
+            if (parsedDate != null) calendar.time = parsedDate
+        } catch (_: Exception) {}
+    }
+
+    var showDialog by remember { mutableStateOf(false) }
+
+    OutlinedTextField(
+        value = date,
+        onValueChange = {},
+        label = { Text(label) },
+        readOnly = true,
+        trailingIcon = {
+            Icon(
+                imageVector = Icons.Default.DateRange,
+                contentDescription = "Выбрать дату",
+                modifier = Modifier.clickable { showDialog = true }
+            )
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { showDialog = true }
+    )
+
+    if (showDialog) {
+        DatePickerDialog(
+            context,
+            { _, year: Int, month: Int, dayOfMonth: Int ->
+                val selectedCal = Calendar.getInstance()
+                selectedCal.set(year, month, dayOfMonth)
+                val formattedDate = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(selectedCal.time)
+                onDateSelected(formattedDate)
+                showDialog = false
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).apply {
+            if (allowEmpty) {
+                setButton(DatePickerDialog.BUTTON_NEGATIVE, "Очистить") { _, _ ->
+                    onDateSelected("")
+                    showDialog = false
+                }
+            }
+            setButton(DatePickerDialog.BUTTON_NEUTRAL, "Отмена") { _, _ ->
+                showDialog = false
+            }
+            show()
         }
     }
 }

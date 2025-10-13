@@ -77,7 +77,29 @@
     <string name="warning_label">Внимание!</string>
     <string name="delete_warning">Вы уверены что хотите удалить %s %s? </string>
 
+    <!-- Пол -->
+    <string name="gender_label">Пол</string>
+    <string name="gender_male">Самец</string>
+    <string name="gender_female">Самка</string>
+    <string name="gender_unknown">Неизвестно</string>
 
+    <!-- Породы коз -->
+    <string name="breed_label">Порода</string>
+    <string name="zaanenskaya">Зааненская</string>
+    <string name="nubian">Нубийская</string>
+    <string name="toggenburgskaya">Тоггенбургская</string>
+    <string name="alpine">Альпийская</string>
+    <string name="la_Mancha">Ламанча</string>
+    <string name="gornoaltayskaya">Горноалтайская</string>
+    <string name="orenburg">Оренбургская</string>
+    <string name="angora">Ангорская</string>
+    <string name="cameroonian">Камерунская</string>
+    <string name="other">Другие</string>
 
-
+    <!-- Статус коз -->
+    <string name="status_label">Статус</string>
+    <string name="milk">Молоко</string>
+    <string name="meat">Мясо</string>
+    <string name="wool">Шерсть</string>
+    <string name="breeding">Племя</string>
 </resources>
