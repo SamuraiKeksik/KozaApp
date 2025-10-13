@@ -1,6 +1,7 @@
 package com.example.kozaapp.features.animals.ui.screens
 
 import android.content.res.Configuration
+import androidx.annotation.StringRes
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -28,7 +29,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -46,13 +46,21 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kozaapp.R
 import com.example.kozaapp.features.animals.goats.ui.GoatsViewModel
 import com.example.kozaapp.features.animals.model.Goat
+import com.example.kozaapp.ui.NavigationDestination
 import com.example.kozaapp.ui.theme.AppTheme
+
+object GoatsDestination : NavigationDestination{
+    override val route = "GoatsScreen"
+    @StringRes
+    override val titleRes = R.string.empty_string
+    override val showBottomBar = false
+}
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun GoatsScreen(
     navigateToGoatEntry: () -> Unit,
-    navigateToItemUpdate: (Int) -> Unit,
+    navigateToGoatDetails: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GoatsViewModel = hiltViewModel(),
     contentPadding: PaddingValues = PaddingValues(0.dp),
@@ -65,7 +73,7 @@ fun GoatsScreen(
     ) {
         GoatsBody(
             goatsList = goatsUiState.goatsList,
-            onGoatClick = navigateToItemUpdate,
+            onGoatClick = navigateToGoatDetails,
             modifier = modifier.fillMaxSize(),
         )
         FloatingActionButton(
@@ -103,7 +111,7 @@ private fun GoatsBody(
         } else {
             GoatsList(
                 goatsList = goatsList,
-                onItemClick = { onGoatClick(it.id) },
+                onGoatClick = { onGoatClick(it.id) },
                 contentPadding = contentPadding,
                 modifier = Modifier
                     .padding(horizontal = dimensionResource(id = R.dimen.padding_small))
@@ -117,7 +125,7 @@ private fun GoatsBody(
 @Composable
 private fun GoatsList(
     goatsList: List<Goat>,
-    onItemClick: (Goat) -> Unit,
+    onGoatClick: (Goat) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
@@ -130,7 +138,7 @@ private fun GoatsList(
                 goat = goat,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
-                    .clickable { onItemClick(goat) })
+                    .clickable { onGoatClick(goat) })
 
         }
     }

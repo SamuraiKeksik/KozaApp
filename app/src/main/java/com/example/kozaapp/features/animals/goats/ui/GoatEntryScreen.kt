@@ -1,5 +1,6 @@
 package com.example.kozaapp.features.animals.goats.ui
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -26,10 +27,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kozaapp.R
 import com.example.kozaapp.ui.CommonTopAppBar
+import com.example.kozaapp.ui.NavigationDestination
 import com.example.kozaapp.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 import java.util.Currency
 import java.util.Locale
+
+object GoatEntryDestination : NavigationDestination{
+    override val route = "GoatEntryScreen"
+    @StringRes
+    override val titleRes = R.string.empty_string
+    override val showBottomBar = false
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

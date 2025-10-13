@@ -1,11 +1,8 @@
 package com.example.kozaapp.animals.ui.screens
 
 import android.content.res.Configuration
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -19,55 +16,58 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.kozaapp.R
+import androidx.navigation.navArgument
+import com.example.kozaapp.features.animals.goats.ui.GoatDetailsDestination
+import com.example.kozaapp.features.animals.goats.ui.GoatDetailsScreen
+import com.example.kozaapp.features.animals.goats.ui.GoatEntryDestination
 import com.example.kozaapp.features.animals.goats.ui.GoatEntryScreen
 import com.example.kozaapp.features.animals.ui.AnimalsViewModel
+import com.example.kozaapp.features.animals.ui.screens.AnimalCardsDestination
 import com.example.kozaapp.features.animals.ui.screens.AnimalCardsScreen
 import com.example.kozaapp.features.animals.ui.screens.BottomNavItems
+import com.example.kozaapp.features.animals.ui.screens.GoatsDestination
 import com.example.kozaapp.features.animals.ui.screens.GoatsScreen
 import com.example.kozaapp.ui.MainAppBar
 import com.example.kozaapp.ui.theme.AppTheme
 
-enum class AnimalsScreenEnum(
-    @StringRes val title: Int,
-    val showBottomBar: Boolean = false,
-    ) {
-    //ToDo: Поменять заголовки на соответствующие
-    AnimalCardsScreen(title = R.string.empty_string, showBottomBar = true,),
-    GoatListScreen(title = R.string.goats_label, showBottomBar = false,),
-    GoatEntryScreen(title = R.string.empty_string, showBottomBar = false)
-}
 
 @Composable
 fun AnimalsScreen(
     viewModel: AnimalsViewModel = viewModel(),
     navController: NavHostController = rememberNavController(),
-    startScreen: AnimalsScreenEnum = AnimalsScreenEnum.AnimalCardsScreen,
+    startDestination: String = AnimalCardsDestination.route,
 ) {
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = AnimalsScreenEnum.valueOf(
-        backStackEntry?.destination?.route ?: AnimalsScreenEnum.AnimalCardsScreen.name
+    val animalsDestinations = listOf(
+        AnimalCardsDestination,
+        GoatsDestination,
+        GoatEntryDestination,
+        GoatDetailsDestination,
     )
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = animalsDestinations.find { destination ->
+        backStackEntry?.destination?.route?.startsWith(destination.route) == true
+    } ?: AnimalCardsDestination
     Scaffold(
         topBar = {
             MainAppBar(
-                currentScreen = currentScreen,
+                currentScreen = currentDestination,
                 canNavigateBack = navController.previousBackStackEntry != null,
                 navigateUp = { navController.navigateUp() }
             )
         },
         bottomBar = {
-            if (currentScreen.showBottomBar) {
+            if (currentDestination.showBottomBar) {
                 NavigationBar{
                     BottomNavItems.itemsList.forEach { item ->
                         NavigationBarItem(
                             modifier = Modifier.padding(top = 10.dp),
                             selected = true,
-                            onClick = { navController.navigate(item.route.name) },
+                            onClick = { navController.navigate(item.route) },
                             icon = {
                                 Icon(item.icon, contentDescription = stringResource(item.labelRes))
                             },
@@ -80,29 +80,38 @@ fun AnimalsScreen(
     ) { innerPading ->
         NavHost(
             navController = navController,
-            startDestination = startScreen.name,
+            startDestination = startDestination,
             modifier = Modifier
                 .padding(innerPading)
                 .fillMaxSize()
         ) {
-            composable(AnimalsScreenEnum.AnimalCardsScreen.name) {
+            composable(AnimalCardsDestination.route) {
                 AnimalCardsScreen(
-                    navigateToGoatsScreen = { navController.navigate(AnimalsScreenEnum.GoatListScreen.name) },
+                    navigateToGoatsScreen = { navController.navigate(GoatsDestination.route) },
                     navigateToCowsScreen = {},
                     navigateToChickenScreen = {}
                 )
             }
-            composable(AnimalsScreenEnum.GoatListScreen.name) {
+            composable(GoatsDestination.route) {
                 GoatsScreen(
-                    navigateToGoatEntry = {navController.navigate(AnimalsScreenEnum.GoatEntryScreen.name)},
-                    navigateToItemUpdate = {},
+                    navigateToGoatEntry = { navController.navigate(GoatEntryDestination.route) },
+                    navigateToGoatDetails = { navController.navigate("${GoatDetailsDestination.route}/${it}") },
                     modifier = Modifier.fillMaxSize()
                 )
             }
-            composable(AnimalsScreenEnum.GoatEntryScreen.name) {
+            composable(GoatEntryDestination.route) {
                 GoatEntryScreen(
                     navigateBack = { navController.popBackStack() },
                     onNavigateUp = { navController.navigateUp() }
+                )
+            }
+            composable(
+                route = GoatDetailsDestination.routeWithArgs,
+                arguments = listOf(navArgument(GoatDetailsDestination.goatIdArg) { type = NavType.IntType })
+            ) {
+                GoatDetailsScreen(
+                    navigateBack = { navController.popBackStack() },
+                    navigateToEditGoat = {},
                 )
             }
         }

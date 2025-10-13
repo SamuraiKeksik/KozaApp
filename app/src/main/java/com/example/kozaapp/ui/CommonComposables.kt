@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kozaapp.AuthScreenEnum
 import com.example.kozaapp.R
-import com.example.kozaapp.animals.ui.screens.AnimalsScreenEnum
 
 @Composable
 fun StandardOutlineTextField(
@@ -88,13 +87,13 @@ fun AuthAppBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainAppBar(
-    currentScreen: AnimalsScreenEnum,
+    currentScreen: NavigationDestination,
     canNavigateBack: Boolean,
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
 ){
     TopAppBar(
-        title = { Text(stringResource(currentScreen.title))},
+        title = { Text(stringResource(currentScreen.titleRes))},
         modifier = modifier,
         navigationIcon = {
             if (canNavigateBack){
