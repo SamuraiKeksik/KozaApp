@@ -79,7 +79,6 @@ fun GoatsScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(scrollState)
     ) {
         GoatsBody(
             goatsList = goatsUiState.goatsList,

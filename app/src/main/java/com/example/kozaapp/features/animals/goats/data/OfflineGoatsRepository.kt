@@ -12,10 +12,19 @@ class OfflineGoatsRepository @Inject constructor(
 
     override fun getGoatStream(id: Int): Flow<Goat?> = goatDao.getGoat(id)
 
-    override suspend fun insertGoat(goat: Goat) = goatDao.insert(goat)
+    override suspend fun insertGoat(goat: Goat) {
+        val changedGoat = goat.copy(needsSync = true)
+        goatDao.insert(changedGoat)
+    }
 
-    override suspend fun updateGoat(goat: Goat) = goatDao.update(goat)
+    override suspend fun updateGoat(goat: Goat) {
+        val changedGoat = goat.copy(needsSync = true)
+        goatDao.update(changedGoat)
+    }
 
-    override suspend fun deleteGoat(goat: Goat) = goatDao.delete(goat)
+    override suspend fun deleteGoat(goat: Goat){
+        val changedGoat = goat.copy(isDeleted = true)
+        goatDao.update(changedGoat)
+    }
 
 }
