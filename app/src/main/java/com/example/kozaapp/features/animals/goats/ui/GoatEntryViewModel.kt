@@ -10,6 +10,8 @@ import com.example.kozaapp.features.animals.model.Gender
 import com.example.kozaapp.features.animals.model.Goat
 import com.example.kozaapp.features.animals.model.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,7 +35,7 @@ class GoatEntryViewModel @Inject constructor(
 
     private fun validateInput(uiState: GoatDetails = goatUiState.goatDetails): Boolean {
         return with(uiState) {
-            name.isNotBlank() && gender.isNotBlank()
+            name.isNotBlank()
         }
     }
 }
@@ -47,11 +49,11 @@ data class GoatDetails(
     val id: Int = 0,
     val name: String = "",
     val gender: String = Gender.UNKNOWN.toString(),
-    val birthDate: String = "",
+    val birthDate: String = LocalDate.now().toString(),
     val description: String = "",
     val breed: String = Breed.OTHER.toString(),
     val status: String = Status.OTHER.toString(),
-    val weight: Int = 0,
+    val weight: String = "0",
 )
 
 fun GoatDetails.toGoat(): Goat {
@@ -68,21 +70,24 @@ fun GoatDetails.toGoat(): Goat {
         Status.valueOf(status.uppercase())
     }.getOrDefault(Status.OTHER)
 
+
     return Goat(
-    id = id,
-    name = name,
-    gender = enumGender,
-    birthDate = birthDate,
-    description = description,
-    breed = enumBreed,
-    status = enumStatus,
-    weight = weight,)
+        id = id,
+        name = name,
+        gender = enumGender,
+        birthDate = birthDate,
+        description = description,
+        breed = enumBreed,
+        status = enumStatus,
+        weight = weight.toIntOrNull() ?: 0,
+    )
 }
 
 fun Goat.toGoatUiState(isEntryValid: Boolean = false): GoatUiState = GoatUiState(
     goatDetails = this.toGoatDetails(),
     isEntryValid = isEntryValid
 )
+
 fun Goat.toGoatDetails(): GoatDetails = GoatDetails(
     id = id,
     name = name,
@@ -91,5 +96,5 @@ fun Goat.toGoatDetails(): GoatDetails = GoatDetails(
     description = description,
     breed = breed.toString(),
     status = status.toString(),
-    weight = weight,
+    weight = weight.toString(),
 )

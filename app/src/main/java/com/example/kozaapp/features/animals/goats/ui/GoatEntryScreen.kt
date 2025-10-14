@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
@@ -18,7 +21,6 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,8 +32,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kozaapp.R
 import com.example.kozaapp.features.animals.model.Breed
@@ -60,8 +62,11 @@ fun GoatEntryScreen(
     viewModel: GoatEntryViewModel = hiltViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState),
     ) {
         GoatEntryBody(
             goatUiState = viewModel.goatUiState,
@@ -117,22 +122,16 @@ fun GoatInputForm(
         OutlinedTextField(
             value = goatDetails.name,
             onValueChange = { onValueChange(goatDetails.copy(name = it)) },
-            label = { Text(stringResource(R.string.goat_name_request_label)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
+            label = { Text(stringResource(R.string.goat_name_label)) },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
+            singleLine = true,
         )
         GenderSelector(
             selectedGender = goatDetails.toGoat().gender,
             onGenderSelected = { newGender ->
                 onValueChange(goatDetails.copy(gender = newGender.toString()))
             },
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp)
         )
         BreedSelector(
             selectedBreed = goatDetails.toGoat().breed,
@@ -146,6 +145,17 @@ fun GoatInputForm(
                 onValueChange(goatDetails.copy(status = newStatus.toString()))
             },
         )
+        OutlinedTextField(
+            value = goatDetails.weight,
+            onValueChange = { onValueChange(goatDetails.copy(weight = it)) },
+            label = { Text(stringResource(R.string.goat_weight_label)) },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = enabled,
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number
+            )
+        )
         DatePickerField(
             label = "Дата рождения",
             date = goatDetails.birthDate,
@@ -155,15 +165,9 @@ fun GoatInputForm(
         OutlinedTextField(
             value = goatDetails.description,
             onValueChange = { onValueChange(goatDetails.copy(description = it)) },
-            label = { Text(stringResource(R.string.goat_description_request_label)) },
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-            ),
+            label = { Text(stringResource(R.string.goat_description_label)) },
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
-            singleLine = true
         )
         if (enabled) {
             Text(

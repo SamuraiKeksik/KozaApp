@@ -66,10 +66,11 @@
     <string name="goat_entry_screen_label">Добавить козу</string>
     <string name="goat_save_button_label">Сохранить</string>
     <string name="goat_delete_button_label">Удалить</string>
-    <string name="goat_name_request_label">Имя козы</string>
-    <string name="goat_gender_request_label">Пол</string>
-    <string name="goat_birth_date_request_label">Дата рождения</string>
-    <string name="goat_description_request_label">Описание</string>
+    <string name="goat_name_label">Кличка</string>
+    <string name="goat_weight_label">Вес</string>
+    <string name="goat_gender_label">Пол</string>
+    <string name="goat_birth_date_label">Дата рождения</string>
+    <string name="goat_description_label">Описание</string>
     <string name="goat_required_fields_label">Заполните поля</string>
 
     <string name="yes">Да</string>

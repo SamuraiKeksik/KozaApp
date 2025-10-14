@@ -152,7 +152,7 @@ fun GoatDetails(
                 )
             )
             GoatDetailsRow(
-                labelResID = R.string.goat_gender_request_label,
+                labelResID = R.string.goat_gender_label,
                 goatDetail = Goat.gender.toString(),
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
@@ -162,7 +162,7 @@ fun GoatDetails(
                 )
             )
             GoatDetailsRow(
-                labelResID = R.string.goat_description_request_label,
+                labelResID = R.string.goat_description_label,
                 goatDetail = Goat.description,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(
