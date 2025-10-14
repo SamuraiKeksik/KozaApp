@@ -44,6 +44,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -113,10 +114,30 @@ private fun GoatsBody(
         modifier = modifier,
     ) {
         if (goatsList.isEmpty()) {
-            Text(
-                "EMPTY!", //ToDo: Сделать нормальную заглушку под пустой список
-                modifier = Modifier.fillMaxSize()
-            )
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Spacer(modifier = Modifier.size(200.dp))
+                Text(
+                    text = stringResource(R.string.empty_animals_list_label1),
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center,
+                )
+                Spacer(modifier = Modifier.size(3.dp))
+                Text(
+                    text = stringResource(R.string.empty_animals_list_label2),
+                    style = MaterialTheme.typography.headlineSmall,
+                    textAlign = TextAlign.Center,
+                )
+                Spacer(modifier = Modifier.size(10.dp))
+                Image(
+                    painterResource(R.drawable.missing_pet),
+                    contentDescription = null,
+                    modifier = Modifier.size(100.dp)
+                )
+            }
+
         } else {
             GoatsList(
                 goatsList = goatsList,
@@ -165,70 +186,30 @@ private fun GoatCard(
             modifier =
                 Modifier
                     .padding(dimensionResource(id = R.dimen.padding_large))
-                    .fillMaxWidth()
-            ,
+                    .fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
         ) {
             Text(
                 text = goat.name,
                 style = MaterialTheme.typography.displaySmall,
             )
-            Spacer(Modifier.weight(1f))
             Text(
-                text = stringResource(R.string.gender_details_label, stringResource(goat.gender.labelResId)) ,
+                text = stringResource(
+                    R.string.gender_details_label,
+                    stringResource(goat.gender.labelResId)
+                ),
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
-                text = stringResource(R.string.status_details_label,stringResource(goat.status.labelResId)),
+                text = stringResource(
+                    R.string.status_details_label,
+                    stringResource(goat.status.labelResId)
+                ),
                 style = MaterialTheme.typography.titleMedium
             )
-        }
-    }
-
-    @Composable
-    fun GoatListItem(
-        goat: Goat,
-        modifier: Modifier = Modifier,
-    ) {
-        Card(
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-            modifier = modifier,
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .sizeIn(minHeight = 72.dp)
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = goat.name,
-                        style = MaterialTheme.typography.displaySmall
-                    )
-                    Text(
-                        text = goat.description,
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
-                Spacer(Modifier.width(16.dp))
-                Box(
-                    modifier = Modifier
-                        .size(72.dp)
-                        .clip(RoundedCornerShape(8.dp))
-
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.ic_launcher_background),
-                        contentDescription = null,
-                        alignment = Alignment.TopCenter,
-                        contentScale = ContentScale.FillWidth
-                    )
-                }
-            }
         }
     }
 }
-
 
 @Preview("Light Theme", showBackground = true)
 @Preview("Dark Theme", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
@@ -251,26 +232,8 @@ fun GoatsBodyPreview() {
 @Preview("Light Theme", showBackground = true)
 @Preview("Dark Theme", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun HomeBodyEmptyListPreview() {
+fun GoatsEmptyScreenPreview() {
     AppTheme {
         GoatsBody(listOf(), onGoatClick = {})
-    }
-}
-
-@Preview("Light Theme", showBackground = true)
-@Preview("Dark Theme", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun InventoryItemPreview() {
-    AppTheme {
-        GoatCard(
-            Goat(id = 1,
-                "Biba",
-                gender = Gender.FEMALE,
-                breed = Breed.OTHER,
-                description = "Very good goat!",
-                status = Status.OTHER,
-                weight = 8,
-                birthDate = "2025-10-14"),
-        )
     }
 }

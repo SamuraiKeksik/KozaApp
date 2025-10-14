@@ -16,6 +16,10 @@ data class Goat(
     val weight: Int,
     val birthDate: String,
     val description: String,
+
+    val needsSync: Boolean = false,
+    val isDeleted: Boolean = false,
+    val serverId: String? = null,
 )
 
 enum class Gender(@StringRes val labelResId: Int) {

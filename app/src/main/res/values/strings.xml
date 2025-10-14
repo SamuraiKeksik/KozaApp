@@ -107,4 +107,7 @@
     <string name="meat">Мясо</string>
     <string name="wool">Шерсть</string>
     <string name="breeding">Племя</string>
+
+    <string name="empty_animals_list_label1">В данный момент здесь пусто.</string>
+    <string name="empty_animals_list_label2">Добавьте новое животное.</string>
 </resources>
