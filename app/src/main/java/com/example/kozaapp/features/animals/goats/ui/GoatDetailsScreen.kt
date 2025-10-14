@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 object GoatDetailsDestination : NavigationDestination{
     override val route = "GoatDetailsScreen"
     @StringRes
-    override val titleRes = R.string.empty_string
+    override val titleRes = R.string.goat_details_screen_label
     override val showBottomBar = false
     const val goatIdArg = "goatId"
     val routeWithArgs = "$route/{$goatIdArg}"
@@ -101,7 +101,7 @@ private fun GoatDetailsBody(
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
         GoatDetails(
-            Goat = goatDetailsUiState.goatDetails.toGoat(), modifier = Modifier.fillMaxWidth()
+            goat = goatDetailsUiState.goatDetails.toGoat(), modifier = Modifier.fillMaxWidth()
         )
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
@@ -127,7 +127,8 @@ private fun GoatDetailsBody(
 
 @Composable
 fun GoatDetails(
-    Goat: Goat, modifier: Modifier = Modifier
+    goat: Goat,
+    modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier, colors = CardDefaults.cardColors(
@@ -142,33 +143,55 @@ fun GoatDetails(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
         ) {
             GoatDetailsRow(
-                labelResID = R.string.goats_label,
-                goatDetail = Goat.name,
+                labelResID = R.string.goat_name_label,
+                goatDetail = goat.name,
                 modifier = Modifier.padding(
-                    horizontal = dimensionResource(
-                        id = R.dimen
-                            .padding_medium
-                    )
+                    horizontal = dimensionResource(id = R.dimen
+                            .padding_medium)
                 )
             )
             GoatDetailsRow(
                 labelResID = R.string.goat_gender_label,
-                goatDetail = Goat.gender.toString(),
+                goatDetail = stringResource(goat.gender.labelResId),
                 modifier = Modifier.padding(
-                    horizontal = dimensionResource(
-                        id = R.dimen
-                            .padding_medium
-                    )
+                    horizontal = dimensionResource(id = R.dimen
+                            .padding_medium)
+                )
+            )
+            GoatDetailsRow(
+                labelResID = R.string.breed_label,
+                goatDetail = stringResource(goat.breed.labelResId),
+                modifier = Modifier.padding(
+                    horizontal = dimensionResource(id = R.dimen
+                            .padding_medium)
+                )
+            )
+            GoatDetailsRow(
+                labelResID = R.string.status_label,
+                goatDetail = stringResource(goat.status.labelResId),
+                modifier = Modifier.padding(
+                    horizontal = dimensionResource(id = R.dimen.padding_medium)
+                )
+            )
+            GoatDetailsRow(
+                labelResID = R.string.goat_weight_label,
+                goatDetail = goat.weight.toString(),
+                modifier = Modifier.padding(
+                    horizontal = dimensionResource(id = R.dimen.padding_medium)
+                )
+            )
+            GoatDetailsRow(
+                labelResID = R.string.goat_birth_date_label,
+                goatDetail = goat.birthDate,
+                modifier = Modifier.padding(
+                    horizontal = dimensionResource(id = R.dimen.padding_medium)
                 )
             )
             GoatDetailsRow(
                 labelResID = R.string.goat_description_label,
-                goatDetail = Goat.description,
+                goatDetail = goat.description,
                 modifier = Modifier.padding(
-                    horizontal = dimensionResource(
-                        id = R.dimen
-                            .padding_medium
-                    )
+                    horizontal = dimensionResource(id = R.dimen.padding_medium)
                 )
             )
         }
@@ -178,7 +201,9 @@ fun GoatDetails(
 
 @Composable
 private fun GoatDetailsRow(
-    @StringRes labelResID: Int, goatDetail: String, modifier: Modifier = Modifier
+    @StringRes labelResID: Int,
+    goatDetail: String,
+    modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
         Text(text = stringResource(labelResID))

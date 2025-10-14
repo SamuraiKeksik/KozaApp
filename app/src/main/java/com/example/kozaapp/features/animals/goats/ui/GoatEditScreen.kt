@@ -2,8 +2,10 @@ package com.example.kozaapp.features.animals.goats.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -22,7 +24,7 @@ import kotlinx.coroutines.launch
 object GoatEditDestination : NavigationDestination{
     override val route = "GoatEditScreen"
     @StringRes
-    override val titleRes = R.string.empty_string
+    override val titleRes = R.string.goat_edit_screen_label
     override val showBottomBar = false
     const val goatIdArg = "goatId"
     val routeWithArgs = "$route/{$goatIdArg}"
@@ -36,8 +38,11 @@ fun GoatEditScreen(
     viewModel: GoatEditViewModel = hiltViewModel()
 ) {
     val coroutineScope = rememberCoroutineScope()
-    Box(
-        modifier = modifier
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState),
     ) { 
         GoatEntryBody(
             goatUiState = viewModel.goatUiState,
@@ -48,8 +53,6 @@ fun GoatEditScreen(
                     navigateBack()
                 }
             },
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
         )
     }
 }

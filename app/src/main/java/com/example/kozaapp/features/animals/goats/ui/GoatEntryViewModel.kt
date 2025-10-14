@@ -89,6 +89,7 @@ fun Goat.toGoatUiState(isEntryValid: Boolean = false): GoatUiState = GoatUiState
 )
 
 fun Goat.toGoatDetails(): GoatDetails = GoatDetails(
+
     id = id,
     name = name,
     gender = gender.toString(),

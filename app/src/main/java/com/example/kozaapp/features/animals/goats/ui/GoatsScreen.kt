@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +21,9 @@ import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
@@ -40,6 +43,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -55,7 +59,7 @@ import com.example.kozaapp.ui.theme.AppTheme
 object GoatsDestination : NavigationDestination{
     override val route = "GoatsScreen"
     @StringRes
-    override val titleRes = R.string.empty_string
+    override val titleRes = R.string.goats_label
     override val showBottomBar = false
 }
 
@@ -69,10 +73,12 @@ fun GoatsScreen(
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     val goatsUiState by viewModel.goatsUiState.collectAsState()
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val scrollState = rememberScrollState()
 
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState)
     ) {
         GoatsBody(
             goatsList = goatsUiState.goatsList,
@@ -156,24 +162,24 @@ private fun GoatCard(
         modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(
-            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
+            modifier =
+                Modifier
+                    .padding(dimensionResource(id = R.dimen.padding_large))
+                    .fillMaxWidth()
+            ,
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = goat.name,
-                    style = MaterialTheme.typography.titleLarge,
-                )
-                Spacer(Modifier.weight(1f))
-                Text(
-                    text = goat.gender.toString(),
-                    style = MaterialTheme.typography.titleMedium
-                )
-            }
             Text(
-                text = goat.description,
+                text = goat.name,
+                style = MaterialTheme.typography.displaySmall,
+            )
+            Spacer(Modifier.weight(1f))
+            Text(
+                text = stringResource(R.string.gender_details_label, stringResource(goat.gender.labelResId)) ,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = stringResource(R.string.status_details_label,stringResource(goat.status.labelResId)),
                 style = MaterialTheme.typography.titleMedium
             )
         }
@@ -264,7 +270,7 @@ fun InventoryItemPreview() {
                 description = "Very good goat!",
                 status = Status.OTHER,
                 weight = 8,
-                birthDate = ""),
+                birthDate = "2025-10-14"),
         )
     }
 }

@@ -49,7 +49,7 @@ import java.util.Locale
 object GoatEntryDestination : NavigationDestination{
     override val route = "GoatEntryScreen"
     @StringRes
-    override val titleRes = R.string.empty_string
+    override val titleRes = R.string.goat_entry_screen_label
     override val showBottomBar = false
 }
 

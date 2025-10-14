@@ -49,6 +49,7 @@ fun AnimalsScreen(
         GoatsDestination,
         GoatEntryDestination,
         GoatDetailsDestination,
+        GoatEditDestination,
     )
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = animalsDestinations.find { destination ->
