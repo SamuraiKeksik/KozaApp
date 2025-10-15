@@ -5,9 +5,9 @@ import com.example.kozaapp.features.animals.model.Goat
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class OfflineGoatsRepository @Inject constructor(
+class GoatLocalDataSource @Inject constructor(
     private val goatDao: GoatDao
-): GoatsRepository {
+): GoatsDataSource {
     override fun getAllGoatsStream(): Flow<List<Goat>> = goatDao.getAllGoats()
 
     override fun getGoatStream(id: Int): Flow<Goat?> = goatDao.getGoat(id)

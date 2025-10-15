@@ -4,19 +4,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.kozaapp.features.animals.goats.data.GoatsRepository
+import com.example.kozaapp.features.animals.goats.data.GoatsDataSource
 import com.example.kozaapp.features.animals.model.Breed
 import com.example.kozaapp.features.animals.model.Gender
 import com.example.kozaapp.features.animals.model.Goat
 import com.example.kozaapp.features.animals.model.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
-import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
 class GoatEntryViewModel @Inject constructor(
-    private val goatsRepository: GoatsRepository
+    private val goatsDataSource: GoatsDataSource
 ) : ViewModel() {
 
     var goatUiState by mutableStateOf(GoatUiState())
@@ -29,7 +28,7 @@ class GoatEntryViewModel @Inject constructor(
 
     suspend fun saveItem() {
         if (validateInput()) {
-            goatsRepository.insertGoat(goatUiState.goatDetails.toGoat())
+            goatsDataSource.insertGoat(goatUiState.goatDetails.toGoat())
         }
     }
 
