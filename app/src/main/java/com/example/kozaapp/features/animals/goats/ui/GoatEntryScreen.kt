@@ -158,7 +158,7 @@ fun GoatInputForm(
         )
         DatePickerField(
             label = "Дата рождения",
-            date = goatDetails.birthDate,
+            date = goatDetails.birthDate ?: "",
             onDateSelected = { onValueChange(goatDetails.copy(birthDate = it)) },
             allowEmpty = false
         )

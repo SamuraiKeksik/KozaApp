@@ -7,24 +7,20 @@ import javax.inject.Inject
 
 class GoatLocalDataSource @Inject constructor(
     private val goatDao: GoatDao
-): GoatsDataSource {
-    override fun getAllGoatsStream(): Flow<List<Goat>> = goatDao.getAllGoats()
+) {
+    fun getAllGoatsStream(): Flow<List<Goat>> = goatDao.getAllGoats()
 
-    override fun getGoatStream(id: Int): Flow<Goat?> = goatDao.getGoat(id)
+    fun getGoatStream(id: Int): Flow<Goat?> = goatDao.getGoat(id)
 
-    override suspend fun insertGoat(goat: Goat) {
-        val changedGoat = goat.copy(needsSync = true)
-        goatDao.insert(changedGoat)
+    suspend fun insertGoat(goat: Goat) = goatDao.insert(goat)
+
+    suspend fun insertGoatList(goatList: List<Goat>) = goatList.forEach {
+        insertGoat(it)
     }
 
-    override suspend fun updateGoat(goat: Goat) {
-        val changedGoat = goat.copy(needsSync = true)
-        goatDao.update(changedGoat)
-    }
+    suspend fun updateGoat(goat: Goat) = goatDao.update(goat)
 
-    override suspend fun deleteGoat(goat: Goat){
-        val changedGoat = goat.copy(isDeleted = true)
-        goatDao.update(changedGoat)
-    }
+    suspend fun deleteGoat(goat: Goat) = goatDao.delete(goat)
+
 
 }

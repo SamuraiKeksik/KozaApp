@@ -182,14 +182,14 @@ fun GoatDetails(
             )
             GoatDetailsRow(
                 labelResID = R.string.goat_birth_date_label,
-                goatDetail = goat.birthDate,
+                goatDetail = goat.birthDate ?: "",
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen.padding_medium)
                 )
             )
             GoatDetailsRow(
                 labelResID = R.string.goat_description_label,
-                goatDetail = goat.description,
+                goatDetail = goat.description ?: "",
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen.padding_medium)
                 )

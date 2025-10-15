@@ -2,7 +2,7 @@ package com.example.kozaapp.features.animals.goats.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kozaapp.features.animals.goats.data.GoatsDataSource
+import com.example.kozaapp.features.animals.goats.data.GoatRepository
 import com.example.kozaapp.features.animals.model.Goat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -13,10 +13,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GoatsViewModel @Inject constructor(
-    goatsDataSource: GoatsDataSource
+    goatRepository: GoatRepository
 ): ViewModel() {
     val goatsUiState: StateFlow<GoatsUiState> =
-        goatsDataSource.getAllGoatsStream().map { GoatsUiState(it) }
+        goatRepository.getAllGoatsStream().map { GoatsUiState(it) }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),

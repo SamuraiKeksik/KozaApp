@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.kozaapp.features.animals.goats.data.GoatsDataSource
+import com.example.kozaapp.features.animals.goats.data.GoatRepository
 import com.example.kozaapp.features.animals.model.Breed
 import com.example.kozaapp.features.animals.model.Gender
 import com.example.kozaapp.features.animals.model.Goat
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GoatEntryViewModel @Inject constructor(
-    private val goatsDataSource: GoatsDataSource
+    private val goatRepository: GoatRepository
 ) : ViewModel() {
 
     var goatUiState by mutableStateOf(GoatUiState())
@@ -28,7 +28,7 @@ class GoatEntryViewModel @Inject constructor(
 
     suspend fun saveItem() {
         if (validateInput()) {
-            goatsDataSource.insertGoat(goatUiState.goatDetails.toGoat())
+            goatRepository.insertGoat(goatUiState.goatDetails.toGoat())
         }
     }
 
@@ -48,7 +48,7 @@ data class GoatDetails(
     val id: Int = 0,
     val name: String = "",
     val gender: String = Gender.UNKNOWN.toString(),
-    val birthDate: String = LocalDate.now().toString(),
+    val birthDate: String? = LocalDate.now().toString(),
     val description: String = "",
     val breed: String = Breed.OTHER.toString(),
     val status: String = Status.OTHER.toString(),

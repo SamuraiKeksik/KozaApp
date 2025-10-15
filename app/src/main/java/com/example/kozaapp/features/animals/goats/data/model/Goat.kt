@@ -14,7 +14,7 @@ data class Goat(
     val breed: Breed,
     val status: Status,
     val weight: Int,
-    val birthDate: String,
+    val birthDate: String?,
     val description: String,
 
     val needsSync: Boolean = false,

@@ -3,8 +3,10 @@ package com.example.kozaapp.data
 import android.content.Context
 import com.example.kozaapp.data.network.ApiService
 import com.example.kozaapp.data.network.AuthService
-import com.example.kozaapp.features.animals.goats.data.GoatsDataSource
 import com.example.kozaapp.features.animals.goats.data.GoatLocalDataSource
+import com.example.kozaapp.features.animals.goats.data.GoatRemoteDataSource
+import com.example.kozaapp.features.animals.goats.data.GoatRepository
+import com.example.kozaapp.features.animals.goats.data.model.GoatDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -81,11 +83,28 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGoatsRepository(
-        @ApplicationContext context: Context
-    ): GoatsDataSource {
-        return GoatLocalDataSource(
-            AnimalsDatabase.getDatabase(context).goatDao()
+    fun provideGoatLocalDataSource(@ApplicationContext context: Context): GoatLocalDataSource {
+        val goatDao = AnimalsDatabase.getDatabase(context).goatDao()
+        return GoatLocalDataSource(goatDao)
+    }
+
+    @Provides
+    @Singleton
+    fun remoteGoatLocalDataSource(
+        apiService: ApiService,
+    ): GoatRemoteDataSource {
+        return GoatRemoteDataSource(apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoatRepository(
+        goatLocalDataSource: GoatLocalDataSource,
+        goatRemoteDataSource: GoatRemoteDataSource,
+    ): GoatRepository {
+        return GoatRepository(
+            goatLocalDataSource,
+            goatRemoteDataSource,
         )
     }
 }
