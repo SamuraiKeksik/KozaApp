@@ -16,22 +16,19 @@ class GoatRepository @Inject constructor(
     fun getGoatStream(id: Int): Flow<Goat?> = localDataSource.getGoatStream(id)
 
     suspend fun insertGoat(goat: Goat) {
-        val changedGoat = goat.copy(needsSync = true)
+        val changedGoat = goat.copy(isEdited = true)
         localDataSource.insertGoat(changedGoat)
-        updateGoatOnServer(changedGoat)
     }
 
     suspend fun updateGoat(goat: Goat) {
-        val changedGoat = goat.copy(needsSync = true)
+        val changedGoat = goat.copy(isEdited = true)
         localDataSource.updateGoat(changedGoat)
-        updateGoatOnServer(changedGoat)
     }
 
     suspend fun deleteGoat(goat: Goat){
         if (goat.serverId != null){
             val changedGoat = goat.copy(isDeleted = true)
             localDataSource.updateGoat(changedGoat)
-            deleteGoatOnServer(goat)
         }
         else{
             localDataSource.deleteGoat(goat)
@@ -40,45 +37,61 @@ class GoatRepository @Inject constructor(
 
 
     //Server part
-    suspend fun copyGoatsFromServer() {
-        val remoteGoatsList = remoteDataSource.getGoatsList()
-
-        val localGoatsList = remoteGoatsList.map { it.toGoatModel() }
-        localDataSource.insertGoatList(localGoatsList)
+    suspend fun syncGoats(){
+        syncDeletedGoats()
+        syncEditedGoats()
+        copyGoatsFromServer()
     }
 
-    suspend fun deleteGoatOnServer(goat: Goat){
-        if (!goat.isDeleted)
-            return
+    private suspend fun copyGoatsFromServer() {
+        try {
+            val remoteGoatsList = remoteDataSource.getGoatsList()
+            val localGoatsList = remoteGoatsList.map { it.toGoatModel() }
+            localDataSource.insertGoatList(localGoatsList)
+        } catch (e: Exception){
+            //ToDo: Сделать обработку ошибки
+        }
 
-        if (goat.serverId == null){
-            localDataSource.deleteGoat(goat)
-            return
-        } else {
-            val result = remoteDataSource.deleteGoat(goat.serverId)
-            if (result?.isDeleted ?: false){
+    }
+
+    private suspend fun syncDeletedGoats(){
+        localDataSource.getDeletedGoats().forEach { goat ->
+            if (goat.serverId != null){
+                try {
+                    remoteDataSource.deleteGoat(goat.serverId)
+                    localDataSource.deleteGoat(goat)
+                } catch (e: Exception){
+                    //ToDo: Сделать обработку ошибки
+                }
+            } else {
                 localDataSource.deleteGoat(goat)
             }
         }
     }
 
-    suspend fun updateGoatOnServer(goat: Goat){
-        if (!goat.needsSync)
-            return
-
-        if (goat.serverId == null){
-            val goatResponse = remoteDataSource.createGoat(goat.toGoatRequest())
-            if (goatResponse != null){
-                localDataSource.updateGoat(goatResponse.toGoatModel())
-            }
-        } else {
-            val goatResponse = remoteDataSource.updateGoat(
-                goat.serverId,
-                goat.toGoatRequest(),
-            )
-            if (goatResponse != null){
-                localDataSource.updateGoat(goatResponse.toGoatModel())
+    private suspend fun syncEditedGoats(){
+        localDataSource.getEditedGoats().forEach { goat ->
+            if (goat.serverId == null){
+                try{
+                    val response = remoteDataSource.createGoat(goat.toGoatRequest())
+                    response?.let {
+                        localDataSource.updateGoat(it.toGoatModel())
+                    }
+                } catch (e: Exception){
+                    //ToDo: Сделать обработку ошибки
+                }
+            } else {
+                try {
+                    val response = remoteDataSource.updateGoat(goat.serverId, goat.toGoatRequest())
+                    response?.let {
+                        localDataSource.updateGoat(it.toGoatModel())
+                    }
+                } catch (e: Exception){
+                    //ToDo: Сделать обработку ошибки
+                }
             }
         }
     }
+
+
 }

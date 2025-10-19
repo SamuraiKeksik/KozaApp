@@ -12,6 +12,9 @@ class GoatLocalDataSource @Inject constructor(
 
     fun getGoatStream(id: Int): Flow<Goat?> = goatDao.getGoat(id)
 
+    suspend fun getEditedGoats(): List<Goat> = goatDao.getEditedGoats()
+
+    suspend fun getDeletedGoats(): List<Goat> = goatDao.getDeletedGoats()
     suspend fun insertGoat(goat: Goat) = goatDao.insert(goat)
 
     suspend fun insertGoatList(goatList: List<Goat>) = goatList.forEach {

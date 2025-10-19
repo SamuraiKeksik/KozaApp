@@ -9,7 +9,7 @@ import com.example.kozaapp.features.animals.goats.data.Converters
 import com.example.kozaapp.features.animals.model.Goat
 import com.example.kozaapp.features.animals.goats.data.model.GoatDao
 
-@Database(entities = [Goat::class], version = 8, exportSchema = false)
+@Database(entities = [Goat::class], version = 9, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AnimalsDatabase : RoomDatabase() {
     abstract fun goatDao(): GoatDao

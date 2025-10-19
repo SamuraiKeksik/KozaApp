@@ -17,7 +17,7 @@ data class Goat(
     val birthDate: String?,
     val description: String,
 
-    val needsSync: Boolean = false,
+    val isEdited: Boolean = false,
     val isDeleted: Boolean = false,
     val serverId: String? = null,
 )

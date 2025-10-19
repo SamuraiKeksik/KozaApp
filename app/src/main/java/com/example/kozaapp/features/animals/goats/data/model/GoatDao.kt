@@ -26,4 +26,9 @@ interface GoatDao {
     @Query("SELECT * FROM goats WHERE id = :id AND isDeleted = 0")
     fun getGoat(id: Int): Flow<Goat?>
 
+    @Query("SELECT * FROM goats WHERE isDeleted = 1")
+    suspend fun getDeletedGoats(): List<Goat>
+
+    @Query("SELECT * FROM goats WHERE isEdited = 1")
+    suspend fun getEditedGoats(): List<Goat>
 }

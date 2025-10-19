@@ -1,7 +1,5 @@
 package com.example.kozaapp.features.animals.goats.data.schemas
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.example.kozaapp.features.animals.model.Breed
 import com.example.kozaapp.features.animals.model.Gender
 import com.example.kozaapp.features.animals.model.Goat
@@ -31,7 +29,7 @@ fun GoatResponse.toGoatModel(): Goat {
         description = this.description,
 
         serverId = this.id,
-        needsSync = false,
+        isEdited = false,
         isDeleted = false,
     )
 }
