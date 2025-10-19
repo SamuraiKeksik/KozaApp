@@ -47,7 +47,17 @@ class GoatRepository @Inject constructor(
         try {
             val remoteGoatsList = remoteDataSource.getGoatsList()
             val localGoatsList = remoteGoatsList.map { it.toGoatModel() }
-            localDataSource.insertGoatList(localGoatsList)
+            localGoatsList.forEach { goat ->
+                if (goat.serverId != null){
+                    val localId = localDataSource.getGoatLocalIdByServerId(goat.serverId)
+                    if (localId != null){
+                        val updatedGoat = goat.copy(id = localId)
+                        localDataSource.updateGoat(updatedGoat)
+                    } else {
+                        localDataSource.insertGoat(goat)
+                    }
+                }
+            }
         } catch (e: Exception){
             //ToDo: Сделать обработку ошибки
         }
@@ -75,7 +85,8 @@ class GoatRepository @Inject constructor(
                 try{
                     val response = remoteDataSource.createGoat(goat.toGoatRequest())
                     response?.let {
-                        localDataSource.updateGoat(it.toGoatModel())
+                        val createdGoat = it.toGoatModel().copy(id = goat.id)
+                        localDataSource.updateGoat(createdGoat)
                     }
                 } catch (e: Exception){
                     //ToDo: Сделать обработку ошибки
@@ -84,8 +95,10 @@ class GoatRepository @Inject constructor(
                 try {
                     val response = remoteDataSource.updateGoat(goat.serverId, goat.toGoatRequest())
                     response?.let {
-                        localDataSource.updateGoat(it.toGoatModel())
-                    }
+                        val updatedGoat = it.toGoatModel().copy(goat.id)
+                        localDataSource.updateGoat(updatedGoat)
+                        }
+
                 } catch (e: Exception){
                     //ToDo: Сделать обработку ошибки
                 }

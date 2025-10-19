@@ -12,6 +12,8 @@ class GoatLocalDataSource @Inject constructor(
 
     fun getGoatStream(id: Int): Flow<Goat?> = goatDao.getGoat(id)
 
+    suspend fun getGoatLocalIdByServerId(serverId: String): Int? = goatDao.getGoatLocalIdByServerId(serverId)
+
     suspend fun getEditedGoats(): List<Goat> = goatDao.getEditedGoats()
 
     suspend fun getDeletedGoats(): List<Goat> = goatDao.getDeletedGoats()

@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GoatDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(goat: Goat)
 
     @Update
@@ -25,6 +25,9 @@ interface GoatDao {
 
     @Query("SELECT * FROM goats WHERE id = :id AND isDeleted = 0")
     fun getGoat(id: Int): Flow<Goat?>
+
+    @Query("SELECT id FROM goats WHERE serverId = :serverId")
+    suspend fun getGoatLocalIdByServerId(serverId: String): Int?
 
     @Query("SELECT * FROM goats WHERE isDeleted = 1")
     suspend fun getDeletedGoats(): List<Goat>

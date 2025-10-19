@@ -12,6 +12,7 @@ import com.example.kozaapp.features.animals.model.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import javax.inject.Inject
+import kotlin.Boolean
 
 @HiltViewModel
 class GoatEntryViewModel @Inject constructor(
@@ -48,11 +49,15 @@ data class GoatDetails(
     val id: Int = 0,
     val name: String = "",
     val gender: String = Gender.UNKNOWN.toString(),
-    val birthDate: String? = LocalDate.now().toString(),
-    val description: String = "",
     val breed: String = Breed.OTHER.toString(),
     val status: String = Status.OTHER.toString(),
     val weight: String = "0",
+    val birthDate: String? = LocalDate.now().toString(),
+    val description: String = "",
+
+    val isEdited: Boolean = false,
+    val isDeleted: Boolean = false,
+    val serverId: String? = null,
 )
 
 fun GoatDetails.toGoat(): Goat {
@@ -79,6 +84,10 @@ fun GoatDetails.toGoat(): Goat {
         breed = enumBreed,
         status = enumStatus,
         weight = weight.toIntOrNull() ?: 0,
+
+        isEdited = isEdited,
+        isDeleted = isDeleted,
+        serverId = serverId,
     )
 }
 
@@ -97,4 +106,9 @@ fun Goat.toGoatDetails(): GoatDetails = GoatDetails(
     breed = breed.toString(),
     status = status.toString(),
     weight = weight.toString(),
+
+    isEdited = isEdited,
+    isDeleted = isDeleted,
+    serverId = serverId,
+
 )
