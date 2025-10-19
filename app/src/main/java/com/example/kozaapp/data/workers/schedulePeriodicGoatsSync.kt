@@ -18,8 +18,8 @@ fun schedulePeriodicGoatsSync(context: Context) {
         .build()
 
     val periodicWorkRequest = PeriodicWorkRequestBuilder<SyncGoatsWorker>(
-        repeatInterval = 1,
-        repeatIntervalTimeUnit = TimeUnit.HOURS
+        repeatInterval = 15,
+        repeatIntervalTimeUnit = TimeUnit.MINUTES
     )
         .addTag(WORK_TAG)
         .setConstraints(constraints)

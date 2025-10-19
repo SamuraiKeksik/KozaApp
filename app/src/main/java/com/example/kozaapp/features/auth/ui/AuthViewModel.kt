@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.kozaapp.R
 import com.example.kozaapp.data.AuthRepository
 import com.example.kozaapp.data.network.RegistrationRequest
+import com.example.kozaapp.features.animals.goats.data.GoatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val authRepository: AuthRepository,
+    private val goatsRepository: GoatRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AuthUiState())
     val uiState: StateFlow<AuthUiState> = _uiState.asStateFlow()
@@ -120,6 +122,7 @@ class AuthViewModel @Inject constructor(
                 updateUiState(isLoading = true)
                 val result = authRepository.login(nickname, password)
                 if (result == true) {
+                    goatsRepository.syncGoats()
                     updateUiState(isLoginSuccess = true)
                 }
             }
