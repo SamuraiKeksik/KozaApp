@@ -23,22 +23,22 @@ class MainViewModel @Inject constructor(
     val startDestination: StateFlow<String?> = _startDestination.asStateFlow()
 
     init {
-        checkApiConnection()
+        //checkApiConnection()
     }
 
-    fun checkApiConnection(){
-        viewModelScope.launch {
-            val result = mainRepository.getCurrentUser()
-            if (result != null){
-                _startDestination.value = MainScreensEnum.AnimalsScreen.name
-                Log.d("MyNetwork", "Успешная проверка доступа к api")
-            }
-            else{
-                _startDestination.value = MainScreensEnum.AuthScreen.name
-                Log.d("MyNetwork", "Неудачная проверка доступа к api")
-            }
-        }//ToDo: сделать обработку ошибок
-    }
+//    fun checkApiConnection(){
+//        viewModelScope.launch {
+//            val result = mainRepository.getCurrentUser()
+//            if (result != null){
+//                _startDestination.value = MainScreensEnum.AnimalsScreen.name
+//                Log.d("MyNetwork", "Успешная проверка доступа к api")
+//            }
+//            else{
+//                _startDestination.value = MainScreensEnum.AuthScreen.name
+//                Log.d("MyNetwork", "Неудачная проверка доступа к api")
+//            }
+//        }//ToDo: сделать обработку ошибок
+//    }
     private fun updateUiState(
         isLoggedIn: Boolean = false,
     ){
