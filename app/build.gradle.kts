@@ -56,6 +56,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.compose.android)
     implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation("androidx.navigation:navigation-compose:2.7.5")
+    implementation("androidx.compose.material:material-icons-extended")
 
     // Retrofit
     implementation(libs.retrofit)

@@ -33,18 +33,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kozaapp.R
-import com.example.kozaapp.animals.ui.screens.AnimalsScreen
-import com.example.kozaapp.ui.NavigationDestination
 import com.example.kozaapp.ui.theme.AppTheme
-object AnimalCardsDestination : NavigationDestination{
-    override val route = "AnimalCardsScreen"
-    @StringRes
-    override val titleRes = R.string.empty_string
-    override val showBottomBar = true
-}
+//object AnimalCardsDestination : NavigationDestination{
+//    override val route = "AnimalCardsScreen"
+//    @StringRes
+//    override val titleRes = R.string.empty_string
+//    override val showBottomBar = true
+//}
 
 @Composable
-fun AnimalCardsScreen(
+fun AnimalsCardsScreen(
     modifier: Modifier = Modifier,
     navigateToGoatsScreen: () -> Unit,
     navigateToCowsScreen: () -> Unit,
@@ -158,7 +156,7 @@ fun AnimalInfoCardPreview() {
 fun AnimalCardsScreenPreview(){
     AppTheme{
         Surface(modifier = Modifier.fillMaxSize()) {
-            AnimalsScreen(startDestination = AnimalCardsDestination.route)
+            //AnimalsScreen()
         }
     }
 }

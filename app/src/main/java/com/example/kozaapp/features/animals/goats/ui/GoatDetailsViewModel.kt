@@ -17,7 +17,7 @@ class GoatDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val goatRepository: GoatRepository,
 ) : ViewModel() {
-    private val goatId: Int = checkNotNull(savedStateHandle[GoatDetailsDestination.goatIdArg])
+    private val goatId: Int = checkNotNull(savedStateHandle["id"])
 
     val uiState: StateFlow<GoatDetailsUiState> =
         goatRepository.getGoatStream(goatId)

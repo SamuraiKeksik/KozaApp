@@ -21,14 +21,14 @@ import com.example.kozaapp.ui.NavigationDestination
 import com.example.kozaapp.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 
-object GoatEditDestination : NavigationDestination{
-    override val route = "GoatEditScreen"
-    @StringRes
-    override val titleRes = R.string.goat_edit_screen_label
-    override val showBottomBar = false
-    const val goatIdArg = "goatId"
-    val routeWithArgs = "$route/{$goatIdArg}"
-}
+//object GoatEditDestination : NavigationDestination{
+//    override val route = "GoatEditScreen"
+//    @StringRes
+//    override val titleRes = R.string.goat_edit_screen_label
+//    override val showBottomBar = false
+//    const val goatIdArg = "goatId"
+//    val routeWithArgs = "$route/{$goatIdArg}"
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

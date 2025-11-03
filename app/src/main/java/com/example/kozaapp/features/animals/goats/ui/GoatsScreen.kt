@@ -57,12 +57,12 @@ import com.example.kozaapp.features.animals.model.Status
 import com.example.kozaapp.ui.NavigationDestination
 import com.example.kozaapp.ui.theme.AppTheme
 
-object GoatsDestination : NavigationDestination{
-    override val route = "GoatsScreen"
-    @StringRes
-    override val titleRes = R.string.goats_label
-    override val showBottomBar = false
-}
+//object GoatsDestination : NavigationDestination{
+//    override val route = "GoatsScreen"
+//    @StringRes
+//    override val titleRes = R.string.goats_label
+//    override val showBottomBar = false
+//}
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable

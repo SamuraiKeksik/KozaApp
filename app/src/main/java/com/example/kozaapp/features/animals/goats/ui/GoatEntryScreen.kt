@@ -46,12 +46,12 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-object GoatEntryDestination : NavigationDestination{
-    override val route = "GoatEntryScreen"
-    @StringRes
-    override val titleRes = R.string.goat_entry_screen_label
-    override val showBottomBar = false
-}
+//object GoatEntryDestination : NavigationDestination{
+//    override val route = "GoatEntryScreen"
+//    @StringRes
+//    override val titleRes = R.string.goat_entry_screen_label
+//    override val showBottomBar = false
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

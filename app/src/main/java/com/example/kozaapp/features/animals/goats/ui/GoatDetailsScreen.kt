@@ -41,15 +41,15 @@ import com.example.kozaapp.features.animals.model.Goat
 import com.example.kozaapp.ui.NavigationDestination
 import com.example.kozaapp.ui.theme.AppTheme
 import kotlinx.coroutines.launch
-
-object GoatDetailsDestination : NavigationDestination{
-    override val route = "GoatDetailsScreen"
-    @StringRes
-    override val titleRes = R.string.goat_details_screen_label
-    override val showBottomBar = false
-    const val goatIdArg = "goatId"
-    val routeWithArgs = "$route/{$goatIdArg}"
-}
+//
+//object GoatDetailsDestination : NavigationDestination{
+//    override val route = "GoatDetailsScreen"
+//    @StringRes
+//    override val titleRes = R.string.goat_details_screen_label
+//    override val showBottomBar = false
+//    const val goatIdArg = "goatId"
+//    val routeWithArgs = "$route/{$goatIdArg}"
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

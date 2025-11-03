@@ -4,8 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
 import com.example.kozaapp.data.workers.schedulePeriodicGoatsSync
-import com.example.kozaapp.features.main.ui.MainScreen
+import com.example.kozaapp.navigation.NavGraph.RootNavGraph
 import com.example.kozaapp.ui.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,7 +21,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppTheme {
-                MainScreen()
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                    ){
+                    RootNavGraph()
+                }
             }
         }
     }

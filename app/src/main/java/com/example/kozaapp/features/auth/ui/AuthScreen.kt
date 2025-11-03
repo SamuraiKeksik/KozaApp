@@ -74,70 +74,7 @@ fun AuthScreen(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            composable(AuthScreenEnum.GreetingScreen.name) {
-                GreetingScreen(
-                    viewModel = viewModel,
-                    onLoginButtonClicked = { navController.navigate(AuthScreenEnum.LoginScreen.name) },
-                    onRegistrationButtonClicked = { navController.navigate(AuthScreenEnum.RegistrationScreen1.name) },
-                    onContinueWithoutLoginButtonClicked = onLoginSuccess,
-                )
-            }
-            composable(AuthScreenEnum.LoginScreen.name) {
-                viewModel.resetUiStateError()
-                LoginScreen(
-                    viewModel = viewModel,
-                    onLoginButtonClicked = onLoginSuccess,
-                    onRegistrationButtonClicked = { navController.navigate(AuthScreenEnum.RegistrationScreen1.name) },
-                    onForgotPasswordButtonClicked = { navController.navigate(AuthScreenEnum.PasswordRecoveryScreen1.name) }
-                )
-            }
-            composable(AuthScreenEnum.RegistrationScreen1.name) {
-                viewModel.resetUiStateError()
-                RegistrationScreen1(
-                    viewModel = viewModel,
-                    onContinueButtonClicked = { navController.navigate(AuthScreenEnum.RegistrationScreen2.name) },
-                    onLoginButtonClicked = { navController.navigate(AuthScreenEnum.LoginScreen.name) },
-                )
-            }
-            composable(AuthScreenEnum.RegistrationScreen2.name) {
-                viewModel.resetUiStateError()
-                RegistrationScreen2(
-                    viewModel = viewModel,
-                    onRegistrationButtonClicked = { navController.navigate(AuthScreenEnum.RegistrationScreen3.name) },
-                    onLoginButtonClicked = { navController.navigate(AuthScreenEnum.LoginScreen.name) },
-                )
-            }
-            composable(AuthScreenEnum.RegistrationScreen3.name) {
-                RegistrationScreen3(
-                    onContinueButtonClicked = onLoginSuccess,
-                )
-            }
-            composable(AuthScreenEnum.PasswordRecoveryScreen1.name) {
-                viewModel.resetUiStateError()
-                PasswordRecoveryScreen1(
-                    viewModel = viewModel,
-                    onContinueButtonClicked = { navController.navigate(AuthScreenEnum.PasswordRecoveryScreen2.name) },
-                    onLoginButtonClicked = { navController.navigate(AuthScreenEnum.LoginScreen.name) },
-                )
-            }
-            composable(AuthScreenEnum.PasswordRecoveryScreen2.name) {
-                viewModel.resetUiStateError()
-                PasswordRecoveryScreen2(
-                    viewModel = viewModel,
-                    onRecoverPasswordButtonClicked = { navController.navigate(AuthScreenEnum.PasswordRecoveryScreen3.name) },
-                    onLoginButtonClicked = { navController.navigate(AuthScreenEnum.LoginScreen.name) },
-                )
-            }
-            composable(AuthScreenEnum.PasswordRecoveryScreen3.name) {
-                viewModel.resetUiStateError()
-                PasswordRecoveryScreen3(
-                    viewModel = viewModel,
-                    onChangePasswordButtonClicked = {
-                        //ToDo: Сделать основной экран приложения
-                        navController.navigate(AuthScreenEnum.GreetingScreen.name)
-                    }
-                )
-            }
+
         }
     }
 }
