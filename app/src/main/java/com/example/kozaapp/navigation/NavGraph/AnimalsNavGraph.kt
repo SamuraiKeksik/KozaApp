@@ -20,57 +20,63 @@ fun NavGraphBuilder.animalsNavGraph(
     navController: NavHostController,
 ) {
 
+    navigation(
+        startDestination = AnimalsScreen.Animals.route,
+        route = NavGraph.ANIMALS_NAV_GRAPH_ROUTE,
+    ) {
+        composable(AnimalsScreen.Animals.route) {
+            AnimalsCardsScreen(
+                navigateToGoatsScreen = { navController.navigate(NavGraph.GOATS_NAV_GRAPH_ROUTE) },
+                navigateToCowsScreen = { navController.navigate(NavGraph.COWS_NAV_GRAPH_ROUTE) },
+                navigateToChickenScreen = {}
+            )
+        }
         navigation(
-            startDestination = AnimalsScreen.Animals.route,
-            route = NavGraph.ANIMALS_NAV_GRAPH_ROUTE,
+            startDestination = GoatsScreen.Goats.route,
+            route = NavGraph.GOATS_NAV_GRAPH_ROUTE
         ) {
-            composable(AnimalsScreen.Animals.route) {
-                AnimalsCardsScreen(
-                    navigateToGoatsScreen = { navController.navigate(NavGraph.GOATS_NAV_GRAPH_ROUTE) },
-                    navigateToCowsScreen = { navController.navigate(NavGraph.COWS_NAV_GRAPH_ROUTE) },
-                    navigateToChickenScreen = {}
+            composable(GoatsScreen.Goats.route) {
+                GoatsScreen(
+                    navigateToGoatEntry = { navController.navigate(GoatsScreen.GoatCreation.route) },
+                    navigateToGoatDetails = {
+                        navController.navigate(
+                            GoatsScreen.GoatDetails.passId(
+                                it
+                            )
+                        )
+                    },
+                    modifier = Modifier.fillMaxSize()
                 )
             }
-            navigation(
-                startDestination = GoatsScreen.Goats.route,
-                route = NavGraph.GOATS_NAV_GRAPH_ROUTE
-            ){
-                composable(GoatsScreen.Goats.route) {
-                    GoatsScreen(
-                        navigateToGoatEntry = { navController.navigate(GoatsScreen.GoatCreation.route) },
-                        navigateToGoatDetails = { navController.navigate(GoatsScreen.GoatDetails.passId(it)) },
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-                composable(GoatsScreen.GoatCreation.route) {
-                    GoatEntryScreen(
-                        navigateBack = { navController.popBackStack() },
-                        onNavigateUp = { navController.navigateUp() }
-                    )
-                }
-                composable(
-                    route = GoatsScreen.GoatDetails.route,
-                    arguments = listOf(navArgument("id") {
-                        type = NavType.IntType
-                    })
-                ) {
-                    GoatDetailsScreen(
-                        navigateBack = { navController.popBackStack() },
-                        navigateToEditGoat = { navController.navigate(GoatsScreen.GoatEdit.passId(it)) },
-                    )
-                }
-                composable(
-                    route = GoatsScreen.GoatEdit.route,
-                    arguments = listOf(navArgument("id") {
-                        type = NavType.IntType
-                    })
-                ) {
-                    GoatEditScreen(
-                        navigateBack = { navController.popBackStack() },
-                    )
-                }
+            composable(GoatsScreen.GoatCreation.route) {
+                GoatEntryScreen(
+                    navigateBack = { navController.popBackStack() },
+                    onNavigateUp = { navController.navigateUp() }
+                )
             }
-
+            composable(
+                route = GoatsScreen.GoatDetails.route,
+                arguments = listOf(navArgument("id") {
+                    type = NavType.IntType
+                })
+            ) {
+                GoatDetailsScreen(
+                    navigateBack = { navController.popBackStack() },
+                    navigateToEditGoat = { navController.navigate(GoatsScreen.GoatEdit.passId(it)) },
+                )
+            }
+            composable(
+                route = GoatsScreen.GoatEdit.route,
+                arguments = listOf(navArgument("id") {
+                    type = NavType.IntType
+                })
+            ) {
+                GoatEditScreen(
+                    navigateBack = { navController.popBackStack() },
+                )
+            }
         }
+
+    }
 
 }

@@ -63,7 +63,7 @@
     <string name="chickens_label">Курицы</string>
     <string name="quantity_label">%d шт.</string>
 
-    <string name="goat_entry_screen_label">Добавление козы</string>
+    <string name="goat_creation_screen_label">Добавление козы</string>
     <string name="goat_details_screen_label">Информация о козе</string>
     <string name="goat_edit_screen_label">Редактирование козы</string>
     <string name="goat_save_button_label">Сохранить</string>

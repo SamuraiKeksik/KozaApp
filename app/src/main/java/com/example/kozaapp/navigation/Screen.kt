@@ -1,5 +1,17 @@
 package com.example.kozaapp.navigation
 
+import androidx.annotation.StringRes
+import com.example.kozaapp.R
+
+
+ object Screens{
+    val list = listOf(
+        GoatsScreen.Goats,
+        GoatsScreen.GoatCreation,
+        GoatsScreen.GoatDetails,
+        GoatsScreen.GoatEdit,
+    )
+}
 
 sealed class AnimalsScreen (val route: String){
     object Animals: AnimalsScreen(route = "animals")
@@ -16,20 +28,38 @@ sealed class AuthScreen(val route: String){
     object PasswordRecovery3: AuthScreen(route = "password_recovery3")
 }
 
-sealed class GoatsScreen(val route: String){
-    object Goats: GoatsScreen(route = "animals/goats")
-    object GoatDetails: GoatsScreen(route = "animals/goats/details/{id}"){
+sealed class GoatsScreen(
+    val route: String,
+    @StringRes val title: Int
+){
+    object Goats: GoatsScreen(
+        route = "animals/goats",
+        title = R.string.goats_label,
+        )
+    object GoatDetails: GoatsScreen(
+        route = "animals/goats/details/{id}",
+        title = R.string.goat_details_screen_label,
+        ){
         fun passId(id: Int): String{
             return "animals/goats/details/${id}"
         }
     }
-    object GoatEdit: GoatsScreen(route = "animals/goats/edit/{id}"){
+    object GoatEdit: GoatsScreen(
+        route = "animals/goats/edit/{id}",
+        title = R.string.goat_edit_screen_label,
+    ){
         fun passId(id: Int): String{
             return "animals/goats/edit/${id}"
         }
     }
-    object GoatCreation: GoatsScreen(route = "animals/goats/creation")
+    object GoatCreation: GoatsScreen(
+        route = "animals/goats/creation",
+        title = R.string.goat_creation_screen_label
+    )
+
 }
+
+
 
 sealed class CowsScreen(val route: String){
     object Cows: CowsScreen(route = "animals/goats")
