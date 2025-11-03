@@ -336,7 +336,7 @@ fun DatePickerField(
         DatePickerDialog(
             context,
             { _, year: Int, month: Int, dayOfMonth: Int ->
-                val selectedCal = Calendar.getInstance()
+                val selectedCal = calendar
                 selectedCal.set(year, month, dayOfMonth)
                 val formattedDate = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(selectedCal.time)
                 onDateSelected(formattedDate)

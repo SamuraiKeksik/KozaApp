@@ -10,7 +10,10 @@ import com.example.kozaapp.features.animals.model.Gender
 import com.example.kozaapp.features.animals.model.Goat
 import com.example.kozaapp.features.animals.model.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.Boolean
 
@@ -45,6 +48,8 @@ data class GoatUiState(
     val isEntryValid: Boolean = false
 )
 
+//val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+
 data class GoatDetails(
     val id: Int = 0,
     val name: String = "",
@@ -52,12 +57,15 @@ data class GoatDetails(
     val breed: String = Breed.OTHER.toString(),
     val status: String = Status.OTHER.toString(),
     val weight: String = "0",
+    //val birthDate: String? = LocalDate.now().format(dateFormatter),
     val birthDate: String? = LocalDate.now().toString(),
     val description: String = "",
 
     val isEdited: Boolean = false,
     val isDeleted: Boolean = false,
     val serverId: String? = null,
+
+
 )
 
 fun GoatDetails.toGoat(): Goat {
