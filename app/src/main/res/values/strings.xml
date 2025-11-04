@@ -63,6 +63,8 @@
     <string name="profile">Профиль</string>
 
     <string name="advertisement_details">Детали объявления</string>
+    <string name="buy">Покупка</string>
+    <string name="sell">Продажа</string>
 
     <string name="main_screen_label">Ваша ферма</string>
     <string name="goats_label">Козы</string>
@@ -117,4 +119,5 @@
 
     <string name="empty_animals_list_label1">В данный момент здесь пусто.</string>
     <string name="empty_animals_list_label2">Добавьте новое животное.</string>
+
 </resources>

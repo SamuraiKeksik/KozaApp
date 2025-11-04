@@ -1,5 +1,7 @@
 package com.example.kozaapp.data.network
 
+import com.example.kozaapp.features.advertisements.data.model.Advertisement
+import com.example.kozaapp.features.advertisements.data.schemas.GetAdvertisementsRequest
 import com.example.kozaapp.features.animals.goats.data.schemas.GoatDeletionResponse
 import com.example.kozaapp.features.animals.goats.data.schemas.GoatRequest
 import com.example.kozaapp.features.animals.goats.data.schemas.GoatResponse
@@ -34,4 +36,6 @@ interface ApiService {
         @Path("goat_id") goatId: String,
         ): Response<GoatDeletionResponse>
 
+    @GET("/advertisements")
+    suspend fun getAdvertisements(request: GetAdvertisementsRequest): Response<List<Advertisement>>
 }

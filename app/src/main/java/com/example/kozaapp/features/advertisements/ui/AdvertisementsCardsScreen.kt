@@ -37,22 +37,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.kozaapp.R
 import com.example.kozaapp.ui.NavigationDestination
 import com.example.kozaapp.ui.theme.AppTheme
 
-//object AdvertisementsCardsDestination: NavigationDestination{
-//    override val route = "AdvertisementsCardsScreen"
-//    @StringRes
-//    override val titleRes = R.string.empty_string
-//    override val showBottomBar = true
-//}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdvertisementsCardsScreen(
     navigateToAdvertisementDetails: (Int) -> Unit,
     modifier: Modifier = Modifier,
-   // viewModel: AdvertisementsViewModel,
+    viewModel: AdvertisementsViewModel = hiltViewModel(),
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     var active by remember { mutableStateOf(false) }
