@@ -27,13 +27,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.kozaapp.navigation.AnimalsScreen
 import com.example.kozaapp.navigation.BottomBarScreen
-import com.example.kozaapp.navigation.GoatsScreen
 import com.example.kozaapp.navigation.NavGraph.NavGraph
 import com.example.kozaapp.navigation.NavGraph.animalsNavGraph
-import com.example.kozaapp.navigation.Screens
-import com.example.kozaapp.ui.NavigationDestination
+import com.example.kozaapp.navigation.Screen
 
 
 @Composable
@@ -76,14 +73,15 @@ fun AppBar(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    if (navController.previousBackStackEntry != null)
+    if ( navController.previousBackStackEntry != null)
         TopAppBar(
             title = {
-                val topBarDestination = Screens.list.firstOrNull() {it.route == currentDestination?.route}
-                if (topBarDestination != null)
-                {
-                    Text(stringResource(topBarDestination.title)) }
-                },
+                val topBarDestination =
+                    Screen.list.firstOrNull() { it.route == currentDestination?.route }
+                if (topBarDestination != null) {
+                    Text(stringResource(topBarDestination.title))
+                }
+            },
             navigationIcon = {
                 IconButton(onClick = { navController.popBackStack() }) {
                     Icon(
