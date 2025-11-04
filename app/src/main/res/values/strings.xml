@@ -57,6 +57,13 @@
     <string name="greetings_screen_text_3">• Дневник ветеринара с фотофиксацией</string>
     <string name="greetings_screen_text_4">• Диагностика заболеваний с использованием ИИ</string>
 
+
+    <string name="animals">Животные</string>
+    <string name="advertisements">Объявления</string>
+    <string name="profile">Профиль</string>
+
+    <string name="advertisement_details">Детали объявления</string>
+
     <string name="main_screen_label">Ваша ферма</string>
     <string name="goats_label">Козы</string>
     <string name="cows_label">Коровы</string>

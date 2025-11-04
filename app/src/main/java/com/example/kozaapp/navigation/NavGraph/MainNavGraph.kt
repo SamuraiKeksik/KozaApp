@@ -27,9 +27,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.kozaapp.navigation.AdvertisementsScreen
+import com.example.kozaapp.navigation.AnimalsScreen
 import com.example.kozaapp.navigation.BottomBarScreen
 import com.example.kozaapp.navigation.NavGraph.NavGraph
+import com.example.kozaapp.navigation.NavGraph.advertisementsNavGraph
 import com.example.kozaapp.navigation.NavGraph.animalsNavGraph
+import com.example.kozaapp.navigation.ProfileScreen
 import com.example.kozaapp.navigation.Screen
 
 
@@ -57,7 +61,7 @@ fun MainNavGraph() {
                 startDestination = NavGraph.ANIMALS_NAV_GRAPH_ROUTE
             ) {
                 animalsNavGraph(navController)
-                //AdvertisementsNavGraph(navController)
+                advertisementsNavGraph(navController)
                 //ProfileNavGraph(navController)
             }
         }
@@ -73,7 +77,16 @@ fun AppBar(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    if ( navController.previousBackStackEntry != null)
+    val mainScreensList = listOf(
+        AnimalsScreen.Animals.route,
+        AdvertisementsScreen.Advertisements.route,
+        ProfileScreen.Profile.route,
+    )
+
+    if (
+        !mainScreensList.any() { it == currentDestination?.route } &&
+        navController.previousBackStackEntry != null
+    )
         TopAppBar(
             title = {
                 val topBarDestination =
@@ -127,7 +140,7 @@ fun RowScope.AddItem(
 ) {
     NavigationBarItem(
         label = {
-            Text(text = screen.title)
+            Text(stringResource(screen.title))
         },
         icon = {
             Icon(

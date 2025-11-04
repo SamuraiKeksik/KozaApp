@@ -23,6 +23,9 @@ sealed class Screen(
                 GoatsScreen.GoatCreation,
                 GoatsScreen.GoatDetails,
                 GoatsScreen.GoatEdit,
+
+                AdvertisementsScreen.Advertisements,
+                AdvertisementsScreen.AdvertisementDetails,
                 )
         }
     }
@@ -83,6 +86,33 @@ sealed class AuthScreen(
     )
 }
 
+sealed class AdvertisementsScreen(
+    val route: String,
+    @StringRes val title: Int
+) {
+    object Advertisements : Screen(
+        route = "advertisements",
+        title = R.string.advertisements,
+    )
+    object AdvertisementDetails : Screen(
+        route = "advertisements/details/{id}",
+        title = R.string.advertisement_details,
+    ) {
+        fun passId(id: Int): String {
+            return "advertisements/details/${id}"
+        }
+    }
+}
+
+sealed class ProfileScreen(
+    val route: String,
+    @StringRes val title: Int
+) {
+    object Profile : Screen(
+        route = "profile",
+        title = R.string.profile,
+    )
+}
 sealed class GoatsScreen(
     val route: String,
     @StringRes val title: Int

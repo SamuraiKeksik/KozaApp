@@ -28,12 +28,12 @@ import androidx.compose.ui.unit.dp
 import com.example.kozaapp.R
 import com.example.kozaapp.ui.NavigationDestination
 
-object AdvertisementDetailsDestination: NavigationDestination{
-    override val route = "AdvertisementDetailsScreen"
-    @StringRes
-    override val titleRes = R.string.empty_string
-    override val showBottomBar = true
-}
+//object AdvertisementDetailsDestination: NavigationDestination{
+//    override val route = "AdvertisementDetailsScreen"
+//    @StringRes
+//    override val titleRes = R.string.empty_string
+//    override val showBottomBar = true
+//}
 @Composable
 fun AdvertisementDetailsScreen() {
     val adDetails = AdDetails(

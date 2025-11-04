@@ -41,12 +41,12 @@ import com.example.kozaapp.R
 import com.example.kozaapp.ui.NavigationDestination
 import com.example.kozaapp.ui.theme.AppTheme
 
-object AdvertisementsCardsDestination: NavigationDestination{
-    override val route = "AdvertisementsCardsScreen"
-    @StringRes
-    override val titleRes = R.string.empty_string
-    override val showBottomBar = true
-}
+//object AdvertisementsCardsDestination: NavigationDestination{
+//    override val route = "AdvertisementsCardsScreen"
+//    @StringRes
+//    override val titleRes = R.string.empty_string
+//    override val showBottomBar = true
+//}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AdvertisementsCardsScreen(
