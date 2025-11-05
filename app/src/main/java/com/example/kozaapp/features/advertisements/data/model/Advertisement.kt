@@ -1,9 +1,14 @@
 package com.example.kozaapp.features.advertisements.data.model
 
 import androidx.annotation.StringRes
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.example.kozaapp.R
 
+@Entity(tableName = "advertisements")
 data class Advertisement(
+    @PrimaryKey
+    val id: String, //UUID
     val user_id: String,
     val title: String,
     val description: String,

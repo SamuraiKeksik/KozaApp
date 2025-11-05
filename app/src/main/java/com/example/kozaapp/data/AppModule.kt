@@ -3,10 +3,12 @@ package com.example.kozaapp.data
 import android.content.Context
 import com.example.kozaapp.data.network.ApiService
 import com.example.kozaapp.data.network.AuthService
+import com.example.kozaapp.features.advertisements.data.AdvertisementLocalDataSource
+import com.example.kozaapp.features.advertisements.data.AdvertisementRemoteDataSource
+import com.example.kozaapp.features.advertisements.data.AdvertisementRepository
 import com.example.kozaapp.features.animals.goats.data.GoatLocalDataSource
 import com.example.kozaapp.features.animals.goats.data.GoatRemoteDataSource
 import com.example.kozaapp.features.animals.goats.data.GoatRepository
-import com.example.kozaapp.features.animals.goats.data.model.GoatDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -85,13 +87,13 @@ object AppModule {
     @Provides
     @Singleton
     fun provideGoatLocalDataSource(@ApplicationContext context: Context): GoatLocalDataSource {
-        val goatDao = AnimalsDatabase.getDatabase(context).goatDao()
+        val goatDao = AppDatabase.getDatabase(context).goatDao()
         return GoatLocalDataSource(goatDao)
     }
 
     @Provides
     @Singleton
-    fun remoteGoatLocalDataSource(
+    fun provideGoatRemoteDataSource(
         apiService: ApiService,
     ): GoatRemoteDataSource {
         return GoatRemoteDataSource(apiService)
@@ -108,4 +110,34 @@ object AppModule {
             goatRemoteDataSource,
         )
     }
+
+    @Provides
+    @Singleton
+    fun provideAdvertisementLocalDataSource(@ApplicationContext context: Context): AdvertisementLocalDataSource {
+        val advertisementDao = AppDatabase.getDatabase(context).advertisementDao()
+        return AdvertisementLocalDataSource(advertisementDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAdvertisementRemoteDataSource(
+        apiService: ApiService,
+    ): AdvertisementRemoteDataSource {
+        return AdvertisementRemoteDataSource(apiService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAdvertisementsRepository(
+        advertisementRemoteDataSource: AdvertisementRemoteDataSource,
+        advertisementLocalDataSource: AdvertisementLocalDataSource,
+    ): AdvertisementRepository {
+        return AdvertisementRepository(
+            advertisementRemoteDataSource,
+            advertisementLocalDataSource
+        )
+    }
+
+
+
 }
