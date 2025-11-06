@@ -133,8 +133,8 @@ object AppModule {
         advertisementLocalDataSource: AdvertisementLocalDataSource,
     ): AdvertisementRepository {
         return AdvertisementRepository(
+            advertisementLocalDataSource,
             advertisementRemoteDataSource,
-            advertisementLocalDataSource
         )
     }
 

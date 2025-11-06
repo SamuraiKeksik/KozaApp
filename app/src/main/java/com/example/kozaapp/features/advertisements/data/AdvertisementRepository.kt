@@ -1,12 +1,11 @@
 package com.example.kozaapp.features.advertisements.data
 
+import android.util.Log
 import com.example.kozaapp.features.advertisements.data.model.Advertisement
-import com.example.kozaapp.features.advertisements.data.schemas.GetAdvertisementsRequest
-import com.example.kozaapp.features.animals.goats.data.GoatRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-
+/// Local Part
 class AdvertisementRepository @Inject constructor(
     private val localDataSource: AdvertisementLocalDataSource,
     private val remoteDataSource: AdvertisementRemoteDataSource,
@@ -17,27 +16,31 @@ class AdvertisementRepository @Inject constructor(
     fun getAdvertisementStream(id: String): Flow<Advertisement?> =
         localDataSource.getAdvertisement(id)
 
+    suspend fun deleteAllAdvertisements(){
+        localDataSource.deleteAllAdvertisements()
+    }
+
+            /// Remote Part
     suspend fun copyAdvertisementsFromServer(
-        user_id: String? = null,
-        category_id: String? = null,
-        subcategory_id: String? = null,
+        userId: String? = null,
+        categoryId: String? = null,
+        subcategoryId: String? = null,
         limit: Int = 30,
         offset: Int = 0, // Смещение: количество объявлений, которые нужно пропустить
     ) {
         try {
-            val getAdvertisementsRequest = GetAdvertisementsRequest(
-                user_id = user_id,
-                category_id = category_id,
-                subcategory_id = subcategory_id,
+            val remoteAdvertisementsList = remoteDataSource.getAdvertisementsList(
+                userId = userId,
+                categoryId = categoryId,
+                subcategoryId = subcategoryId,
                 limit = limit,
                 offset = offset,
             )
-            val remoteAdvertisementsList = remoteDataSource.getAdvertisementsList(
-                getAdvertisementsRequest
-            )
             localDataSource.insertAdvertisementList(remoteAdvertisementsList)
         } catch (e: Exception) {
+            Log.e("Network", e.message ?: "")
             //ToDo: Сделать обработку ошибки
         }
     }
+
 }
