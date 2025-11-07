@@ -14,8 +14,8 @@ data class Advertisement(
     val description: String,
     val price: Float,
 
-    val category_id: String, //uuid.UUID,
-    val subcategory_id: String, //uuid.UUID,
+    val category_id: Int,
+    val subcategory_id: Int,
 
     val location: String,
     val latitude: Float,
