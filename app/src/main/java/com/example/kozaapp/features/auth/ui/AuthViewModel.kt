@@ -1,6 +1,7 @@
 package com.example.kozaapp.auth.data
 
 import androidx.annotation.StringRes
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -102,8 +103,8 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-
-    fun isNicknameValid(): Boolean {
+    @VisibleForTesting
+    internal fun isNicknameValid(): Boolean {
         if (nickname.length < 3) {
             updateUiState(
                 isNicknameWrong = true,

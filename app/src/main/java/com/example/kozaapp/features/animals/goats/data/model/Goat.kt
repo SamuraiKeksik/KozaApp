@@ -1,5 +1,5 @@
 package com.example.kozaapp.features.animals.model
-
+import java.util.UUID
 import androidx.annotation.StringRes
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -8,7 +8,7 @@ import com.example.kozaapp.R
 @Entity(tableName = "goats")
 data class Goat(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    val id: UUID = UUID.randomUUID(),
     val name: String,
     val gender: Gender,
     val breed: Breed,
@@ -19,7 +19,6 @@ data class Goat(
 
     val isEdited: Boolean = false,
     val isDeleted: Boolean = false,
-    val serverId: String? = null,
 )
 
 enum class Gender(@StringRes val labelResId: Int) {
