@@ -1,11 +1,9 @@
-package com.example.kozaapp.data.network
+package com.example.network
 
 import com.example.kozaapp.features.advertisements.data.model.Advertisement
-import com.example.kozaapp.features.advertisements.data.schemas.GetAdvertisementsRequest
 import com.example.kozaapp.features.animals.goats.data.schemas.GoatDeletionResponse
 import com.example.kozaapp.features.animals.goats.data.schemas.GoatRequest
 import com.example.kozaapp.features.animals.goats.data.schemas.GoatResponse
-import com.example.kozaapp.features.animals.model.Goat
 import com.example.kozaapp.features.auth.data.model.User
 import retrofit2.Response
 import retrofit2.http.Body
@@ -15,7 +13,6 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
-import retrofit2.http.QueryMap
 
 interface ApiService {
     @GET("/users/me")

@@ -1,4 +1,5 @@
-package com.example.kozaapp.features.animals.model
+package com.example.database.models
+
 import java.util.UUID
 import androidx.annotation.StringRes
 import androidx.room.Entity
@@ -44,7 +45,7 @@ enum class Breed(@StringRes val labelResId: Int){
     OTHER(R.string.other);
 
     companion object {
-        fun valuesList(): List<Breed> = Breed.entries
+        fun valuesList(): List<Breed> = entries
     }
 }
 
@@ -56,6 +57,6 @@ enum class Status(@StringRes val labelResId: Int){
     OTHER(R.string.other);
 
     companion object {
-        fun valuesList(): List<Status> = Status.entries
+        fun valuesList(): List<Status> = entries
     }
 }

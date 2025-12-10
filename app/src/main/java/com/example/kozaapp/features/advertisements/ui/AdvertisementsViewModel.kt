@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kozaapp.features.advertisements.data.AdvertisementRepository
 import com.example.kozaapp.features.advertisements.data.model.Advertisement
-import com.example.kozaapp.features.animals.model.Goat
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

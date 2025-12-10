@@ -1,4 +1,4 @@
-package com.example.kozaapp.features.auth.data.model
+package com.example.database.models
 
 data class User(
     val email: String,

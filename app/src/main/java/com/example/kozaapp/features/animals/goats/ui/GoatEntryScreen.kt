@@ -1,7 +1,6 @@
 package com.example.kozaapp.features.animals.goats.ui
 
 import android.app.DatePickerDialog
-import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -39,7 +38,6 @@ import com.example.kozaapp.R
 import com.example.kozaapp.features.animals.model.Breed
 import com.example.kozaapp.features.animals.model.Gender
 import com.example.kozaapp.features.animals.model.Status
-import com.example.kozaapp.ui.NavigationDestination
 import com.example.kozaapp.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat

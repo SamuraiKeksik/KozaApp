@@ -1,15 +1,6 @@
-package com.example.kozaapp.data
+package com.example.database
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import com.example.kozaapp.features.advertisements.data.model.Advertisement
-import com.example.kozaapp.features.advertisements.data.model.AdvertisementDao
-import com.example.kozaapp.data.Converters
-import com.example.kozaapp.features.animals.model.Goat
-import com.example.kozaapp.features.animals.goats.data.model.GoatDao
 
 @Database(entities = [Goat::class, Advertisement::class], version = 10, exportSchema = false)
 @TypeConverters(Converters::class)

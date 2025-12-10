@@ -38,7 +38,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kozaapp.R
 import com.example.kozaapp.features.animals.model.Goat
-import com.example.kozaapp.ui.NavigationDestination
 import com.example.kozaapp.ui.theme.AppTheme
 import kotlinx.coroutines.launch
 //

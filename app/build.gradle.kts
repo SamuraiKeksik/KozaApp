@@ -44,9 +44,17 @@ android {
 
 dependencies {
 
+    // Core Android dependencies
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
+
+    //Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.android.compiler)
+    ksp(libs.androidx.hilt.compiler)
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
@@ -58,33 +66,11 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation("androidx.navigation:navigation-compose:2.7.5")
     implementation("androidx.compose.material:material-icons-extended")
-
-    // Retrofit
-    implementation(libs.retrofit)
-    // Retrofit with Scalar Converter
-    implementation(libs.converter.scalars)
-    // Retrofit with Gson Converter
-    implementation(libs.converter.gson)
-
-    //Hilt
-    implementation("com.google.dagger:hilt-android:2.57.2")
-    ksp("com.google.dagger:hilt-android-compiler:2.57.2")
-    //implementation("androidx.hilt:hilt-common:1.3.0")
-    ksp("androidx.hilt:hilt-compiler:1.3.0")
-    implementation("androidx.hilt:hilt-navigation-compose:1.3.0")
+    //implementation(project("app-network"))
 
     //Work
     implementation("androidx.work:work-runtime-ktx:2.10.5")
     implementation("androidx.hilt:hilt-work:1.3.0")
-
-    // Room components
-    implementation("androidx.room:room-runtime:2.8.2")
-    ksp("androidx.room:room-compiler:2.8.2")
-    implementation("androidx.room:room-ktx:2.8.2")
-    androidTestImplementation("androidx.room:room-testing:2.8.2")
-
-    // WorkManager dependency
-    implementation("androidx.work:work-runtime-ktx:2.10.5")
 
     //Preferences DataStore
     implementation(libs.androidx.datastore.preferences)

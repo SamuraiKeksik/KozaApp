@@ -1,4 +1,4 @@
-package com.example.kozaapp.features.animals.goats.data.model
+package com.example.database.models
 
 import androidx.room.Dao
 import androidx.room.Delete

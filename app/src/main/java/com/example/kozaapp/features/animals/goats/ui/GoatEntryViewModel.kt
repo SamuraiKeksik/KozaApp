@@ -10,10 +10,7 @@ import com.example.kozaapp.features.animals.model.Gender
 import com.example.kozaapp.features.animals.model.Goat
 import com.example.kozaapp.features.animals.model.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 import javax.inject.Inject
 import kotlin.Boolean
 
