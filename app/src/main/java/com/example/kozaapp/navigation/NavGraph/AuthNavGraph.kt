@@ -12,12 +12,10 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navigation
 import com.example.kozaapp.auth.data.AuthViewModel
 import com.example.kozaapp.features.auth.ui.screens.GreetingScreen
 import com.example.kozaapp.features.auth.ui.screens.LoginScreen

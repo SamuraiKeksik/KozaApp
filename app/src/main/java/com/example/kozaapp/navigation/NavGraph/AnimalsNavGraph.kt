@@ -12,7 +12,6 @@ import com.example.kozaapp.features.animals.goats.ui.GoatDetailsScreen
 import com.example.kozaapp.features.animals.goats.ui.GoatEditScreen
 import com.example.kozaapp.features.animals.goats.ui.GoatEntryScreen
 import com.example.kozaapp.features.animals.ui.screens.AnimalsCardsScreen
-import com.example.kozaapp.features.animals.ui.screens.GoatsScreen
 import com.example.kozaapp.navigation.AnimalsScreen
 import com.example.kozaapp.navigation.GoatsScreen
 
