@@ -21,12 +21,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "KozaApp"
 include(":app")
-include(":app-data")
-include(":app-data:database")
-include(":app-data:network")
-include(":app-data:animals")
 include(":app-features")
 include(":app-features:animals")
 include(":app-features:auth")
 include(":app-features:advertisements")
-include(":app-data:advertisements")
+include(":app-data")
