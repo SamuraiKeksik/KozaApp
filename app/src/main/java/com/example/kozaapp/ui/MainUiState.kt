@@ -1,4 +1,4 @@
-package com.example.kozaapp
+package com.example.kozaapp.ui
 
 data class MainUiState (
     val isLoggedIn: Boolean? = null,

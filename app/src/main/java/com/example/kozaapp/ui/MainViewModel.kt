@@ -1,4 +1,4 @@
-package com.example.kozaapp
+package com.example.kozaapp.ui
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

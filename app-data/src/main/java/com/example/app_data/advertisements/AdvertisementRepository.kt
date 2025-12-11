@@ -1,7 +1,6 @@
 package com.example.advertisements
 
 import android.util.Log
-import com.example.kozaapp.features.advertisements.data.model.Advertisement
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -21,26 +20,26 @@ class AdvertisementRepository @Inject constructor(
     }
 
             /// Remote Part
-    suspend fun copyAdvertisementsFromServer(
-        userId: String? = null,
-        categoryId: String? = null,
-        subcategoryId: String? = null,
-        limit: Int = 30,
-        offset: Int = 0, // Смещение: количество объявлений, которые нужно пропустить
-    ) {
-        try {
-            val remoteAdvertisementsList = remoteDataSource.getAdvertisementsList(
-                userId = userId,
-                categoryId = categoryId,
-                subcategoryId = subcategoryId,
-                limit = limit,
-                offset = offset,
-            )
-            localDataSource.insertAdvertisementList(remoteAdvertisementsList)
-        } catch (e: Exception) {
-            Log.e("Network", e.message ?: "")
-            //ToDo: Сделать обработку ошибки
-        }
-    }
+//    suspend fun copyAdvertisementsFromServer(
+//        userId: String? = null,
+//        categoryId: String? = null,
+//        subcategoryId: String? = null,
+//        limit: Int = 30,
+//        offset: Int = 0, // Смещение: количество объявлений, которые нужно пропустить
+//    ) {
+//        try {
+//            val remoteAdvertisementsList = remoteDataSource.getAdvertisementsList(
+//                userId = userId,
+//                categoryId = categoryId,
+//                subcategoryId = subcategoryId,
+//                limit = limit,
+//                offset = offset,
+//            )
+//            localDataSource.insertAdvertisementList(remoteAdvertisementsList)
+//        } catch (e: Exception) {
+//            Log.e("Network", e.message ?: "")
+//            //ToDo: Сделать обработку ошибки
+//        }
+//    }
 
 }

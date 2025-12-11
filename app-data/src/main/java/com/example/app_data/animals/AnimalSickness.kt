@@ -1,4 +1,4 @@
-//package com.example.animals
+//package com.example.app_data.animals
 //
 //@Entity(
 //    tableName = "animal_sicknesses",

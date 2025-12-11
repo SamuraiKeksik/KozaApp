@@ -1,4 +1,4 @@
-package com.example.kozaapp
+package com.example.kozaapp.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

@@ -1,9 +1,7 @@
 package com.example.advertisements
 
-import androidx.annotation.StringRes
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.kozaapp.R
 
 @Entity(tableName = "advertisements")
 data class Advertisement(
@@ -29,8 +27,7 @@ data class Advertisement(
     val type: AdvertisementType
 )
 
-enum class AdvertisementType(@StringRes val labelResId: Int) {
-    BUY(R.string.buy),
-    SELL(R.string.sell) ;
+enum class AdvertisementType() {
+    BUY, SELL;
 
 }

@@ -1,7 +1,5 @@
 package com.example.advertisements
 
-import com.example.kozaapp.features.advertisements.data.model.Advertisement
-import com.example.kozaapp.features.advertisements.data.model.AdvertisementDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

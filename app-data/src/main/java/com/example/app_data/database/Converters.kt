@@ -1,12 +1,13 @@
 package com.example.database
 
 import androidx.room.TypeConverter
-import com.example.kozaapp.features.advertisements.data.model.AdvertisementType
-import com.example.kozaapp.features.animals.model.Breed
-import com.example.kozaapp.features.animals.model.Gender
-import com.example.kozaapp.features.animals.model.Status
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.example.advertisements.AdvertisementType
+import com.example.app_data.animals.Breed
+import com.example.app_data.animals.Gender
+import com.example.app_data.animals.Status
+
+//import com.google.gson.Gson
+//import com.google.gson.reflect.TypeToken
 
 class Converters {
 
@@ -44,16 +45,16 @@ class Converters {
         return AdvertisementType.valueOf(advertisementTypeString)
     }
 
-    private val gson = Gson()
-
-    @TypeConverter
-    fun fromStringList(list: List<String>): String{
-        return gson.toJson(list)
-    }
-
-    @TypeConverter
-    fun toStringList(jsonString: String): List<String>? {
-        val listType = object : TypeToken<List<String>>() {}.type
-        return gson.fromJson(jsonString, listType)
-    }
+//    private val gson = Gson()
+//
+//    @TypeConverter
+//    fun fromStringList(list: List<String>): String{
+//        return gson.toJson(list)
+//    }
+//
+//    @TypeConverter
+//    fun toStringList(jsonString: String): List<String>? {
+//        val listType = object : TypeToken<List<String>>() {}.type
+//        return gson.fromJson(jsonString, listType)
+//    }
 }
