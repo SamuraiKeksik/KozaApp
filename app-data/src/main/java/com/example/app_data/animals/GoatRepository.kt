@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 interface GoatRepository{
     val goatsList: Flow<List<Goat>>
-    suspend fun getGoat(id: UUID): Flow<Goat?>
+    fun getGoat(id: UUID): Flow<Goat?>
     suspend fun insertGoat(goat: Goat)
     suspend fun updateGoat(goat: Goat)
     suspend fun deleteGoat(goat: Goat)
@@ -22,7 +22,7 @@ class DefaultGoatRepository @Inject constructor(
 ):GoatRepository{
 
     override val goatsList: Flow<List<Goat>> = localDataSource.getAllGoatsStream()
-    override suspend fun getGoat(id: UUID): Flow<Goat?> = localDataSource.getGoatStream(id)
+    override fun getGoat(id: UUID): Flow<Goat?> = localDataSource.getGoatStream(id)
 
     override suspend fun insertGoat(goat: Goat) {
         val changedGoat = goat.copy(isEdited = true)

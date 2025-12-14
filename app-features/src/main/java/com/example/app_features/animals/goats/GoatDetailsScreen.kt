@@ -1,4 +1,4 @@
-package com.example.animals.goats.ui
+package com.example.app_features.animals.goats
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
@@ -36,10 +36,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.kozaapp.R
-import com.example.kozaapp.features.animals.model.Goat
-import com.example.kozaapp.ui.theme.AppTheme
+import com.example.app_data.animals.Goat
+import com.example.app_features.R
+import com.example.app_features.theme.AppTheme
 import kotlinx.coroutines.launch
+import java.util.UUID
+
 //
 //object GoatDetailsDestination : NavigationDestination{
 //    override val route = "GoatDetailsScreen"
@@ -53,7 +55,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GoatDetailsScreen(
-    navigateToEditGoat: (Int) -> Unit,
+    navigateToEditGoat: (UUID) -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GoatDetailsViewModel = hiltViewModel()
@@ -151,7 +153,8 @@ fun GoatDetails(
             )
             GoatDetailsRow(
                 labelResID = R.string.goat_gender_label,
-                goatDetail = stringResource(goat.gender.labelResId),
+                goatDetail = goat.gender.toString(),
+                //goatDetail = stringResource(goat.gender.labelResId),
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen
                             .padding_medium)
@@ -159,7 +162,8 @@ fun GoatDetails(
             )
             GoatDetailsRow(
                 labelResID = R.string.breed_label,
-                goatDetail = stringResource(goat.breed.labelResId),
+                goatDetail = goat.breed.toString(),
+                //goatDetail = stringResource(goat.breed.labelResId),
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen
                             .padding_medium)
@@ -167,7 +171,8 @@ fun GoatDetails(
             )
             GoatDetailsRow(
                 labelResID = R.string.status_label,
-                goatDetail = stringResource(goat.status.labelResId),
+                goatDetail = goat.status.toString(),
+                //goatDetail = stringResource(goat.status.labelResId),
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen.padding_medium)
                 )
@@ -238,8 +243,9 @@ private fun DeleteConfirmationDialog(
 @Composable
 fun GoatDetailsScreenPreview() {
     AppTheme {
-        GoatDetailsBody(GoatDetailsUiState(
-            goatDetails = GoatDetails(1, "Pen", "$100", "10")
-        ), onDelete = {})
+        GoatDetailsBody(
+            GoatDetailsUiState(
+                goatDetails = GoatDetails(UUID.randomUUID(), "Pen", "$100", "10")
+            ), onDelete = {})
     }
 }

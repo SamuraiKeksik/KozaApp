@@ -1,4 +1,4 @@
-package com.example.animals.goats.ui
+package com.example.app_features.animals.goats
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -6,9 +6,12 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kozaapp.features.animals.goats.data.GoatRepository
+import com.example.app_data.animals.GoatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,11 +23,11 @@ class GoatEditViewModel @Inject constructor(
     var goatUiState by mutableStateOf(GoatUiState())
         private set
 
-    private val goatId: Int = checkNotNull(savedStateHandle["id"])
+    private val goatId: UUID = checkNotNull(savedStateHandle["id"])
 
     init {
         viewModelScope.launch {
-            goatUiState = goatRepository.getGoatStream(goatId)
+            goatUiState = goatRepository.getGoat(goatId)
                 .filterNotNull()
                 .first()
                 .toGoatUiState(true)

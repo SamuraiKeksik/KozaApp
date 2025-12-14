@@ -1,4 +1,4 @@
-package com.example.kozaapp.ui.theme
+package com.example.app_features.theme
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

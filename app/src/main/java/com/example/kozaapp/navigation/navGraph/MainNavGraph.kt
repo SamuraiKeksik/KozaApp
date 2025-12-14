@@ -1,4 +1,4 @@
-package com.example.kozaapp.features.main.ui
+package com.example.kozaapp.navigation.navGraph
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
@@ -30,17 +30,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.kozaapp.navigation.AdvertisementsScreen
 import com.example.kozaapp.navigation.AnimalsScreen
 import com.example.kozaapp.navigation.BottomBarScreen
-import com.example.kozaapp.navigation.NavGraph.NavGraph
-import com.example.kozaapp.navigation.NavGraph.advertisementsNavGraph
-import com.example.kozaapp.navigation.NavGraph.animalsNavGraph
 import com.example.kozaapp.navigation.ProfileScreen
 import com.example.kozaapp.navigation.Screen
-
 
 @Composable
 fun MainNavGraph() {
     val navController = rememberNavController()
-    //val startDestination by viewModel.startDestination.collectAsState()
 
     Scaffold(
         topBar = {
@@ -61,7 +56,7 @@ fun MainNavGraph() {
                 startDestination = NavGraph.ANIMALS_NAV_GRAPH_ROUTE
             ) {
                 animalsNavGraph(navController)
-                advertisementsNavGraph(navController)
+                //advertisementsNavGraph(navController)
                 //ProfileNavGraph(navController)
             }
         }

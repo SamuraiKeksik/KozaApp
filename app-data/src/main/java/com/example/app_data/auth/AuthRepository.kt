@@ -1,14 +1,17 @@
-//package com.example.app_data.auth
+package com.example.app_data.auth
+import jakarta.inject.Inject
+
+
 //
 //import com.example.kozaapp.data.network.AuthService
 //import com.example.kozaapp.data.network.RegistrationRequest
 //import java.lang.Exception
 //import javax.inject.Inject
 //
-//class AuthRepository @Inject constructor(
+class AuthRepository @Inject constructor(
 //    private val authService: AuthService,
 //    private val tokenManager: TokenManager,
-//){
+){
 //    suspend fun login(username: String, password: String): Boolean {
 //        try{
 //            val response = authService.login(username, password)
@@ -57,4 +60,4 @@
 //        }
 //
 //    }
-//}
+}

@@ -1,4 +1,4 @@
-package com.example.kozaapp.navigation.NavGraph
+package com.example.kozaapp.navigation.navGraph
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
@@ -8,10 +8,11 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import com.example.kozaapp.features.animals.goats.ui.GoatDetailsScreen
-import com.example.kozaapp.features.animals.goats.ui.GoatEditScreen
-import com.example.kozaapp.features.animals.goats.ui.GoatEntryScreen
-import com.example.kozaapp.features.animals.ui.screens.AnimalsCardsScreen
+import com.example.app_features.animals.goats.GoatDetailsScreen
+import com.example.app_features.animals.goats.GoatEditScreen
+import com.example.app_features.animals.goats.GoatEntryScreen
+import com.example.app_features.animals.goats.GoatsScreen
+import com.example.app_features.animals.AnimalsCardsScreen
 import com.example.kozaapp.navigation.AnimalsScreen
 import com.example.kozaapp.navigation.GoatsScreen
 

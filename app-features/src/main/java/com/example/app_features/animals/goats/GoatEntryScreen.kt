@@ -1,4 +1,4 @@
-package com.example.animals.goats.ui
+package com.example.app_features.animals.goats
 
 import android.app.DatePickerDialog
 import androidx.compose.foundation.clickable
@@ -34,11 +34,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.kozaapp.R
-import com.example.kozaapp.features.animals.model.Breed
-import com.example.kozaapp.features.animals.model.Gender
-import com.example.kozaapp.features.animals.model.Status
-import com.example.kozaapp.ui.theme.AppTheme
+import com.example.app_data.animals.Breed
+import com.example.app_data.animals.Gender
+import com.example.app_data.animals.Status
+import com.example.app_features.R
+import com.example.app_features.theme.AppTheme
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -190,7 +190,8 @@ fun GenderSelector(
         modifier = modifier
     ) {
         OutlinedTextField(
-            value = stringResource(selectedGender.labelResId),
+            value = selectedGender.toString(),
+            //value = stringResource(selectedGender.labelResId),
             onValueChange = { /* Не изменяем вручную, только через меню */ },
             readOnly = true,
             label = { Text(stringResource(R.string.gender_label)) },
@@ -203,7 +204,8 @@ fun GenderSelector(
         ) {
             Gender.valuesList().forEach { gender ->
                 DropdownMenuItem(
-                    text = { Text(stringResource(gender.labelResId)) },
+                    text = { Text(gender.toString()) },
+                    //text = { Text(stringResource(gender.labelResId)) },
                     onClick = {
                         onGenderSelected(gender)
                         expanded = false
@@ -229,7 +231,8 @@ fun BreedSelector(
         modifier = modifier
     ) {
         OutlinedTextField(
-            value = stringResource(selectedBreed.labelResId),
+            value = selectedBreed.toString(),
+            //value = stringResource(selectedBreed.labelResId),
             onValueChange = { /* Не изменяем вручную, только через меню */ },
             readOnly = true,
             label = { Text(stringResource(R.string.breed_label)) },
@@ -242,7 +245,8 @@ fun BreedSelector(
         ) {
             Breed.valuesList().forEach { breed ->
                 DropdownMenuItem(
-                    text = { Text(stringResource(breed.labelResId)) },
+                    text = { Text(breed.toString()) },
+                    //text = { Text(stringResource(breed.labelResId)) },
                     onClick = {
                         onBreedSelected(breed)
                         expanded = false
@@ -268,7 +272,8 @@ fun StatusSelector(
         modifier = modifier
     ) {
         OutlinedTextField(
-            value = stringResource(selectedStatus.labelResId),
+            value = selectedStatus.toString(),
+            //value = stringResource(selectedStatus.labelResId),
             onValueChange = { /* Не изменяем вручную, только через меню */ },
             readOnly = true,
             label = { Text(stringResource(R.string.status_label)) },
@@ -281,7 +286,8 @@ fun StatusSelector(
         ) {
             Status.valuesList().forEach { status ->
                 DropdownMenuItem(
-                    text = { Text(stringResource(status.labelResId)) },
+                    text = { Text(status.toString()) },
+                    //text = { Text(stringResource(status.labelResId)) },
                     onClick = {
                         onStatusSelected(status)
                         expanded = false

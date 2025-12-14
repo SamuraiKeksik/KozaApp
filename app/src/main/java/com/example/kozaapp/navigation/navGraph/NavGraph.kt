@@ -1,4 +1,4 @@
-package com.example.kozaapp.navigation.NavGraph
+package com.example.kozaapp.navigation.navGraph
 
 object NavGraph {
     const val ROOT_NAV_GRAPH_ROUTE = "root_graph"

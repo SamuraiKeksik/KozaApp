@@ -1,4 +1,4 @@
-package com.example.kozaapp.features.animals.ui.screens
+package com.example.app_features.animals
 
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes
@@ -32,8 +32,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.kozaapp.R
-import com.example.kozaapp.ui.theme.AppTheme
+import com.example.app_features.R
+import com.example.app_features.theme.AppTheme
+
 //object AnimalCardsDestination : NavigationDestination{
 //    override val route = "AnimalCardsScreen"
 //    @StringRes

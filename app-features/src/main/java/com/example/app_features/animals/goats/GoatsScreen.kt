@@ -1,4 +1,4 @@
-package com.example.kozaapp.features.animals.ui.screens
+package com.example.app_features.animals.goats
 
 import android.content.res.Configuration
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -38,13 +38,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.kozaapp.R
-import com.example.animals.goats.ui.GoatsViewModel
-import com.example.kozaapp.features.animals.model.Breed
-import com.example.kozaapp.features.animals.model.Gender
-import com.example.kozaapp.features.animals.model.Goat
-import com.example.kozaapp.features.animals.model.Status
-import com.example.kozaapp.ui.theme.AppTheme
+import com.example.app_data.animals.Breed
+import com.example.app_data.animals.Gender
+import com.example.app_data.animals.Goat
+import com.example.app_data.animals.Status
+import com.example.app_features.R
+import com.example.app_features.theme.AppTheme
+import java.util.UUID
 
 //object GoatsDestination : NavigationDestination{
 //    override val route = "GoatsScreen"
@@ -57,7 +57,7 @@ import com.example.kozaapp.ui.theme.AppTheme
 @Composable
 fun GoatsScreen(
     navigateToGoatEntry: () -> Unit,
-    navigateToGoatDetails: (Int) -> Unit,
+    navigateToGoatDetails: (UUID) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GoatsViewModel = hiltViewModel(),
     contentPadding: PaddingValues = PaddingValues(0.dp),
@@ -93,7 +93,7 @@ fun GoatsScreen(
 @Composable
 private fun GoatsBody(
     goatsList: List<Goat>,
-    onGoatClick: (Int) -> Unit,
+    onGoatClick: (UUID) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -184,14 +184,16 @@ private fun GoatCard(
             Text(
                 text = stringResource(
                     R.string.gender_details_label,
-                    stringResource(goat.gender.labelResId)
+                    goat.gender.toString()
+                   // stringResource(goat.gender.labelResId)
                 ),
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
                 text = stringResource(
                     R.string.status_details_label,
-                    stringResource(goat.status.labelResId)
+                    goat.status.toString()
+                    //stringResource(goat.status.labelResId)
                 ),
                 style = MaterialTheme.typography.titleMedium
             )
@@ -205,7 +207,7 @@ private fun GoatCard(
 fun GoatsBodyPreview() {
     AppTheme {
         GoatsBody(listOf(
-            Goat(id = 1,
+            Goat(id = UUID.randomUUID(),
                 "Biba",
                 gender = Gender.FEMALE,
                 breed = Breed.OTHER,

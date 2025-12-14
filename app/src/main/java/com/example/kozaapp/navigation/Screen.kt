@@ -2,6 +2,7 @@ package com.example.kozaapp.navigation
 
 import androidx.annotation.StringRes
 import com.example.kozaapp.R
+import java.util.UUID
 
 sealed class Screen(
     val route: String,
@@ -126,7 +127,7 @@ sealed class GoatsScreen(
         route = "animals/goats/details/{id}",
         title = R.string.goat_details_screen_label,
     ) {
-        fun passId(id: Int): String {
+        fun passId(id: UUID): String {
             return "animals/goats/details/${id}"
         }
     }
@@ -135,7 +136,7 @@ sealed class GoatsScreen(
         route = "animals/goats/edit/{id}",
         title = R.string.goat_edit_screen_label,
     ) {
-        fun passId(id: Int): String {
+        fun passId(id: UUID): String {
             return "animals/goats/edit/${id}"
         }
     }

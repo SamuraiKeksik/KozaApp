@@ -52,20 +52,11 @@ dependencies {
     //Hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.compose.material3)
     ksp(libs.hilt.android.compiler)
     ksp(libs.androidx.hilt.compiler)
 
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.ui.text.google.fonts)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.navigation.compose.android)
-    implementation(libs.androidx.lifecycle.runtime.compose)
-    implementation("androidx.navigation:navigation-compose:2.7.5")
-    implementation("androidx.compose.material:material-icons-extended")
+
     //implementation(project("app-network"))
 
     //Work
@@ -75,6 +66,8 @@ dependencies {
     //Preferences DataStore
     implementation(libs.androidx.datastore.preferences)
 
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -82,4 +75,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(project(":app-features"))
 }

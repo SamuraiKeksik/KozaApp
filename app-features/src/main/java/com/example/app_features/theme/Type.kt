@@ -1,4 +1,4 @@
-package com.example.kozaapp.ui.theme
+package com.example.app_features.theme
 
 import androidx.compose.material3.Typography
 

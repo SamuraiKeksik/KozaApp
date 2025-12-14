@@ -1,16 +1,17 @@
-package com.example.animals.goats.ui
+package com.example.app_features.animals.goats
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.kozaapp.features.animals.goats.data.GoatRepository
-import com.example.kozaapp.features.animals.model.Breed
-import com.example.kozaapp.features.animals.model.Gender
-import com.example.kozaapp.features.animals.model.Goat
-import com.example.kozaapp.features.animals.model.Status
+import com.example.app_data.animals.Breed
+import com.example.app_data.animals.Gender
+import com.example.app_data.animals.Goat
+import com.example.app_data.animals.GoatRepository
+import com.example.app_data.animals.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
+import java.util.UUID
 import javax.inject.Inject
 import kotlin.Boolean
 
@@ -48,7 +49,7 @@ data class GoatUiState(
 //val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
 
 data class GoatDetails(
-    val id: Int = 0,
+    val id: UUID = UUID.randomUUID(),
     val name: String = "",
     val gender: String = Gender.UNKNOWN.toString(),
     val breed: String = Breed.OTHER.toString(),
@@ -63,7 +64,7 @@ data class GoatDetails(
     val serverId: String? = null,
 
 
-)
+    )
 
 fun GoatDetails.toGoat(): Goat {
 
@@ -92,7 +93,7 @@ fun GoatDetails.toGoat(): Goat {
 
         isEdited = isEdited,
         isDeleted = isDeleted,
-        serverId = serverId,
+        //serverId = serverId,
     )
 }
 
@@ -114,6 +115,6 @@ fun Goat.toGoatDetails(): GoatDetails = GoatDetails(
 
     isEdited = isEdited,
     isDeleted = isDeleted,
-    serverId = serverId,
+    //serverId = serverId,
 
 )

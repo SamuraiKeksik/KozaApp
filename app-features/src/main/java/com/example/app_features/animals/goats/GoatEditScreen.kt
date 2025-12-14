@@ -1,4 +1,4 @@
-package com.example.animals.goats.ui
+package com.example.app_features.animals.goats
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +10,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.kozaapp.ui.theme.AppTheme
+import com.example.app_features.theme.AppTheme
 import kotlinx.coroutines.launch
 
 //object GoatEditDestination : NavigationDestination{
@@ -35,7 +35,7 @@ fun GoatEditScreen(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(scrollState),
-    ) { 
+    ) {
         GoatEntryBody(
             goatUiState = viewModel.goatUiState,
             onGoatValueChange = viewModel::updateUiState,
