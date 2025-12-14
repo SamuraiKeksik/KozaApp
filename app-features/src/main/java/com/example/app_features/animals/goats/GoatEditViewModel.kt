@@ -23,7 +23,7 @@ class GoatEditViewModel @Inject constructor(
     var goatUiState by mutableStateOf(GoatUiState())
         private set
 
-    private val goatId: UUID = checkNotNull(savedStateHandle["id"])
+    private val goatId: UUID = UUID.fromString(checkNotNull(savedStateHandle["id"]))
 
     init {
         viewModelScope.launch {

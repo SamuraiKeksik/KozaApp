@@ -57,7 +57,7 @@ fun NavGraphBuilder.animalsNavGraph(
             composable(
                 route = GoatsScreen.GoatDetails.route,
                 arguments = listOf(navArgument("id") {
-                    type = NavType.IntType
+                    type = NavType.StringType
                 })
             ) {
                 GoatDetailsScreen(
@@ -68,7 +68,7 @@ fun NavGraphBuilder.animalsNavGraph(
             composable(
                 route = GoatsScreen.GoatEdit.route,
                 arguments = listOf(navArgument("id") {
-                    type = NavType.IntType
+                    type = NavType.StringType
                 })
             ) {
                 GoatEditScreen(
