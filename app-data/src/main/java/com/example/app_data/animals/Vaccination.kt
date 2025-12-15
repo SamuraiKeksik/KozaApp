@@ -9,7 +9,7 @@ import java.util.UUID
 data class Vaccination (
     @PrimaryKey
     val id: UUID = UUID.randomUUID(),
-    //val sickness_Type: SicknessType,
+    val sicknessTypeId: Int,
     val animalId: UUID,
     val date: Date,
     val medication: String,

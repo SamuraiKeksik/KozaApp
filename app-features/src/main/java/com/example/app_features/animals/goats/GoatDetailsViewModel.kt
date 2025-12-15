@@ -3,6 +3,9 @@ package com.example.app_features.animals.goats
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.app_data.animals.MilkYield
+import com.example.app_data.animals.Sickness
+import com.example.app_data.animals.Vaccination
 import com.example.app_data.animals.goats.GoatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -24,7 +27,12 @@ class GoatDetailsViewModel @Inject constructor(
         goatRepository.getGoat(goatId)
             .filterNotNull()
             .map {
-                GoatDetailsUiState(goatDetails = it.toGoatDetails())
+                GoatDetailsUiState(
+                    goatDetails = it.goat.toGoatDetails(),
+                    goatVaccinations = it.vaccinations.sortedBy { vac -> vac.date },
+                    goatSicknesses = it.sicknesses,
+                    goatMilkYields = it.milkYields
+                )
             }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
@@ -39,5 +47,8 @@ class GoatDetailsViewModel @Inject constructor(
     }
 }
 data class GoatDetailsUiState(
-    val goatDetails: GoatDetails = GoatDetails()
-)
+    val goatDetails: GoatDetails = GoatDetails(),
+    val goatVaccinations: List<Vaccination> = emptyList(),
+    val goatSicknesses: List<Sickness> = emptyList(),
+    val goatMilkYields: List<MilkYield> = emptyList(),
+    )

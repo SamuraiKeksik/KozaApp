@@ -17,7 +17,7 @@ import com.example.database.Converters
     Sickness::class,
     Vaccination::class,
     Weight::class,
-], version = 12, exportSchema = false)
+], version = 13, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun goatDao(): GoatDao

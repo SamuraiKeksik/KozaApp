@@ -30,6 +30,7 @@ class GoatEditViewModel @Inject constructor(
             goatUiState = goatRepository.getGoat(goatId)
                 .filterNotNull()
                 .first()
+                .goat
                 .toGoatUiState(true)
         }
     }
@@ -51,3 +52,4 @@ class GoatEditViewModel @Inject constructor(
         }
     }
 }
+

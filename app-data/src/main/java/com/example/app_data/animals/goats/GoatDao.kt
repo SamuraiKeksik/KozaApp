@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
@@ -19,8 +20,9 @@ interface GoatDao {
     suspend fun delete(goatEntity: GoatEntity)
     @Query("SELECT * FROM goats WHERE isDeleted = 0 ORDER BY name ASC")
     fun getAllGoats(): Flow<List<GoatEntity>>
+    @Transaction
     @Query("SELECT * FROM goats WHERE id = :id AND isDeleted = 0")
-    fun getGoat(id: UUID): Flow<GoatEntity?>
+    fun getGoat(id: UUID): Flow<GoatModel?>
 
 //    @Query("SELECT * FROM goats WHERE isDeleted = 1")
 //    suspend fun getDeletedGoats(): List<Goat>
