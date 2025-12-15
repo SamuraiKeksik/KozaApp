@@ -1,11 +1,11 @@
-package com.example.app_data.animals
+package com.example.app_data.animals.goats
 
 import java.util.UUID
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "goats")
-data class Goat(
+data class GoatEntity(
     @PrimaryKey()
     val id: UUID = UUID.randomUUID(),
     val name: String,

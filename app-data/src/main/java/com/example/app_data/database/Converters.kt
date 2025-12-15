@@ -2,9 +2,11 @@ package com.example.database
 
 import androidx.room.TypeConverter
 import com.example.advertisements.AdvertisementType
-import com.example.app_data.animals.Breed
-import com.example.app_data.animals.Gender
-import com.example.app_data.animals.Status
+import com.example.app_data.animals.AnimalType
+import com.example.app_data.animals.goats.Breed
+import com.example.app_data.animals.goats.Gender
+import com.example.app_data.animals.goats.Status
+import java.util.Date
 
 //import com.google.gson.Gson
 //import com.google.gson.reflect.TypeToken
@@ -34,6 +36,25 @@ class Converters {
     @TypeConverter
     fun toStatus(statusString: String): Status {
         return Status.valueOf(statusString)
+    }
+
+    @TypeConverter
+    fun fromTimestamp(value: Long?): Date? {
+        return value?.let { Date(it) }
+    }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time?.toLong()
+    }
+
+    @TypeConverter
+    fun fromAnimalType(animalType: AnimalType): String {
+        return animalType.name
+    }
+    @TypeConverter
+    fun toAnimalType(animalTypeString: String): AnimalType {
+        return AnimalType.valueOf(animalTypeString)
     }
 
     @TypeConverter

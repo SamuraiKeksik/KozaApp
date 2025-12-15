@@ -2,8 +2,8 @@ package com.example.app_features.animals.goats
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.app_data.animals.Goat
-import com.example.app_data.animals.GoatRepository
+import com.example.app_data.animals.goats.GoatEntity
+import com.example.app_data.animals.goats.GoatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -27,4 +27,4 @@ class GoatsViewModel @Inject constructor(
     }
 }
 
-data class GoatsUiState(val goatsList: List<Goat> = listOf())
+data class GoatsUiState(val goatsList: List<GoatEntity> = listOf())

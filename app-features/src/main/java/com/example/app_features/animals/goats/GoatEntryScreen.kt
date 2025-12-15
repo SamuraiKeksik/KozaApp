@@ -34,9 +34,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.app_data.animals.Breed
-import com.example.app_data.animals.Gender
-import com.example.app_data.animals.Status
+import com.example.app_data.animals.goats.Breed
+import com.example.app_data.animals.goats.Gender
+import com.example.app_data.animals.goats.Status
 import com.example.app_features.R
 import com.example.app_features.theme.AppTheme
 import kotlinx.coroutines.launch

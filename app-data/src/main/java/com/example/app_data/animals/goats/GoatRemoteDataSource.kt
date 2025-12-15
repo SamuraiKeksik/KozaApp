@@ -1,4 +1,4 @@
-package com.example.app_data.animals
+package com.example.app_data.animals.goats
 
 //import com.example.kozaapp.data.network.ApiService
 //import com.example.kozaapp.features.animals.goats.data.schemas.GoatDeletionResponse

@@ -5,11 +5,19 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.advertisements.Advertisement
+import com.example.app_data.animals.goats.GoatEntity
+import com.example.app_data.animals.goats.GoatDao
 import com.example.database.Converters
 
 
-@Database(entities = [Goat::class], version = 11, exportSchema = false)
+@Database(entities = [
+    GoatEntity::class,
+    MilkYield::class,
+    SicknessType::class,
+    Sickness::class,
+    Vaccination::class,
+    Weight::class,
+], version = 12, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun goatDao(): GoatDao

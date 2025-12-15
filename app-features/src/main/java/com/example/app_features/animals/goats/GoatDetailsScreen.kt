@@ -36,7 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.app_data.animals.Goat
+import com.example.app_data.animals.goats.GoatEntity
 import com.example.app_features.R
 import com.example.app_features.theme.AppTheme
 import kotlinx.coroutines.launch
@@ -102,7 +102,7 @@ private fun GoatDetailsBody(
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
         GoatDetails(
-            goat = goatDetailsUiState.goatDetails.toGoat(), modifier = Modifier.fillMaxWidth()
+            goatEntity = goatDetailsUiState.goatDetails.toGoat(), modifier = Modifier.fillMaxWidth()
         )
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
@@ -128,7 +128,7 @@ private fun GoatDetailsBody(
 
 @Composable
 fun GoatDetails(
-    goat: Goat,
+    goatEntity: GoatEntity,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -145,7 +145,7 @@ fun GoatDetails(
         ) {
             GoatDetailsRow(
                 labelResID = R.string.goat_name_label,
-                goatDetail = goat.name,
+                goatDetail = goatEntity.name,
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen
                             .padding_medium)
@@ -153,7 +153,7 @@ fun GoatDetails(
             )
             GoatDetailsRow(
                 labelResID = R.string.goat_gender_label,
-                goatDetail = goat.gender.toString(),
+                goatDetail = goatEntity.gender.toString(),
                 //goatDetail = stringResource(goat.gender.labelResId),
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen
@@ -162,7 +162,7 @@ fun GoatDetails(
             )
             GoatDetailsRow(
                 labelResID = R.string.breed_label,
-                goatDetail = goat.breed.toString(),
+                goatDetail = goatEntity.breed.toString(),
                 //goatDetail = stringResource(goat.breed.labelResId),
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen
@@ -171,7 +171,7 @@ fun GoatDetails(
             )
             GoatDetailsRow(
                 labelResID = R.string.status_label,
-                goatDetail = goat.status.toString(),
+                goatDetail = goatEntity.status.toString(),
                 //goatDetail = stringResource(goat.status.labelResId),
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen.padding_medium)
@@ -179,21 +179,21 @@ fun GoatDetails(
             )
             GoatDetailsRow(
                 labelResID = R.string.goat_weight_label,
-                goatDetail = goat.weight.toString(),
+                goatDetail = goatEntity.weight.toString(),
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen.padding_medium)
                 )
             )
             GoatDetailsRow(
                 labelResID = R.string.goat_birth_date_label,
-                goatDetail = goat.birthDate ?: "",
+                goatDetail = goatEntity.birthDate ?: "",
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen.padding_medium)
                 )
             )
             GoatDetailsRow(
                 labelResID = R.string.goat_description_label,
-                goatDetail = goat.description ?: "",
+                goatDetail = goatEntity.description ?: "",
                 modifier = Modifier.padding(
                     horizontal = dimensionResource(id = R.dimen.padding_medium)
                 )

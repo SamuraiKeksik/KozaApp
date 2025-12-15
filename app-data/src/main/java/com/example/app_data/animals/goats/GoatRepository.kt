@@ -1,6 +1,6 @@
-package com.example.app_data.animals
+package com.example.app_data.animals.goats
 //
-//import com.example.app_data.animals.Goat
+//import com.example.app_data.animals.goats.Goat
 //import com.example.kozaapp.features.animals.goats.data.schemas.toGoatModel
 //import com.example.kozaapp.features.animals.goats.data.schemas.toGoatRequest
 import kotlinx.coroutines.flow.Flow
@@ -8,11 +8,11 @@ import java.util.UUID
 import javax.inject.Inject
 
 interface GoatRepository{
-    val goatsList: Flow<List<Goat>>
-    fun getGoat(id: UUID): Flow<Goat?>
-    suspend fun insertGoat(goat: Goat)
-    suspend fun updateGoat(goat: Goat)
-    suspend fun deleteGoat(goat: Goat)
+    val goatsList: Flow<List<GoatEntity>>
+    fun getGoat(id: UUID): Flow<GoatEntity?>
+    suspend fun insertGoat(goatEntity: GoatEntity)
+    suspend fun updateGoat(goatEntity: GoatEntity)
+    suspend fun deleteGoat(goatEntity: GoatEntity)
 
 }
 
@@ -21,20 +21,20 @@ class DefaultGoatRepository @Inject constructor(
     private val remoteDataSource: GoatRemoteDataSource,
 ):GoatRepository{
 
-    override val goatsList: Flow<List<Goat>> = localDataSource.getAllGoatsStream()
-    override fun getGoat(id: UUID): Flow<Goat?> = localDataSource.getGoatStream(id)
+    override val goatsList: Flow<List<GoatEntity>> = localDataSource.getAllGoatsStream()
+    override fun getGoat(id: UUID): Flow<GoatEntity?> = localDataSource.getGoatStream(id)
 
-    override suspend fun insertGoat(goat: Goat) {
-        val changedGoat = goat.copy(isEdited = true)
+    override suspend fun insertGoat(goatEntity: GoatEntity) {
+        val changedGoat = goatEntity.copy(isEdited = true)
         localDataSource.insertGoat(changedGoat)
     }
 
-    override suspend fun updateGoat(goat: Goat) {
-        val changedGoat = goat.copy(isEdited = true)
+    override suspend fun updateGoat(goatEntity: GoatEntity) {
+        val changedGoat = goatEntity.copy(isEdited = true)
         localDataSource.updateGoat(changedGoat)
     }
 
-    override suspend fun deleteGoat(goat: Goat) = localDataSource.deleteGoat(goat)
+    override suspend fun deleteGoat(goatEntity: GoatEntity) = localDataSource.deleteGoat(goatEntity)
 
 //    suspend fun deleteGoat(goat: Goat){
 //        if (goat.serverId != null){

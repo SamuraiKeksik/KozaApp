@@ -4,11 +4,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.app_data.animals.Breed
-import com.example.app_data.animals.Gender
-import com.example.app_data.animals.Goat
-import com.example.app_data.animals.GoatRepository
-import com.example.app_data.animals.Status
+import com.example.app_data.animals.goats.Breed
+import com.example.app_data.animals.goats.Gender
+import com.example.app_data.animals.goats.GoatEntity
+import com.example.app_data.animals.goats.GoatRepository
+import com.example.app_data.animals.goats.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import java.util.UUID
@@ -66,7 +66,7 @@ data class GoatDetails(
 
     )
 
-fun GoatDetails.toGoat(): Goat {
+fun GoatDetails.toGoat(): GoatEntity {
 
     val enumGender = runCatching {
         Gender.valueOf(gender.uppercase())
@@ -81,7 +81,7 @@ fun GoatDetails.toGoat(): Goat {
     }.getOrDefault(Status.OTHER)
 
 
-    return Goat(
+    return GoatEntity(
         id = id,
         name = name,
         gender = enumGender,
@@ -97,12 +97,12 @@ fun GoatDetails.toGoat(): Goat {
     )
 }
 
-fun Goat.toGoatUiState(isEntryValid: Boolean = false): GoatUiState = GoatUiState(
+fun GoatEntity.toGoatUiState(isEntryValid: Boolean = false): GoatUiState = GoatUiState(
     goatDetails = this.toGoatDetails(),
     isEntryValid = isEntryValid
 )
 
-fun Goat.toGoatDetails(): GoatDetails = GoatDetails(
+fun GoatEntity.toGoatDetails(): GoatDetails = GoatDetails(
 
     id = id,
     name = name,

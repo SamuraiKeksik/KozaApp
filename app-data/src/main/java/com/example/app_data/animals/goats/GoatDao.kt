@@ -1,4 +1,4 @@
-package com.example.app_data.animals
+package com.example.app_data.animals.goats
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,22 +6,21 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.app_data.animals.Goat
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
 @Dao
 interface GoatDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(goat: Goat)
+    suspend fun insert(goatEntity: GoatEntity)
     @Update
-    suspend fun update(goat: Goat)
+    suspend fun update(goatEntity: GoatEntity)
     @Delete
-    suspend fun delete(goat: Goat)
+    suspend fun delete(goatEntity: GoatEntity)
     @Query("SELECT * FROM goats WHERE isDeleted = 0 ORDER BY name ASC")
-    fun getAllGoats(): Flow<List<Goat>>
+    fun getAllGoats(): Flow<List<GoatEntity>>
     @Query("SELECT * FROM goats WHERE id = :id AND isDeleted = 0")
-    fun getGoat(id: UUID): Flow<Goat?>
+    fun getGoat(id: UUID): Flow<GoatEntity?>
 
 //    @Query("SELECT * FROM goats WHERE isDeleted = 1")
 //    suspend fun getDeletedGoats(): List<Goat>

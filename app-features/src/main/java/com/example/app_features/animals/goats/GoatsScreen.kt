@@ -38,10 +38,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.app_data.animals.Breed
-import com.example.app_data.animals.Gender
-import com.example.app_data.animals.Goat
-import com.example.app_data.animals.Status
+import com.example.app_data.animals.goats.Breed
+import com.example.app_data.animals.goats.Gender
+import com.example.app_data.animals.goats.GoatEntity
+import com.example.app_data.animals.goats.Status
 import com.example.app_features.R
 import com.example.app_features.theme.AppTheme
 import java.util.UUID
@@ -92,7 +92,7 @@ fun GoatsScreen(
 
 @Composable
 private fun GoatsBody(
-    goatsList: List<Goat>,
+    goatsList: List<GoatEntity>,
     onGoatClick: (UUID) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
@@ -142,8 +142,8 @@ private fun GoatsBody(
 
 @Composable
 private fun GoatsList(
-    goatsList: List<Goat>,
-    onGoatClick: (Goat) -> Unit,
+    goatsList: List<GoatEntity>,
+    onGoatClick: (GoatEntity) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
@@ -153,7 +153,7 @@ private fun GoatsList(
     ) {
         items(items = goatsList, key = { it.id }) {goat ->
             GoatCard(
-                goat = goat,
+                goatEntity = goat,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
                     .clickable { onGoatClick(goat) })
@@ -164,7 +164,7 @@ private fun GoatsList(
 
 @Composable
 private fun GoatCard(
-    goat: Goat,
+    goatEntity: GoatEntity,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -178,13 +178,13 @@ private fun GoatCard(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
         ) {
             Text(
-                text = goat.name,
+                text = goatEntity.name,
                 style = MaterialTheme.typography.displaySmall,
             )
             Text(
                 text = stringResource(
                     R.string.gender_details_label,
-                    goat.gender.toString()
+                    goatEntity.gender.toString()
                    // stringResource(goat.gender.labelResId)
                 ),
                 style = MaterialTheme.typography.titleMedium
@@ -192,7 +192,7 @@ private fun GoatCard(
             Text(
                 text = stringResource(
                     R.string.status_details_label,
-                    goat.status.toString()
+                    goatEntity.status.toString()
                     //stringResource(goat.status.labelResId)
                 ),
                 style = MaterialTheme.typography.titleMedium
@@ -207,7 +207,7 @@ private fun GoatCard(
 fun GoatsBodyPreview() {
     AppTheme {
         GoatsBody(listOf(
-            Goat(id = UUID.randomUUID(),
+            GoatEntity(id = UUID.randomUUID(),
                 "Biba",
                 gender = Gender.FEMALE,
                 breed = Breed.OTHER,
