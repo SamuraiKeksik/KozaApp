@@ -5,6 +5,7 @@ import com.example.app_data.animals.goats.DefaultGoatRepository
 import com.example.app_data.animals.goats.GoatLocalDataSource
 import com.example.app_data.animals.goats.GoatRemoteDataSource
 import com.example.app_data.animals.goats.GoatRepository
+import com.example.app_data.database.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

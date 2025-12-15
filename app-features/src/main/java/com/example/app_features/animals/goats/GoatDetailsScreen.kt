@@ -104,44 +104,38 @@ private fun GoatDetailsBody(
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var expanded by remember {mutableStateOf(false)}
-    ExpandLabel(
-        label = stringResource(R.string.goat_details_screen_label),
-        expanded = expanded,
-        onClick = { expanded = !expanded }
-    )
-    if (expanded){
-        Column(
-            modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
+
+    Column(
+        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
+    ) {
+        var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
+        GoatDetails(
+            goatEntity = goatDetailsUiState.goatDetails.toGoat(), modifier = Modifier.fillMaxWidth()
+        )
+        GoatVaccinations(vaccinationsList = goatDetailsUiState.goatVaccinations)
+        OutlinedButton(
+            onClick = { deleteConfirmationRequired = true },
+            shape = MaterialTheme.shapes.small,
+            modifier = Modifier.fillMaxWidth()
         ) {
-            var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
-            GoatDetails(
-                goatEntity = goatDetailsUiState.goatDetails.toGoat(), modifier = Modifier.fillMaxWidth()
+            Text(stringResource(R.string.goat_delete_button_label))
+        }
+        if (deleteConfirmationRequired) {
+            DeleteConfirmationDialog(
+                onDeleteConfirm = {
+                    deleteConfirmationRequired = false
+                    onDelete()
+                },
+                onDeleteCancel = { deleteConfirmationRequired = false },
+                goatName = goatDetailsUiState.goatDetails.name,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             )
-            GoatVaccinations(vaccinationsList = goatDetailsUiState.goatVaccinations)
-            OutlinedButton(
-                onClick = { deleteConfirmationRequired = true },
-                shape = MaterialTheme.shapes.small,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(stringResource(R.string.goat_delete_button_label))
-            }
-            if (deleteConfirmationRequired) {
-                DeleteConfirmationDialog(
-                    onDeleteConfirm = {
-                        deleteConfirmationRequired = false
-                        onDelete()
-                    },
-                    onDeleteCancel = { deleteConfirmationRequired = false },
-                    goatName = goatDetailsUiState.goatDetails.name,
-                    modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
-                )
-            }
         }
     }
-
 }
+
+
 
 
 @Composable
@@ -149,73 +143,82 @@ fun GoatDetails(
     goatEntity: GoatEntity,
     modifier: Modifier = Modifier
 ) {
+    var expanded by remember {mutableStateOf(false)}
     Card(
         modifier = modifier, colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(dimensionResource(id = R.dimen.padding_medium)),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
-        ) {
-            GoatDetailsRow(
-                labelResID = R.string.goat_name_label,
-                goatDetail = goatEntity.name,
-                modifier = Modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen
-                            .padding_medium)
+        ExpandLabel(
+            label = stringResource(R.string.goat_details_screen_label),
+            expanded = expanded,
+            onExpandClick = { expanded = !expanded },
+            onAddClick = {}
+        )
+        if (expanded) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(dimensionResource(id = R.dimen.padding_medium)),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
+            ) {
+                GoatDetailsRow(
+                    labelResID = R.string.goat_name_label,
+                    goatDetail = goatEntity.name,
+                    modifier = Modifier.padding(
+                        horizontal = dimensionResource(id = R.dimen
+                                .padding_medium)
+                    )
                 )
-            )
-            GoatDetailsRow(
-                labelResID = R.string.goat_gender_label,
-                goatDetail = goatEntity.gender.toString(),
-                //goatDetail = stringResource(goat.gender.labelResId),
-                modifier = Modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen
-                            .padding_medium)
+                GoatDetailsRow(
+                    labelResID = R.string.goat_gender_label,
+                    goatDetail = goatEntity.gender.toString(),
+                    //goatDetail = stringResource(goat.gender.labelResId),
+                    modifier = Modifier.padding(
+                        horizontal = dimensionResource(id = R.dimen
+                                .padding_medium)
+                    )
                 )
-            )
-            GoatDetailsRow(
-                labelResID = R.string.breed_label,
-                goatDetail = goatEntity.breed.toString(),
-                //goatDetail = stringResource(goat.breed.labelResId),
-                modifier = Modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen
-                            .padding_medium)
+                GoatDetailsRow(
+                    labelResID = R.string.breed_label,
+                    goatDetail = goatEntity.breed.toString(),
+                    //goatDetail = stringResource(goat.breed.labelResId),
+                    modifier = Modifier.padding(
+                        horizontal = dimensionResource(id = R.dimen
+                                .padding_medium)
+                    )
                 )
-            )
-            GoatDetailsRow(
-                labelResID = R.string.status_label,
-                goatDetail = goatEntity.status.toString(),
-                //goatDetail = stringResource(goat.status.labelResId),
-                modifier = Modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_medium)
+                GoatDetailsRow(
+                    labelResID = R.string.status_label,
+                    goatDetail = goatEntity.status.toString(),
+                    //goatDetail = stringResource(goat.status.labelResId),
+                    modifier = Modifier.padding(
+                        horizontal = dimensionResource(id = R.dimen.padding_medium)
+                    )
                 )
-            )
-            GoatDetailsRow(
-                labelResID = R.string.goat_weight_label,
-                goatDetail = goatEntity.weight.toString(),
-                modifier = Modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_medium)
+                GoatDetailsRow(
+                    labelResID = R.string.goat_weight_label,
+                    goatDetail = goatEntity.weight.toString(),
+                    modifier = Modifier.padding(
+                        horizontal = dimensionResource(id = R.dimen.padding_medium)
+                    )
                 )
-            )
-            GoatDetailsRow(
-                labelResID = R.string.goat_birth_date_label,
-                goatDetail = goatEntity.birthDate ?: "",
-                modifier = Modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_medium)
+                GoatDetailsRow(
+                    labelResID = R.string.goat_birth_date_label,
+                    goatDetail = goatEntity.birthDate ?: "",
+                    modifier = Modifier.padding(
+                        horizontal = dimensionResource(id = R.dimen.padding_medium)
+                    )
                 )
-            )
-            GoatDetailsRow(
-                labelResID = R.string.goat_description_label,
-                goatDetail = goatEntity.description ?: "",
-                modifier = Modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_medium)
+                GoatDetailsRow(
+                    labelResID = R.string.goat_description_label,
+                    goatDetail = goatEntity.description ?: "",
+                    modifier = Modifier.padding(
+                        horizontal = dimensionResource(id = R.dimen.padding_medium)
+                    )
                 )
-            )
+            }
         }
     }
 }

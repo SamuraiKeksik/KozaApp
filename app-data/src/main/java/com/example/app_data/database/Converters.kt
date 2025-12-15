@@ -3,7 +3,6 @@ package com.example.database
 import androidx.room.TypeConverter
 import com.example.advertisements.AdvertisementType
 import com.example.app_data.animals.AnimalType
-import com.example.app_data.animals.SicknessType
 import com.example.app_data.animals.goats.Breed
 import com.example.app_data.animals.goats.Gender
 import com.example.app_data.animals.goats.Status
