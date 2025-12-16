@@ -1,6 +1,9 @@
 package com.example.app_features.animals.goats
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,6 +18,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Mode
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -143,9 +148,15 @@ fun GoatDetails(
     goatEntity: GoatEntity,
     modifier: Modifier = Modifier
 ) {
-    var expanded by remember {mutableStateOf(false)}
+    var expanded by remember {mutableStateOf(true)}
     Card(
-        modifier = modifier, colors = CardDefaults.cardColors(
+        modifier = modifier
+            .animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioNoBouncy,
+                    stiffness = Spring.StiffnessMediumLow
+                )),
+        colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
@@ -154,7 +165,8 @@ fun GoatDetails(
             label = stringResource(R.string.goat_details_screen_label),
             expanded = expanded,
             onExpandClick = { expanded = !expanded },
-            onAddClick = {}
+            onActionClick = {},
+            imageVector = Icons.Filled.Mode,
         )
         if (expanded) {
             Column(
@@ -229,6 +241,7 @@ private fun GoatVaccinations(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
+    var expanded by remember { mutableStateOf(false) }
     Card(
         modifier = modifier, colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,

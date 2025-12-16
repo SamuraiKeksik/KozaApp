@@ -33,15 +33,12 @@ fun ExpandLabel(
             expanded = expanded,
             onClick = onExpandClick,
         )
-        Spacer(modifier = Modifier.weight(1f))
         Column(
             modifier = Modifier.weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Text(text = label)
         }
-
-        Spacer(modifier = Modifier.weight(1f))
         ActionButton(
             onClick = onActionClick,
             imageVector = imageVector,
