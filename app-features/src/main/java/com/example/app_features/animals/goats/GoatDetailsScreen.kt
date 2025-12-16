@@ -1,15 +1,17 @@
 package com.example.app_features.animals.goats
 
+import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,10 +19,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Mode
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,6 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.app_data.animals.Sickness
 import com.example.app_data.animals.Vaccination
 import com.example.app_data.animals.goats.GoatEntity
 import com.example.app_features.ExpandLabel
@@ -73,7 +79,6 @@ fun GoatDetailsScreen(
 ) {
     val uiState = viewModel.uiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
-    val detailsExpanded by remember {mutableStateOf(false)}
 
     Column( modifier = modifier,
     ) {
@@ -116,9 +121,9 @@ private fun GoatDetailsBody(
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
         GoatDetails(
-            goatEntity = goatDetailsUiState.goatDetails.toGoat(), modifier = Modifier.fillMaxWidth()
-        )
+            goatEntity = goatDetailsUiState.goatDetails.toGoat())
         GoatVaccinations(vaccinationsList = goatDetailsUiState.goatVaccinations)
+        GoatSicknesses(sicknessesList = goatDetailsUiState.goatSicknesses)
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
             shape = MaterialTheme.shapes.small,
@@ -151,6 +156,10 @@ fun GoatDetails(
     var expanded by remember {mutableStateOf(true)}
     Card(
         modifier = modifier
+            .border(
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                shape = RoundedCornerShape(10.dp)
+            )
             .animateContentSize(
                 animationSpec = spring(
                     dampingRatio = Spring.DampingRatioNoBouncy,
@@ -243,65 +252,126 @@ private fun GoatVaccinations(
 ) {
     var expanded by remember { mutableStateOf(false) }
     Card(
-        modifier = modifier, colors = CardDefaults.cardColors(
+        modifier = modifier
+            .border(
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                shape = RoundedCornerShape(10.dp)
+            )
+            .animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioNoBouncy,
+                    stiffness = Spring.StiffnessMediumLow
+                ))
+        ,
+        colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier,
-        ) {
-            Row {
+        ExpandLabel(
+            label = stringResource(R.string.vaccinations_label),
+            expanded = expanded,
+            onExpandClick = { expanded = !expanded },
+            onActionClick = {},
+            imageVector = Icons.Filled.Add,
+        )
+        if (expanded) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+            ) {
+                if (vaccinationsList.isEmpty()) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.empty_vaccinations_list_label),
+                           // style = MaterialTheme.typography.headlineSmall,
+                            textAlign = TextAlign.Center,
+                        )
+                    }
 
-            }
-            if (vaccinationsList.isEmpty()) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Spacer(modifier = Modifier.size(200.dp))
-                    Text(
-                        text = stringResource(R.string.empty_vaccinations_list_label),
-                        style = MaterialTheme.typography.headlineSmall,
-                        textAlign = TextAlign.Center,
-                    )
-//                Spacer(modifier = Modifier.size(10.dp))
-//                Image(
-//                    painterResource(R.drawable.missing_pet),
-//                    contentDescription = null,
-//                    modifier = Modifier.size(100.dp)
-//                )
+                } else {
+                    LazyColumn(
+                        modifier = modifier,
+                        contentPadding = contentPadding,
+                    ) {
+                        items(items = vaccinationsList, key = { it.id }) {vaccination ->
+                            Row(modifier = modifier) {
+                                Text(text = vaccination.date.toString())
+                                Spacer(modifier = Modifier.weight(1f))
+                                Text(text = vaccination.medication)
+                            }
+                        }
+                    }
                 }
-
-            } else {
-                VaccinationsList(
-                    vaccinationsList = vaccinationsList,
-                    contentPadding = contentPadding,
-                    modifier = Modifier
-                        .padding(horizontal = dimensionResource(id = R.dimen.padding_small))
-                        .fillMaxHeight(),
-                )
             }
         }
     }
 }
 
 @Composable
-private fun VaccinationsList(
-    vaccinationsList: List<Vaccination>,
-    contentPadding: PaddingValues,
+private fun GoatSicknesses(
+    sicknessesList: List<Sickness>,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = contentPadding,
+    var expanded by remember { mutableStateOf(false) }
+    Card(
+        modifier = modifier
+            .border(
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+            shape = RoundedCornerShape(10.dp)
+            )
+            .animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioNoBouncy,
+                    stiffness = Spring.StiffnessMediumLow
+                )),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        )
     ) {
-        items(items = vaccinationsList, key = { it.id }) {vaccination ->
-            Row(modifier = modifier) {
-                Text(text = vaccination.date.toString())
-                Spacer(modifier = Modifier.weight(1f))
-                Text(text = vaccination.medication)
+        ExpandLabel(
+            label = stringResource(R.string.sicknesses_label),
+            expanded = expanded,
+            onExpandClick = { expanded = !expanded },
+            onActionClick = {},
+            imageVector = Icons.Filled.Add,
+        )
+        if (expanded) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+            ) {
+                if (sicknessesList.isEmpty()) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.empty_sicknesses_list_label),
+                            //style = MaterialTheme.typography.headlineSmall,
+                            textAlign = TextAlign.Center,
+                        )
+                    }
+
+                } else {
+                    LazyColumn(
+                        modifier = modifier,
+                        contentPadding = contentPadding,
+                    ) {
+                        items(items = sicknessesList, key = { it.id }) { vaccination ->
+                            Row(modifier = modifier) {
+                                Text(text = vaccination.startDate.toString())
+                                Spacer(modifier = Modifier.weight(1f))
+                                Text(text = vaccination.endDate.toString())
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -343,7 +413,9 @@ private fun DeleteConfirmationDialog(
         })
 }
 
+
 @Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun GoatDetailsScreenPreview() {
     AppTheme {

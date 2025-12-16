@@ -119,6 +119,10 @@
 
     <string name="empty_animals_list_label1">В данный момент здесь пусто.</string>
     <string name="empty_animals_list_label2">Добавьте новое животное.</string>
+
     <string name="empty_vaccinations_list_label">Прививки отсутствуют</string>
+    <string name="vaccinations_label">Прививки</string>
+    <string name="empty_sicknesses_list_label">Заболевания отсутствуют</string>
+    <string name="sicknesses_label">Заболевания</string>
 
 </resources>
