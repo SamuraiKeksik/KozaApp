@@ -50,6 +50,7 @@ dependencies {
     //Hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
+    debugImplementation(libs.androidx.compose.ui.tooling)
     ksp(libs.hilt.android.compiler)
     ksp(libs.androidx.hilt.compiler)
 
