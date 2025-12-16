@@ -86,8 +86,15 @@
 
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="add">Добавить</string>
+    <string name="cancel">Отменить</string>
+    <string name="date">Дата</string>
+    <string name="sickness">Заболевание</string>
+    <string name="medication">Препарат</string>
     <string name="warning_label">Внимание!</string>
     <string name="delete_warning">Вы уверены что хотите удалить %s %s? </string>
+    <string name="add_vaccination_label">Добавление прививки </string>
+    <string name="add_sickness_label">Добавление заболевания </string>
 
     <!-- Пол -->
     <string name="gender_label">Пол</string>
@@ -116,6 +123,7 @@
     <string name="meat">Мясо</string>
     <string name="wool">Шерсть</string>
     <string name="breeding">Племя</string>
+
 
     <string name="empty_animals_list_label1">В данный момент здесь пусто.</string>
     <string name="empty_animals_list_label2">Добавьте новое животное.</string>

@@ -20,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -29,8 +30,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Label
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -46,9 +49,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.app_data.animals.Sickness
 import com.example.app_data.animals.Vaccination
@@ -91,7 +96,8 @@ fun GoatDetailsScreen(
                 }
             },
             modifier = Modifier
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
+            onGoatEdit = { navigateToEditGoat(uiState.value.goatDetails.id) }
         )
 //        FloatingActionButton(
 //            onClick = { navigateToEditGoat(uiState.value.goatDetails.id) },
@@ -111,6 +117,7 @@ fun GoatDetailsScreen(
 @Composable
 private fun GoatDetailsBody(
     goatDetailsUiState: GoatDetailsUiState,
+    onGoatEdit: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -120,10 +127,22 @@ private fun GoatDetailsBody(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
+        var addVaccinationRequired by rememberSaveable { mutableStateOf(false) }
+        var addSicknessRequired by rememberSaveable { mutableStateOf(false) }
+
         GoatDetails(
-            goatEntity = goatDetailsUiState.goatDetails.toGoat())
-        GoatVaccinations(vaccinationsList = goatDetailsUiState.goatVaccinations)
-        GoatSicknesses(sicknessesList = goatDetailsUiState.goatSicknesses)
+            goatEntity = goatDetailsUiState.goatDetails.toGoat(),
+            onActionClick = onGoatEdit,
+        )
+        GoatVaccinations(
+            vaccinationsList = goatDetailsUiState.goatVaccinations,
+            onAddClick = { addVaccinationRequired = true }
+        )
+        GoatSicknesses(
+            sicknessesList = goatDetailsUiState.goatSicknesses,
+            onAddClick = { addSicknessRequired = true }
+        )
+
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
             shape = MaterialTheme.shapes.small,
@@ -142,6 +161,30 @@ private fun GoatDetailsBody(
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             )
         }
+
+        if (addVaccinationRequired) {
+            AddVaccinationDialog(
+                onAddConfirm = {
+                    addVaccinationRequired = false
+                    //onAddVaccination()
+                },
+                onAddCancel = { addVaccinationRequired = false },
+                goatName = goatDetailsUiState.goatDetails.name,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            )
+        }
+
+        if (addSicknessRequired) {
+            AddSicknessDialog(
+                onAddConfirm = {
+                    addSicknessRequired = false
+                    //onAddSickness()
+                },
+                onAddCancel = { addSicknessRequired = false },
+                goatName = goatDetailsUiState.goatDetails.name,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            )
+        }
     }
 }
 
@@ -151,7 +194,8 @@ private fun GoatDetailsBody(
 @Composable
 fun GoatDetails(
     goatEntity: GoatEntity,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onActionClick: () -> Unit,
 ) {
     var expanded by remember {mutableStateOf(true)}
     Card(
@@ -174,7 +218,7 @@ fun GoatDetails(
             label = stringResource(R.string.goat_details_screen_label),
             expanded = expanded,
             onExpandClick = { expanded = !expanded },
-            onActionClick = {},
+            onActionClick = onActionClick,
             imageVector = Icons.Filled.Mode,
         )
         if (expanded) {
@@ -247,6 +291,7 @@ fun GoatDetails(
 @Composable
 private fun GoatVaccinations(
     vaccinationsList: List<Vaccination>,
+    onAddClick: () -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -272,7 +317,7 @@ private fun GoatVaccinations(
             label = stringResource(R.string.vaccinations_label),
             expanded = expanded,
             onExpandClick = { expanded = !expanded },
-            onActionClick = {},
+            onActionClick = onAddClick,
             imageVector = Icons.Filled.Add,
         )
         if (expanded) {
@@ -314,6 +359,7 @@ private fun GoatVaccinations(
 @Composable
 private fun GoatSicknesses(
     sicknessesList: List<Sickness>,
+    onAddClick: () -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -338,7 +384,7 @@ private fun GoatSicknesses(
             label = stringResource(R.string.sicknesses_label),
             expanded = expanded,
             onExpandClick = { expanded = !expanded },
-            onActionClick = {},
+            onActionClick = onAddClick,
             imageVector = Icons.Filled.Add,
         )
         if (expanded) {
@@ -391,6 +437,89 @@ private fun GoatDetailsRow(
 }
 
 @Composable
+private fun AddVaccinationDialog(
+    onAddConfirm: () -> Unit,
+    onAddCancel: () -> Unit,
+    goatName: String,
+    modifier: Modifier = Modifier,
+) {
+    Dialog(onDismissRequest = { /* Do nothing */ }){
+        Card(
+            modifier = Modifier
+        ) {
+            Text(
+                text = stringResource(R.string.add_vaccination_label),
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(dimensionResource(id = R.dimen.padding_medium)),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Row(modifier = modifier) {
+                    Text(text = stringResource(R.string.date))
+                    Spacer(modifier = Modifier.weight(1f))
+                    OutlinedTextField(
+                        //value = goatDetails.weight,
+                        //onValueChange = { onValueChange(goatDetails.copy(weight = it)) },
+                        //label = { Text(stringResource(R.string.goat_weight_label)) },
+                        value = "sickness",
+                        onValueChange = {},
+                        label = { Text(stringResource(R.string.sickness)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = true,
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number
+                        )
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    TextButton(
+                        onClick = { onAddCancel() },
+                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+                    ) {
+                        Text(stringResource(R.string.cancel))
+                    }
+                    TextButton(
+                        onClick = { onAddConfirm() },
+                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+                    ) {
+                        Text(stringResource(R.string.add))
+                    }
+                }
+            }
+        }
+    }
+}
+@Composable
+private fun AddSicknessDialog(
+    onAddConfirm: () -> Unit,
+    onAddCancel: () -> Unit,
+    goatName: String,
+    modifier: Modifier = Modifier,
+) {
+    AlertDialog(onDismissRequest = { /* Do nothing */ },
+        title = { Text(stringResource(R.string.add_sickness_label)) },
+        modifier = modifier,
+        dismissButton = {
+            TextButton(onClick = onAddCancel) {
+                Text(text = stringResource(R.string.cancel))
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onAddConfirm) {
+                Text(text = stringResource(R.string.add))
+            }
+        })
+}
+
+@Composable
 private fun DeleteConfirmationDialog(
     onDeleteConfirm: () -> Unit,
     onDeleteCancel: () -> Unit,
@@ -422,6 +551,9 @@ fun GoatDetailsScreenPreview() {
         GoatDetailsBody(
             GoatDetailsUiState(
                 goatDetails = GoatDetails(UUID.randomUUID(), "Pen", "$100", "10")
-            ), onDelete = {})
+            ),
+            onDelete = {},
+            onGoatEdit = {},
+            )
     }
 }
