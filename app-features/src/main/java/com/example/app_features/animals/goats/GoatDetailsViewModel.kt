@@ -1,5 +1,9 @@
 package com.example.app_features.animals.goats
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,6 +27,9 @@ class GoatDetailsViewModel @Inject constructor(
 ) : ViewModel() {
     private val goatId: UUID = UUID.fromString(checkNotNull(savedStateHandle["id"]))
 
+    var vaccinationUiState by mutableStateOf(VaccinationUiState())
+        private set
+
     var uiState: StateFlow<GoatDetailsUiState> =
         goatRepository.getGoat(goatId)
             .filterNotNull()
@@ -39,6 +46,24 @@ class GoatDetailsViewModel @Inject constructor(
                 initialValue = GoatDetailsUiState()
             )
 
+
+
+    fun updateVaccinationUiState(vaccinationDetails: VaccinationDetails){
+        vaccinationUiState = VaccinationUiState(
+            vaccinationDetails = vaccinationDetails,
+            isEntryValid =
+                    vaccinationDetails.date.isNotBlank() &&
+                    vaccinationDetails.sickness.isNotBlank() &&
+                    vaccinationDetails.medication.isNotBlank()
+            )
+    }
+
+    fun insertVaccination() {
+        if (vaccinationUiState.isEntryValid) {
+            //goatRepository.insertVaccination(vaccinationUiState.vaccinationDetails)
+        }
+    }
+
     suspend fun deleteGoat() {
         goatRepository.deleteGoat(uiState.value.goatDetails.toGoat())
     }
@@ -52,3 +77,14 @@ data class GoatDetailsUiState(
     val goatSicknesses: List<Sickness> = emptyList(),
     val goatMilkYields: List<MilkYield> = emptyList(),
     )
+
+data class VaccinationUiState(
+    val vaccinationDetails: VaccinationDetails = VaccinationDetails(),
+    val isEntryValid: Boolean = false
+)
+
+public data class VaccinationDetails(
+    val date: String = "",
+    val sickness: String = "",
+    val medication: String = "",
+)
