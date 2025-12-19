@@ -43,4 +43,14 @@ object AnimalsModule {
             goatRemoteDataSource,
         )
     }
+
+    @Provides
+    @Singleton
+    fun provideAnimalsDao(@ApplicationContext context: Context): AnimalsDao =
+        AppDatabase.getDatabase(context).animalsDao()
+
+    @Provides
+    @Singleton
+    fun provideAnimalsRepository(animalsDao: AnimalsDao): AnimalsRepository =
+        DefaultAnimalsRepository(animalsDao)
 }

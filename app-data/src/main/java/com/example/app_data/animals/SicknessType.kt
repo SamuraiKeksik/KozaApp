@@ -15,5 +15,5 @@ data class SicknessType (
 )
 
 enum class AnimalType {
-    Goat, Cow, Pig, Sheep
+    Unknown, Goat, Cow, Pig, Sheep
 }

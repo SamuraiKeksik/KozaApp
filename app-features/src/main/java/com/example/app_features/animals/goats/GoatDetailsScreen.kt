@@ -14,13 +14,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarMonth
@@ -29,7 +28,10 @@ import androidx.compose.material.icons.filled.Mode
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -47,20 +49,18 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection.Companion.Next
 import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.app_data.animals.Sickness
+import com.example.app_data.animals.SicknessType
 import com.example.app_data.animals.Vaccination
 import com.example.app_data.animals.goats.GoatEntity
 import com.example.app_features.DatePickerModal
@@ -68,7 +68,6 @@ import com.example.app_features.ExpandLabel
 import com.example.app_features.R
 import com.example.app_features.theme.AppTheme
 import kotlinx.coroutines.launch
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.UUID
@@ -144,6 +143,7 @@ private fun GoatDetailsBody(
 //    modifier: Modifier = Modifier
 ) {
     val uiState = viewModel.uiState.collectAsState().value
+    val sicknessTypesList = viewModel.sicknessTypesList.collectAsState().value
     val coroutineScope = rememberCoroutineScope()
 
     var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
@@ -200,12 +200,16 @@ private fun GoatDetailsBody(
                 isEntryValid = viewModel.vaccinationUiState.isEntryValid,
                 onAddConfirm = {
                     addVaccinationRequired = false
-                    viewModel.insertVaccination()
+                    coroutineScope.launch {
+                        viewModel.insertVaccination()
+                    }
+
                 },
                 onAddCancel = { addVaccinationRequired = false },
                 onDateFocused = { dateSelectionRequired = true },
                 onDateUnFocused = { dateSelectionRequired = false },
                 onValueChange = { viewModel.updateVaccinationUiState(it) },
+                sicknessTypesList = sicknessTypesList.sicknessTypesList,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             )
         }
@@ -214,7 +218,9 @@ private fun GoatDetailsBody(
             AddSicknessDialog(
                 onAddConfirm = {
                     addSicknessRequired = false
-                    //onAddSickness()
+                    coroutineScope.launch {
+                        //viewModel.insertSickness()
+                    }
                 },
                 onAddCancel = { addSicknessRequired = false },
                 goatName = "goatDetailsUiState.goatDetails.name",
@@ -225,7 +231,7 @@ private fun GoatDetailsBody(
             DatePickerModal(
                 onDateSelected = {
                     viewModel.updateVaccinationUiState(
-                        vaccinationDetails = it.let{
+                        vaccinationDetails = it.let {
                             viewModel.vaccinationUiState.vaccinationDetails.copy(
                                 date = dateFormat.format(Date(it!!)).toString()
                             )
@@ -498,6 +504,7 @@ private fun GoatDetailsRow(
 @Composable
 private fun AddVaccinationDialog(
     vaccinationDetails: VaccinationDetails,
+    sicknessTypesList: List<SicknessType>,
     isEntryValid: Boolean,
     onAddConfirm: () -> Unit,
     onAddCancel: () -> Unit,
@@ -541,13 +548,8 @@ private fun AddVaccinationDialog(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
+                Column {
                     OutlinedTextField(
-                        //value = goatDetails.weight,
-                        //onValueChange = { onValueChange(goatDetails.copy(weight = it)) },
-                        //label = { Text(stringResource(R.string.goat_weight_label)) },
                         value = vaccinationDetails.date,
                         onValueChange = { onValueChange(vaccinationDetails.copy(date = it)) },
                         label = { Text(stringResource(R.string.date)) },
@@ -556,23 +558,41 @@ private fun AddVaccinationDialog(
                             .onFocusChanged {
                                 if (it.isFocused) onDateFocused() else onDateUnFocused()
                             },
-                        enabled = true,
+                        readOnly = true,
                         singleLine = true,
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number
-                        ),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                         trailingIcon = {
-                            IconButton(
-                                onClick = onDateFocused
-                            ) {
+                            IconButton(onClick = onDateFocused) {
                                 Icon(
                                     imageVector = Icons.Filled.CalendarMonth,
                                     contentDescription = null
                                 )
                             }
-
                         },
                     )
+                    Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
+                    SicknessTypeSelector(
+                        sicknessTypesList = sicknessTypesList,
+                        selectedSicknessName = vaccinationDetails.sicknessName,
+                        onSicknessSelected = {
+                            onValueChange(
+                                vaccinationDetails.copy(
+                                    sicknessTypeId = it,
+                                    sicknessName = sicknessTypesList.first { s -> s.id == it }.name
+                                )
+                            )
+                        },
+                    )
+                    Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
+                    OutlinedTextField(
+                        value = vaccinationDetails.medication,
+                        onValueChange = { onValueChange(vaccinationDetails.copy(medication = it)) },
+                        label = { Text(stringResource(R.string.medication)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    )
+
                 }
                 Row(
                     modifier = Modifier
@@ -643,6 +663,48 @@ private fun DeleteConfirmationDialog(
                 Text(text = stringResource(R.string.yes))
             }
         })
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SicknessTypeSelector(
+    sicknessTypesList: List<SicknessType>,
+    selectedSicknessName: String,
+    onSicknessSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+        modifier = modifier
+    ) {
+        OutlinedTextField(
+            value = selectedSicknessName,
+            onValueChange = { /* Не изменяем вручную, только через меню */ },
+            readOnly = true,
+            label = { Text(stringResource(R.string.sickness)) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier.menuAnchor()
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            sicknessTypesList.forEach { sicknessType ->
+                DropdownMenuItem(
+                    text = { Text(sicknessType.name) },
+                    //text = { Text(stringResource(breed.labelResId)) },
+                    onClick = {
+                        onSicknessSelected(sicknessType.id)
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
+            }
+        }
+    }
 }
 
 
