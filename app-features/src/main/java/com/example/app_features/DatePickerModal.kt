@@ -16,12 +16,14 @@ fun DatePickerModal(
     onDateSelected: (Long?) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val datePickerState = rememberDatePickerState(initialDisplayMode = DisplayMode.Input)
+    val datePickerState = rememberDatePickerState(initialDisplayMode = DisplayMode.Picker)
 
     DatePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            TextButton(onClick = {
+            TextButton(
+                enabled = datePickerState.selectedDateMillis != null,
+                onClick = {
                 onDateSelected(datePickerState.selectedDateMillis)
                 onDismiss()
             }) {

@@ -47,7 +47,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection.Companion.Next
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -66,6 +68,8 @@ import com.example.app_features.ExpandLabel
 import com.example.app_features.R
 import com.example.app_features.theme.AppTheme
 import kotlinx.coroutines.launch
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.UUID
 
@@ -146,6 +150,7 @@ private fun GoatDetailsBody(
     var addVaccinationRequired by rememberSaveable { mutableStateOf(false) }
     var addSicknessRequired by rememberSaveable { mutableStateOf(false) }
     var dateSelectionRequired by rememberSaveable { mutableStateOf(false) }
+    val dateFormat = SimpleDateFormat("dd.MM.yyyy")
 
     Column(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
@@ -221,12 +226,16 @@ private fun GoatDetailsBody(
                 onDateSelected = {
                     viewModel.updateVaccinationUiState(
                         vaccinationDetails = it.let{
-                            viewModel.vaccinationUiState.vaccinationDetails.copy(date = Date(it!!).toString())
+                            viewModel.vaccinationUiState.vaccinationDetails.copy(
+                                date = dateFormat.format(Date(it!!)).toString()
+                            )
                         }
                     )
                     dateSelectionRequired = false
                 },
-                onDismiss = { dateSelectionRequired = false }
+                onDismiss = {
+                    dateSelectionRequired = false
+                }
             )
         }
     }
@@ -497,8 +506,6 @@ private fun AddVaccinationDialog(
     onValueChange: (VaccinationDetails) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var isDateFieldFocused by remember { mutableStateOf(false) }
-
     Dialog(onDismissRequest = { /* Do nothing */ }) {
         Card {
             Row(
@@ -556,7 +563,7 @@ private fun AddVaccinationDialog(
                         ),
                         trailingIcon = {
                             IconButton(
-                                onClick = {}
+                                onClick = onDateFocused
                             ) {
                                 Icon(
                                     imageVector = Icons.Filled.CalendarMonth,
