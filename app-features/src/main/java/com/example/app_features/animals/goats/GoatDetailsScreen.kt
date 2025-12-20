@@ -69,18 +69,7 @@ import com.example.app_features.R
 import com.example.app_features.theme.AppTheme
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.UUID
-
-//
-//object GoatDetailsDestination : NavigationDestination{
-//    override val route = "GoatDetailsScreen"
-//    @StringRes
-//    override val titleRes = R.string.goat_details_screen_label
-//    override val showBottomBar = false
-//    const val goatIdArg = "goatId"
-//    val routeWithArgs = "$route/{$goatIdArg}"
-//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,7 +79,6 @@ fun GoatDetailsScreen(
     modifier: Modifier = Modifier,
     viewModel: GoatDetailsViewModel = hiltViewModel()
 ) {
-
     Column(
         modifier = modifier,
     ) {
@@ -98,32 +86,8 @@ fun GoatDetailsScreen(
             viewModel = viewModel,
             navigateBack = navigateBack,
             navigateToEditGoat = navigateToEditGoat,
-//            goatDetailsUiState = uiState.value,
-//            vaccinationUiState = viewModel.vaccinationUiState,
-//            onGoatDelete = {
-//                coroutineScope.launch {
-//                    viewModel.deleteGoat()
-//                    navigateBack()
-//                }
-//            },
-//            modifier = Modifier
-//                .verticalScroll(rememberScrollState()),
-//            onVaccinationEdit = { viewModel.updateVaccinationUiState(it) },
-//            onSicknessEdit = {  },
-//            onMilkYieldEdit = {  }
-        )
-//        FloatingActionButton(
-//            onClick = { navigateToEditGoat(uiState.value.goatDetails.id) },
-//            shape = MaterialTheme.shapes.medium,
-//            modifier = Modifier
-//                .align(Alignment.BottomEnd)
-//                .padding(dimensionResource(R.dimen.padding_large))
-//        ) {
-//            Icon(
-//                imageVector = Icons.Default.Edit,
-//                contentDescription = null
-//            )
-//        }
+//
+        )//
     }
 }
 
@@ -133,14 +97,6 @@ private fun GoatDetailsBody(
     navigateToEditGoat: (UUID) -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-//    goatDetailsUiState: GoatDetailsUiState,
-//    vaccinationUiState: VaccinationUiState,
-//    onGoatEdit: () -> Unit,
-//    onGoatDelete: () -> Unit,
-//    onVaccinationEdit: (VaccinationDetails) -> Unit,
-//    onSicknessEdit: () -> Unit,
-//    onMilkYieldEdit: () -> Unit,
-//    modifier: Modifier = Modifier
 ) {
     val uiState = viewModel.uiState.collectAsState().value
     val sicknessTypesList = viewModel.sicknessTypesList.collectAsState().value
@@ -164,7 +120,6 @@ private fun GoatDetailsBody(
             vaccinationsList = uiState.goatVaccinations,
             onAddClick = {
                 addVaccinationRequired = true
-                viewModel
             }
         )
         GoatSicknesses(
@@ -199,10 +154,10 @@ private fun GoatDetailsBody(
                 vaccinationDetails = viewModel.vaccinationUiState.vaccinationDetails,
                 isEntryValid = viewModel.vaccinationUiState.isEntryValid,
                 onAddConfirm = {
-                    addVaccinationRequired = false
                     coroutineScope.launch {
                         viewModel.insertVaccination()
                     }
+                    addVaccinationRequired = false
 
                 },
                 onAddCancel = { addVaccinationRequired = false },
@@ -210,6 +165,7 @@ private fun GoatDetailsBody(
                 onDateUnFocused = { dateSelectionRequired = false },
                 onValueChange = { viewModel.updateVaccinationUiState(it) },
                 sicknessTypesList = sicknessTypesList.sicknessTypesList,
+                dateFormat = dateFormat,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             )
         }
@@ -233,7 +189,7 @@ private fun GoatDetailsBody(
                     viewModel.updateVaccinationUiState(
                         vaccinationDetails = it.let {
                             viewModel.vaccinationUiState.vaccinationDetails.copy(
-                                date = dateFormat.format(Date(it!!)).toString()
+                                date = it!!
                             )
                         }
                     )
@@ -511,6 +467,7 @@ private fun AddVaccinationDialog(
     onDateFocused: () -> Unit,
     onDateUnFocused: () -> Unit,
     onValueChange: (VaccinationDetails) -> Unit,
+    dateFormat: SimpleDateFormat,
     modifier: Modifier = Modifier,
 ) {
     Dialog(onDismissRequest = { /* Do nothing */ }) {
@@ -550,8 +507,8 @@ private fun AddVaccinationDialog(
             ) {
                 Column {
                     OutlinedTextField(
-                        value = vaccinationDetails.date,
-                        onValueChange = { onValueChange(vaccinationDetails.copy(date = it)) },
+                        value = dateFormat.format(vaccinationDetails.date),
+                        onValueChange = { onValueChange(vaccinationDetails.copy(date = it.toLong())) },
                         label = { Text(stringResource(R.string.date)) },
                         modifier = Modifier
                             .fillMaxWidth()

@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import java.time.LocalDate
 import java.util.Date
 import java.util.UUID
 import javax.inject.Inject
@@ -64,7 +65,6 @@ class GoatDetailsViewModel @Inject constructor(
         vaccinationUiState = VaccinationUiState(
             vaccinationDetails = vaccinationDetails,
             isEntryValid =
-                    vaccinationDetails.date.isNotBlank() &&
                     vaccinationDetails.sicknessName.isNotBlank() &&
                     vaccinationDetails.sicknessTypeId != 0 &&
                     vaccinationDetails.medication.isNotBlank()
@@ -75,6 +75,8 @@ class GoatDetailsViewModel @Inject constructor(
         if (vaccinationUiState.isEntryValid) {
             animalsRepository.insertVaccination(vaccinationUiState.vaccinationDetails.toVaccination())
         }
+        //Обнуляем поля
+        updateVaccinationUiState(vaccinationDetails = VaccinationDetails(goatId = goatId))
     }
 
     suspend fun deleteGoat() {
@@ -101,14 +103,13 @@ fun VaccinationDetails.toVaccination() = Vaccination(
     sicknessTypeId = sicknessTypeId,
     animalId = goatId,
     medication = medication,
-    date = Date(date)
-    //TODo: исправить парсинг даты - из-за него крашится приложеине
+    date = date
 )
 
 data class SicknessTypesUiState(val sicknessTypesList: List<SicknessType> = emptyList())
 
 public data class VaccinationDetails(
-    val date: String = "",
+    val date: Long = System.currentTimeMillis(),
     val sicknessName: String = "",
     val goatId: UUID = UUID.randomUUID(),
     val sicknessTypeId: Int = 0,

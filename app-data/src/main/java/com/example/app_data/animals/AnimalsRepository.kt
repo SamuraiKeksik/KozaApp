@@ -10,11 +10,9 @@ interface AnimalsRepository {
 }
 
 class DefaultAnimalsRepository @Inject constructor(
-    private val animalsDao: AnimalsDao
+    private val animalsLocalDataSource: AnimalsLocalDataSource
 ) : AnimalsRepository {
-
-    override val sicknessTypesList: Flow<List<SicknessType>> = animalsDao.getAllSicknessTypesFlow()
-    override suspend fun insertVaccination(vaccination: Vaccination) {
-        animalsDao.insertVaccination(vaccination)
-    }
+    override val sicknessTypesList: Flow<List<SicknessType>> = animalsLocalDataSource.getAllSicknessTypesFlow()
+    override suspend fun insertVaccination(vaccination: Vaccination) =
+        animalsLocalDataSource.insertVaccination(vaccination)
 }

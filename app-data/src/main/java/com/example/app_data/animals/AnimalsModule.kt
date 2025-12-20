@@ -46,11 +46,12 @@ object AnimalsModule {
 
     @Provides
     @Singleton
-    fun provideAnimalsDao(@ApplicationContext context: Context): AnimalsDao =
-        AppDatabase.getDatabase(context).animalsDao()
-
+    fun provideAnimalsLocalDataSources(@ApplicationContext context: Context): AnimalsLocalDataSource {
+        val animalsDao = AppDatabase.getDatabase(context).animalsDao()
+        return AnimalsLocalDataSource(animalsDao)
+    }
     @Provides
     @Singleton
-    fun provideAnimalsRepository(animalsDao: AnimalsDao): AnimalsRepository =
-        DefaultAnimalsRepository(animalsDao)
+    fun provideAnimalsRepository(animalsLocalDataSource: AnimalsLocalDataSource): AnimalsRepository =
+        DefaultAnimalsRepository(animalsLocalDataSource)
 }

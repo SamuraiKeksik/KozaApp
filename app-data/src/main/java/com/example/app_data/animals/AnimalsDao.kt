@@ -12,8 +12,8 @@ interface AnimalsDao {
     fun getAllSicknessTypesFlow(): Flow<List<SicknessType>>
 
     @Insert
-    fun insertSicknessType(sicknessType: SicknessType)
+    suspend fun insertSicknessType(sicknessType: SicknessType)
 
     @Insert
-    fun insertVaccination(vaccination: Vaccination)
+    suspend fun insertVaccination(vaccination: Vaccination)
 }
