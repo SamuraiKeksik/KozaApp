@@ -71,12 +71,23 @@ class GoatDetailsViewModel @Inject constructor(
             )
     }
 
+    fun clearVaccinationUiState() = updateVaccinationUiState(vaccinationDetails = VaccinationDetails(goatId = goatId))
+
     suspend fun insertVaccination() {
         if (vaccinationUiState.isEntryValid) {
             animalsRepository.insertVaccination(vaccinationUiState.vaccinationDetails.toVaccination())
         }
         //Обнуляем поля
-        updateVaccinationUiState(vaccinationDetails = VaccinationDetails(goatId = goatId))
+        clearVaccinationUiState()
+    }
+
+    suspend fun deleteVaccination() {
+        val vaccination = animalsRepository.getVaccination(vaccinationUiState.vaccinationDetails.id)
+            if (vaccination != null){
+                animalsRepository.deleteVaccination(vaccination)
+            }
+        clearVaccinationUiState()
+
     }
 
     suspend fun deleteGoat() {
@@ -91,6 +102,8 @@ data class GoatDetailsUiState(
     val goatVaccinations: List<Vaccination> = emptyList(),
     val goatSicknesses: List<Sickness> = emptyList(),
     val goatMilkYields: List<MilkYield> = emptyList(),
+    val selectedVaccinationId: UUID = UUID.randomUUID(),
+    val selectedSicknessId: UUID = UUID.randomUUID()
     )
 
 data class VaccinationUiState(
@@ -99,7 +112,7 @@ data class VaccinationUiState(
 )
 
 fun VaccinationDetails.toVaccination() = Vaccination(
-    id = UUID.randomUUID(),
+    id = id,
     sicknessTypeId = sicknessTypeId,
     animalId = goatId,
     medication = medication,
@@ -109,6 +122,7 @@ fun VaccinationDetails.toVaccination() = Vaccination(
 data class SicknessTypesUiState(val sicknessTypesList: List<SicknessType> = emptyList())
 
 public data class VaccinationDetails(
+    val id: UUID = UUID.randomUUID(),
     val date: Long = System.currentTimeMillis(),
     val sicknessName: String = "",
     val goatId: UUID = UUID.randomUUID(),

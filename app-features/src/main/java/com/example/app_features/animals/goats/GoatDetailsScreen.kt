@@ -29,6 +29,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Mode
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -109,6 +110,7 @@ private fun GoatDetailsBody(
     val coroutineScope = rememberCoroutineScope()
 
     var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
+    var deleteVaccinationConfirmationRequired by rememberSaveable { mutableStateOf(false) }
     var addVaccinationRequired by rememberSaveable { mutableStateOf(false) }
     var addSicknessRequired by rememberSaveable { mutableStateOf(false) }
     var dateSelectionRequired by rememberSaveable { mutableStateOf(false) }
@@ -129,6 +131,17 @@ private fun GoatDetailsBody(
             onAddClick = {
                 addVaccinationRequired = true
             },
+            onEditClick = {
+                viewModel.updateVaccinationUiState(
+                    viewModel.vaccinationUiState.vaccinationDetails.copy(id = it)
+                )
+            },
+            onDeleteClick = {
+                viewModel.updateVaccinationUiState(
+                    viewModel.vaccinationUiState.vaccinationDetails.copy(id = it)
+                )
+                deleteVaccinationConfirmationRequired = true
+            },
             dateFormat = dateFormat
         )
         GoatSicknesses(
@@ -143,6 +156,7 @@ private fun GoatDetailsBody(
         ) {
             Text(stringResource(R.string.goat_delete_button_label))
         }
+
         if (deleteConfirmationRequired) {
             DeleteConfirmationDialog(
                 onDeleteConfirm = {
@@ -153,7 +167,7 @@ private fun GoatDetailsBody(
                     }
                 },
                 onDeleteCancel = { deleteConfirmationRequired = false },
-                goatName = uiState.goatDetails.name,
+                warningText = stringResource(R.string.delete_warning, "Козу", uiState.goatDetails.name),
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             )
         }
@@ -175,6 +189,20 @@ private fun GoatDetailsBody(
                 onValueChange = { viewModel.updateVaccinationUiState(it) },
                 sicknessTypesList = sicknessTypesList.sicknessTypesList,
                 dateFormat = dateFormat,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            )
+        }
+
+        if (deleteVaccinationConfirmationRequired) {
+            DeleteConfirmationDialog(
+                onDeleteConfirm = {
+                    deleteVaccinationConfirmationRequired = false
+                    coroutineScope.launch {
+                        viewModel.deleteVaccination()
+                    }
+                },
+                onDeleteCancel = { deleteVaccinationConfirmationRequired = false },
+                warningText = stringResource(R.string.delete_warning, "прививку", ""),
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             )
         }
@@ -322,6 +350,8 @@ private fun GoatVaccinations(
     vaccinationsList: List<Vaccination>,
     sicknessTypesList: List<SicknessType>,
     onAddClick: () -> Unit,
+    onEditClick: (UUID) -> Unit,
+    onDeleteClick: (UUID) -> Unit,
     dateFormat: SimpleDateFormat,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
@@ -378,8 +408,18 @@ private fun GoatVaccinations(
                                 Text(text = dateFormat.format(vaccination.date))
                                 Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
                                 Text(text = sicknessTypesList.find { it.id == vaccination.sicknessTypeId }?.name ?: "")
-                                Spacer(modifier = Modifier.weight(1f))
+                                Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
                                 Text(text = vaccination.medication)
+                                Spacer(modifier = Modifier.weight(1f))
+
+                                Row{
+                                    IconButton(onClick = { onEditClick(vaccination.id) }) {
+                                        Icon(imageVector = Icons.Filled.Mode, contentDescription = "")
+                                    }
+                                    IconButton(onClick = { onDeleteClick(vaccination.id) }) {
+                                        Icon(imageVector = Icons.Filled.Delete, contentDescription = "")
+                                    }
+                                }
                             }
                         }
                     }
@@ -619,13 +659,13 @@ private fun AddSicknessDialog(
 private fun DeleteConfirmationDialog(
     onDeleteConfirm: () -> Unit,
     onDeleteCancel: () -> Unit,
-    goatName: String,
+    warningText: String,
     modifier: Modifier = Modifier,
 ) {//ToDo: Доделать строки
     AlertDialog(
         onDismissRequest = { /* Do nothing */ },
         title = { Text(stringResource(R.string.warning_label)) },
-        text = { Text(stringResource(R.string.delete_warning, "Козу", goatName)) },
+        text = { Text(warningText) },
         modifier = modifier,
         dismissButton = {
             TextButton(onClick = onDeleteCancel) {

@@ -63,7 +63,7 @@ abstract class AppDatabase : RoomDatabase() {
                 super.onCreate(db)
                 CoroutineScope(Dispatchers.IO).launch {
                     val dao = getDatabase(context).animalsDao()
-                    val list = dao.getAllSicknessTypesFlow().first()
+                    val list = dao.getAllSicknessTypes().first()
                     if (list.isEmpty()) {
                         dao.insertSicknessType(
                             SicknessType(
