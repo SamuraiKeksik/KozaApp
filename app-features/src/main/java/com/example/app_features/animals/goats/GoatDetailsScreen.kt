@@ -7,6 +7,7 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -15,17 +16,22 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Mode
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenuItem
@@ -109,7 +115,8 @@ private fun GoatDetailsBody(
     val dateFormat = SimpleDateFormat("dd.MM.yyyy")
 
     Column(
-        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         GoatDetails(
@@ -118,9 +125,11 @@ private fun GoatDetailsBody(
         )
         GoatVaccinations(
             vaccinationsList = uiState.goatVaccinations,
+            sicknessTypesList = sicknessTypesList.sicknessTypesList,
             onAddClick = {
                 addVaccinationRequired = true
-            }
+            },
+            dateFormat = dateFormat
         )
         GoatSicknesses(
             sicknessesList = uiState.goatSicknesses,
@@ -311,7 +320,9 @@ fun GoatDetails(
 @Composable
 private fun GoatVaccinations(
     vaccinationsList: List<Vaccination>,
+    sicknessTypesList: List<SicknessType>,
     onAddClick: () -> Unit,
+    dateFormat: SimpleDateFormat,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
@@ -347,7 +358,7 @@ private fun GoatVaccinations(
             ) {
                 if (vaccinationsList.isEmpty()) {
                     Column(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Text(
@@ -359,16 +370,22 @@ private fun GoatVaccinations(
 
                 } else {
                     LazyColumn(
-                        modifier = modifier,
+                        modifier = modifier.heightIn(max = 400.dp),
                         contentPadding = contentPadding,
                     ) {
-                        items(items = vaccinationsList, key = { it.id }) { vaccination ->
+                        items(items = vaccinationsList.take(10), key = { it.id }) { vaccination ->
                             Row(modifier = modifier) {
-                                Text(text = vaccination.date.toString())
+                                Text(text = dateFormat.format(vaccination.date))
+                                Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
+                                Text(text = sicknessTypesList.find { it.id == vaccination.sicknessTypeId }?.name ?: "")
                                 Spacer(modifier = Modifier.weight(1f))
                                 Text(text = vaccination.medication)
                             }
                         }
+                    }
+                    if (vaccinationsList.size > 10) {
+                        Button(modifier = Modifier.fillMaxWidth(), onClick = {}) { Text ("Переход на экран прививок")}
+                        //ToDo:Переход на экран прививок
                     }
                 }
             }
@@ -415,7 +432,7 @@ private fun GoatSicknesses(
             ) {
                 if (sicknessesList.isEmpty()) {
                     Column(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Text(
