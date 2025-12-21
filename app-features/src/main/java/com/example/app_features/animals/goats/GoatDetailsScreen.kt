@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -412,12 +413,20 @@ private fun GoatVaccinations(
                                 Text(text = vaccination.medication)
                                 Spacer(modifier = Modifier.weight(1f))
 
-                                Row{
+                                Row(horizontalArrangement = Arrangement.End){
                                     IconButton(onClick = { onEditClick(vaccination.id) }) {
-                                        Icon(imageVector = Icons.Filled.Mode, contentDescription = "")
+                                        Icon(
+                                            modifier = Modifier.size(18.dp),
+                                            imageVector = Icons.Filled.Mode,
+                                            contentDescription = ""
+                                        )
                                     }
                                     IconButton(onClick = { onDeleteClick(vaccination.id) }) {
-                                        Icon(imageVector = Icons.Filled.Delete, contentDescription = "")
+                                        Icon(
+                                            modifier = Modifier.size(18.dp),
+                                            imageVector = Icons.Filled.Delete,
+                                            contentDescription = ""
+                                        )
                                     }
                                 }
                             }
