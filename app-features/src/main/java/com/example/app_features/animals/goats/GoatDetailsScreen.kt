@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -71,6 +72,7 @@ import com.example.app_data.animals.Sickness
 import com.example.app_data.animals.SicknessType
 import com.example.app_data.animals.Vaccination
 import com.example.app_data.animals.goats.GoatEntity
+import com.example.app_features.CustomizableSearchBar
 import com.example.app_features.DatePickerModal
 import com.example.app_features.ExpandLabel
 import com.example.app_features.R
@@ -112,8 +114,12 @@ private fun GoatDetailsBody(
 
     var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
     var deleteVaccinationConfirmationRequired by rememberSaveable { mutableStateOf(false) }
+
     var addVaccinationRequired by rememberSaveable { mutableStateOf(false) }
     var addSicknessRequired by rememberSaveable { mutableStateOf(false) }
+
+    var updateVaccinationRequired by rememberSaveable { mutableStateOf(false) }
+
     var dateSelectionRequired by rememberSaveable { mutableStateOf(false) }
     val dateFormat = SimpleDateFormat("dd.MM.yyyy")
 
@@ -133,9 +139,10 @@ private fun GoatDetailsBody(
                 addVaccinationRequired = true
             },
             onEditClick = {
-                viewModel.updateVaccinationUiState(
-                    viewModel.vaccinationUiState.vaccinationDetails.copy(id = it)
-                )
+                coroutineScope.launch {
+                    viewModel.getVaccination(id = it)
+                }
+                updateVaccinationRequired = true
             },
             onDeleteClick = {
                 viewModel.updateVaccinationUiState(
@@ -194,6 +201,27 @@ private fun GoatDetailsBody(
             )
         }
 
+        if (updateVaccinationRequired) {
+            AddVaccinationDialog(
+                vaccinationDetails = viewModel.vaccinationUiState.vaccinationDetails,
+                isEntryValid = viewModel.vaccinationUiState.isEntryValid,
+                onAddConfirm = {
+                    coroutineScope.launch {
+                        viewModel.updateVaccination()
+                    }
+                    updateVaccinationRequired = false
+
+                },
+                onAddCancel = { updateVaccinationRequired = false },
+                onDateFocused = { dateSelectionRequired = true },
+                onDateUnFocused = { dateSelectionRequired = false },
+                onValueChange = { viewModel.updateVaccinationUiState(it) },
+                sicknessTypesList = sicknessTypesList.sicknessTypesList,
+                dateFormat = dateFormat,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            )
+        }
+
         if (deleteVaccinationConfirmationRequired) {
             DeleteConfirmationDialog(
                 onDeleteConfirm = {
@@ -202,7 +230,10 @@ private fun GoatDetailsBody(
                         viewModel.deleteVaccination()
                     }
                 },
-                onDeleteCancel = { deleteVaccinationConfirmationRequired = false },
+                onDeleteCancel = {
+                    deleteVaccinationConfirmationRequired = false
+                    viewModel.clearVaccinationUiState()
+                    },
                 warningText = stringResource(R.string.delete_warning, "прививку", ""),
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             )
@@ -405,25 +436,38 @@ private fun GoatVaccinations(
                         contentPadding = contentPadding,
                     ) {
                         items(items = vaccinationsList.take(10), key = { it.id }) { vaccination ->
-                            Row(modifier = modifier) {
-                                Text(text = dateFormat.format(vaccination.date))
-                                Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
-                                Text(text = sicknessTypesList.find { it.id == vaccination.sicknessTypeId }?.name ?: "")
-                                Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
-                                Text(text = vaccination.medication)
-                                Spacer(modifier = Modifier.weight(1f))
-
-                                Row(horizontalArrangement = Arrangement.End){
-                                    IconButton(onClick = { onEditClick(vaccination.id) }) {
+                            Row(
+                                modifier = modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Row(modifier = Modifier){
+                                    Text(text = dateFormat.format(vaccination.date))
+                                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
+                                    Text(text = sicknessTypesList.find { it.id == vaccination.sicknessTypeId }?.name ?: "")
+                                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
+                                    Text(text = vaccination.medication)
+                                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
+                                }
+                                Row(
+                                    modifier = Modifier.widthIn(min = 24.dp)
+                                ){
+                                    IconButton(
+                                        modifier = Modifier.size(24.dp),
+                                        onClick = { onEditClick(vaccination.id) }
+                                    ) {
                                         Icon(
-                                            modifier = Modifier.size(18.dp),
+                                            modifier = Modifier.size(20.dp),
                                             imageVector = Icons.Filled.Mode,
                                             contentDescription = ""
                                         )
                                     }
-                                    IconButton(onClick = { onDeleteClick(vaccination.id) }) {
+                                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
+                                    IconButton(
+                                        modifier = Modifier.size(24.dp),
+                                        onClick = { onDeleteClick(vaccination.id) }
+                                    ) {
                                         Icon(
-                                            modifier = Modifier.size(18.dp),
+                                            modifier = Modifier.size(20.dp),
                                             imageVector = Icons.Filled.Delete,
                                             contentDescription = ""
                                         )
@@ -606,6 +650,13 @@ private fun AddVaccinationDialog(
                             )
                         },
                     )
+                    CustomizableSearchBar(
+                        query = "",
+                        onQueryChange = {},
+                        onSearch = {},
+                        searchResults = emptyList(),
+                        onResultClick = {},
+                        )
                     Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
                     OutlinedTextField(
                         value = vaccinationDetails.medication,
@@ -633,7 +684,7 @@ private fun AddVaccinationDialog(
                         enabled = isEntryValid,
                         modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
                     ) {
-                        Text(stringResource(R.string.add))
+                        Text(stringResource(R.string.save))
                     }
                 }
             }

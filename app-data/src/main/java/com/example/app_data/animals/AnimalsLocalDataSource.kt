@@ -12,5 +12,6 @@ class AnimalsLocalDataSource @Inject constructor(
     suspend fun getVaccination(id: UUID): Vaccination? = animalsDao.getVaccination(id)
     suspend fun insertVaccination(vaccination: Vaccination) = animalsDao.insertVaccination(vaccination)
     suspend fun deleteVaccination(vaccination: Vaccination) = animalsDao.deleteVaccination(vaccination)
+    suspend fun updateVaccination(vaccination: Vaccination) = animalsDao.updateVaccination(vaccination)
 }
 

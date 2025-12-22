@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
@@ -24,4 +25,6 @@ interface AnimalsDao {
 
     @Delete
     suspend fun deleteVaccination(vaccination: Vaccination)
+    @Update
+    suspend fun updateVaccination(vaccination: Vaccination)
 }

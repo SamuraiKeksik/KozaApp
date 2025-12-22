@@ -31,13 +31,14 @@ class GoatDetailsViewModel @Inject constructor(
 ) : ViewModel() {
     private val goatId: UUID = UUID.fromString(checkNotNull(savedStateHandle["id"]))
 
-    var sicknessTypesList: StateFlow<SicknessTypesUiState> = animalsRepository.sicknessTypesList.map {
-        SicknessTypesUiState(it)
-    }.stateIn(
+    var sicknessTypesList: StateFlow<SicknessTypesUiState> =
+        animalsRepository.sicknessTypesList.map {
+            SicknessTypesUiState(it)
+        }.stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
             SicknessTypesUiState()
-    )
+        )
 
     var uiState: StateFlow<GoatDetailsUiState> =
         goatRepository.getGoat(goatId)
@@ -55,23 +56,36 @@ class GoatDetailsViewModel @Inject constructor(
                 initialValue = GoatDetailsUiState()
             )
 
-    var vaccinationUiState by mutableStateOf(VaccinationUiState(
+    var vaccinationUiState by mutableStateOf(
+        VaccinationUiState(
             vaccinationDetails = VaccinationDetails(goatId = goatId)
-    ))
+        )
+    )
         private set
 
 
-    fun updateVaccinationUiState(vaccinationDetails: VaccinationDetails){
+    suspend fun deleteGoat() {
+        goatRepository.deleteGoat(uiState.value.goatDetails.toGoat())
+    }
+
+
+    //Vaccinations
+    fun updateVaccinationUiState(vaccinationDetails: VaccinationDetails) {
         vaccinationUiState = VaccinationUiState(
             vaccinationDetails = vaccinationDetails,
             isEntryValid =
-                    vaccinationDetails.sicknessName.isNotBlank() &&
-                    vaccinationDetails.sicknessTypeId != 0 &&
-                    vaccinationDetails.medication.isNotBlank()
-            )
+                vaccinationDetails.sicknessName.isNotBlank() &&
+                        vaccinationDetails.sicknessTypeId != 0 &&
+                        vaccinationDetails.medication.isNotBlank()
+        )
     }
 
-    fun clearVaccinationUiState() = updateVaccinationUiState(vaccinationDetails = VaccinationDetails(goatId = goatId))
+    suspend fun getVaccination(id: UUID) {
+        val vaccination = animalsRepository.getVaccination(id)
+        if (vaccination != null) {
+            updateVaccinationUiState(vaccination.toVaccinationDetails())
+        }
+    }
 
     suspend fun insertVaccination() {
         if (vaccinationUiState.isEntryValid) {
@@ -81,22 +95,32 @@ class GoatDetailsViewModel @Inject constructor(
         clearVaccinationUiState()
     }
 
+    suspend fun updateVaccination() {
+        if (vaccinationUiState.isEntryValid) {
+            animalsRepository.updateVaccination(vaccinationUiState.vaccinationDetails.toVaccination())
+        }
+        clearVaccinationUiState()
+    }
+
     suspend fun deleteVaccination() {
         val vaccination = animalsRepository.getVaccination(vaccinationUiState.vaccinationDetails.id)
-            if (vaccination != null){
-                animalsRepository.deleteVaccination(vaccination)
-            }
+        if (vaccination != null) {
+            animalsRepository.deleteVaccination(vaccination)
+        }
         clearVaccinationUiState()
-
     }
 
-    suspend fun deleteGoat() {
-        goatRepository.deleteGoat(uiState.value.goatDetails.toGoat())
-    }
+    fun clearVaccinationUiState() =
+        updateVaccinationUiState(vaccinationDetails = VaccinationDetails(goatId = goatId))
+
+    //Sicknesses
+
+
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
     }
 }
+
 data class GoatDetailsUiState(
     val goatDetails: GoatDetails = GoatDetails(),
     val goatVaccinations: List<Vaccination> = emptyList(),
@@ -104,7 +128,7 @@ data class GoatDetailsUiState(
     val goatMilkYields: List<MilkYield> = emptyList(),
     val selectedVaccinationId: UUID = UUID.randomUUID(),
     val selectedSicknessId: UUID = UUID.randomUUID()
-    )
+)
 
 data class VaccinationUiState(
     val vaccinationDetails: VaccinationDetails = VaccinationDetails(),
@@ -115,6 +139,14 @@ fun VaccinationDetails.toVaccination() = Vaccination(
     id = id,
     sicknessTypeId = sicknessTypeId,
     animalId = goatId,
+    medication = medication,
+    date = date
+)
+
+fun Vaccination.toVaccinationDetails() = VaccinationDetails(
+    id = id,
+    sicknessTypeId = sicknessTypeId,
+    goatId = animalId,
     medication = medication,
     date = date
 )
