@@ -26,6 +26,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -76,6 +77,8 @@ import com.example.app_features.CustomizableSearchBar
 import com.example.app_features.DatePickerModal
 import com.example.app_features.ExpandLabel
 import com.example.app_features.R
+import com.example.app_features.SelectSearchBar
+import com.example.app_features.SimpleSearchBar
 import com.example.app_features.theme.AppTheme
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -650,13 +653,7 @@ private fun AddVaccinationDialog(
                             )
                         },
                     )
-                    CustomizableSearchBar(
-                        query = "",
-                        onQueryChange = {},
-                        onSearch = {},
-                        searchResults = emptyList(),
-                        onResultClick = {},
-                        )
+                    SelectSearchBar()
                     Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
                     OutlinedTextField(
                         value = vaccinationDetails.medication,
@@ -749,15 +746,17 @@ fun SicknessTypeSelector(
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
+    var text by remember { mutableStateOf("") }
+
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded },
         modifier = modifier
     ) {
         OutlinedTextField(
-            value = selectedSicknessName,
-            onValueChange = { /* Не изменяем вручную, только через меню */ },
-            readOnly = true,
+            value = text,
+            onValueChange = { text = it },
+            readOnly = false,
             label = { Text(stringResource(R.string.sickness)) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier.menuAnchor()
