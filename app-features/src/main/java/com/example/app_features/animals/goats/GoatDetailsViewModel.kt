@@ -58,16 +58,19 @@ class GoatDetailsViewModel @Inject constructor(
 
     var vaccinationUiState by mutableStateOf(
         VaccinationUiState(
-            vaccinationDetails = VaccinationDetails(goatId = goatId)
+            vaccinationDetails = VaccinationDetails(
+                goatId = goatId
+            )
         )
     )
         private set
 
+    var sicknessUiState by mutableStateOf(SicknessUiState(sicknessDetails = SicknessDetails(goatId = goatId)))
+        private set
 
     suspend fun deleteGoat() {
         goatRepository.deleteGoat(uiState.value.goatDetails.toGoat())
     }
-
 
     //Vaccinations
     fun updateVaccinationUiState(vaccinationDetails: VaccinationDetails) {
@@ -83,7 +86,8 @@ class GoatDetailsViewModel @Inject constructor(
     suspend fun getVaccination(id: UUID) {
         val vaccination = animalsRepository.getVaccination(id)
         if (vaccination != null) {
-            val sickness = sicknessTypesList.value.sicknessTypesList.find { it.id == vaccination.sicknessTypeId }
+            val sickness =
+                sicknessTypesList.value.sicknessTypesList.find { it.id == vaccination.sicknessTypeId }
             updateVaccinationUiState(
                 vaccination.toVaccinationDetails().copy(sicknessName = sickness?.name ?: "")
             )
@@ -116,6 +120,54 @@ class GoatDetailsViewModel @Inject constructor(
     fun clearVaccinationUiState() =
         updateVaccinationUiState(vaccinationDetails = VaccinationDetails(goatId = goatId))
 
+
+    //Sicknesses
+    fun updateSicknessUiState(sicknessDetails: SicknessDetails) {
+        sicknessUiState = SicknessUiState(
+            sicknessDetails = sicknessDetails,
+            isEntryValid =
+                sicknessDetails.sicknessName.isNotBlank() &&
+                        sicknessDetails.sicknessTypeId != 0
+        )
+    }
+
+    suspend fun getSickness(id: UUID) {
+        val sickness = animalsRepository.getSickness(id)
+        if (sickness != null) {
+            val sickness =
+                sicknessTypesList.value.sicknessTypesList.find { it.id == sickness.sicknessTypeId }
+            updateSicknessUiState(
+                sickness.toSicknessDetails().copy(sicknessName = sickness?.name ?: "")
+            )
+        }
+    }
+
+    suspend fun insertSickness() {
+        if (sicknessUiState.isEntryValid) {
+            animalsRepository.insertSickness(sicknessUiState.sicknessDetails.toSickness())
+        }
+        //Обнуляем поля
+        clearSicknessUiState()
+    }
+
+    suspend fun updateSickness() {
+        if (sicknessUiState.isEntryValid) {
+            animalsRepository.updateSickness(sicknessUiState.sicknessDetails.toSickness())
+        }
+        clearSicknessUiState()
+    }
+
+    suspend fun deleteSickness() {
+        val sickness = animalsRepository.getSickness(sicknessUiState.sicknessDetails.id)
+        if (sickness != null) {
+            animalsRepository.deleteSickness(sickness)
+        }
+        clearSicknessUiState()
+    }
+
+    fun clearSicknessUiState() =
+        updateSicknessUiState(sicknessDetails = SicknessDetails(goatId = goatId))
+
     //Sicknesses
 
 
@@ -133,9 +185,21 @@ data class GoatDetailsUiState(
     val selectedSicknessId: UUID = UUID.randomUUID()
 )
 
+data class SicknessTypesUiState(val sicknessTypesList: List<SicknessType> = emptyList())
+
+//Vaccinations
 data class VaccinationUiState(
     val vaccinationDetails: VaccinationDetails = VaccinationDetails(),
     val isEntryValid: Boolean = false
+)
+
+data class VaccinationDetails(
+    val id: UUID = UUID.randomUUID(),
+    val date: Long = System.currentTimeMillis(),
+    val sicknessName: String = "",
+    val goatId: UUID = UUID.randomUUID(),
+    val sicknessTypeId: Int = 0,
+    val medication: String = "",
 )
 
 fun VaccinationDetails.toVaccination() = Vaccination(
@@ -154,13 +218,33 @@ fun Vaccination.toVaccinationDetails() = VaccinationDetails(
     date = date
 )
 
-data class SicknessTypesUiState(val sicknessTypesList: List<SicknessType> = emptyList())
+//Sicknesses
+data class SicknessUiState(
+    val sicknessDetails: SicknessDetails = SicknessDetails(),
+    val isEntryValid: Boolean = false
+)
 
-public data class VaccinationDetails(
+data class SicknessDetails(
     val id: UUID = UUID.randomUUID(),
-    val date: Long = System.currentTimeMillis(),
+    val startDate: Long = System.currentTimeMillis(),
+    val endDate: Long? = null,
     val sicknessName: String = "",
     val goatId: UUID = UUID.randomUUID(),
     val sicknessTypeId: Int = 0,
-    val medication: String = "",
+)
+
+fun SicknessDetails.toSickness() = Sickness(
+    id = id,
+    startDate = startDate,
+    endDate = endDate,
+    sicknessTypeId = sicknessTypeId,
+    animalId = goatId,
+)
+
+fun Sickness.toSicknessDetails() = SicknessDetails(
+    id = id,
+    startDate = startDate,
+    endDate = endDate,
+    sicknessTypeId = sicknessTypeId,
+    goatId = animalId,
 )

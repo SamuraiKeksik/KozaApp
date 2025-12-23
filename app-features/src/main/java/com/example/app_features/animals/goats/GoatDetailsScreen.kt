@@ -248,15 +248,23 @@ private fun GoatDetailsBody(
         }
 
         if (addSicknessRequired) {
-            AddSicknessDialog(
+            SicknessDialog(
+                label = stringResource(R.string.add_vaccination_label),
+                sicknessDetails = viewModel.sicknessUiState.sicknessDatails,
+                isEntryValid = viewModel.sicknessUiState.isEntryValid,
                 onAddConfirm = {
-                    addSicknessRequired = false
                     coroutineScope.launch {
-                        //viewModel.insertSickness()
+                        viewModel.insertVaccination()
                     }
+                    addVaccinationRequired = false
+
                 },
-                onAddCancel = { addSicknessRequired = false },
-                goatName = "goatDetailsUiState.goatDetails.name",
+                onAddCancel = { addVaccinationRequired = false },
+                onDateFocused = { dateSelectionRequired = true },
+                onDateUnFocused = { dateSelectionRequired = false },
+                onValueChange = { viewModel.updateVaccinationUiState(it) },
+                sicknessTypesList = sicknessTypesList.sicknessTypesList,
+                dateFormat = dateFormat,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             )
         }
@@ -700,26 +708,133 @@ private fun VaccinationDialog(
 }
 
 @Composable
-private fun AddSicknessDialog(
+private fun SicknessDialog(
+    label: String,
+    sicknessDetails: SicknessDetails,
+    sicknessTypesList: List<SicknessType>,
+    isEntryValid: Boolean,
     onAddConfirm: () -> Unit,
     onAddCancel: () -> Unit,
-    goatName: String,
+    onDateFocused: () -> Unit,
+    onDateUnFocused: () -> Unit,
+    onValueChange: (SicknessDetails) -> Unit,
+    dateFormat: SimpleDateFormat,
     modifier: Modifier = Modifier,
 ) {
-    AlertDialog(
-        onDismissRequest = { /* Do nothing */ },
-        title = { Text(stringResource(R.string.add_sickness_label)) },
-        modifier = modifier,
-        dismissButton = {
-            TextButton(onClick = onAddCancel) {
-                Text(text = stringResource(R.string.cancel))
+    Dialog(onDismissRequest = { /* Do nothing */ }) {
+        Card {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            ) {
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.weight(1f)
+                )
+                IconButton(
+                    modifier = Modifier.padding(0.dp),
+                    onClick = { onAddCancel() }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
+                }
             }
-        },
-        confirmButton = {
-            TextButton(onClick = onAddConfirm) {
-                Text(text = stringResource(R.string.add))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        dimensionResource(id = R.dimen.padding_medium),
+                        0.dp,
+                        dimensionResource(id = R.dimen.padding_medium),
+                        dimensionResource(id = R.dimen.padding_medium),
+                    ),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Column {
+                    OutlinedTextField(
+                        value = dateFormat.format(sicknessDetails.startDate),
+                        onValueChange = { onValueChange(sicknessDetails.copy(startDate = it.toLong())) },
+                        label = { Text(stringResource(R.string.start_date)) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .onFocusChanged {
+                                if (it.isFocused) onDateFocused() else onDateUnFocused()
+                            },
+                        readOnly = true,
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        trailingIcon = {
+                            IconButton(onClick = onDateFocused) {
+                                Icon(
+                                    imageVector = Icons.Filled.CalendarMonth,
+                                    contentDescription = null
+                                )
+                            }
+                        },
+                    )
+                    OutlinedTextField(
+                        value = dateFormat.format(sicknessDetails.endDate),
+                        onValueChange = { onValueChange(sicknessDetails.copy(endDate = it.toLong())) },
+                        label = { Text(stringResource(R.string.end_date)) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .onFocusChanged {
+                                if (it.isFocused) onDateFocused() else onDateUnFocused()
+                            },
+                        readOnly = true,
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        trailingIcon = {
+                            IconButton(onClick = onDateFocused) {
+                                Icon(
+                                    imageVector = Icons.Filled.CalendarMonth,
+                                    contentDescription = null
+                                )
+                            }
+                        },
+                    )
+                    Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
+                    SicknessTypeSelector(
+                        sicknessTypesList = sicknessTypesList,
+                        selectedSicknessName = vaccinationDetails.sicknessName,
+                        onSicknessUpdate = { id, name ->
+                            onValueChange(
+                                vaccinationDetails.copy(
+                                    sicknessTypeId = id,
+                                    sicknessName = name
+                                )
+                            )
+                        },
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    TextButton(
+                        onClick = { onAddCancel() },
+                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+                    ) {
+                        Text(stringResource(R.string.cancel))
+                    }
+                    TextButton(
+                        onClick = { onAddConfirm() },
+                        enabled = isEntryValid,
+                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+                    ) {
+                        Text(stringResource(R.string.save))
+                    }
+                }
             }
-        })
+        }
+    }
 }
 
 @Composable

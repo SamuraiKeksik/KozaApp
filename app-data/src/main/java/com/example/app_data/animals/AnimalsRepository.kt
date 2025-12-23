@@ -17,11 +17,11 @@ class DefaultAnimalsRepository @Inject constructor(
     private val animalsLocalDataSource: AnimalsLocalDataSource
 ) : AnimalsRepository {
     override val sicknessTypesList: Flow<List<SicknessType>> = animalsLocalDataSource.getAllSicknessTypesFlow()
-    override suspend fun getVaccination(id: UUID): Vaccination? = animalsLocalDataSource.getVaccination(id)
 
+    //Vaccination
+    override suspend fun getVaccination(id: UUID): Vaccination? = animalsLocalDataSource.getVaccination(id)
     override suspend fun insertVaccination(vaccination: Vaccination) =
         animalsLocalDataSource.insertVaccination(vaccination)
-
     override suspend fun deleteVaccination(vaccination: Vaccination) = animalsLocalDataSource.deleteVaccination(vaccination)
     override suspend fun updateVaccination(vaccination: Vaccination) = animalsLocalDataSource.updateVaccination(vaccination)
 }

@@ -10,7 +10,7 @@ data class Sickness (
     @PrimaryKey
     val id: UUID = UUID.randomUUID(),
     val animalId: UUID,
-    val sicknessType: Int,
-    val startDate: Date,
-    val endDate: Date,
+    val sicknessTypeId: Int,
+    val startDate: Long,
+    val endDate: Long?,
 )
