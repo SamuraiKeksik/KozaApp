@@ -2,7 +2,9 @@ package com.example.app_data.animals
 
 import androidx.room.Dao
 import androidx.room.Delete
+import androidx.room.Ignore
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +19,7 @@ interface AnimalsDao {
     @Query("SELECT * FROM vaccinations WHERE id = :id")
     suspend fun getVaccination(id: UUID): Vaccination?
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertSicknessType(sicknessType: SicknessType)
 
     @Insert

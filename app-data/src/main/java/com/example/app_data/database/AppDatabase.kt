@@ -64,13 +64,30 @@ abstract class AppDatabase : RoomDatabase() {
                 CoroutineScope(Dispatchers.IO).launch {
                     val dao = getDatabase(context).animalsDao()
                     val list = dao.getAllSicknessTypes().first()
-                    if (list.isEmpty()) {
+                    val vaccination = list.firstOrNull() { it.id == 3 }
+                    if ( vaccination == null ) {
                         dao.insertSicknessType(
                             SicknessType(
                                 id = 1,
                                 name = "Неизвестно",
                                 description = "",
                                 animalType = AnimalType.Unknown
+                            )
+                        )
+                        dao.insertSicknessType(
+                            SicknessType(
+                                id = 2,
+                                name = "Тимпания ",
+                                description = "",
+                                animalType = AnimalType.Goat
+                            )
+                        )
+                        dao.insertSicknessType(
+                            SicknessType(
+                                id = 3,
+                                name = "Сибирская язва",
+                                description = "",
+                                animalType = AnimalType.Goat
                             )
                         )
                     }

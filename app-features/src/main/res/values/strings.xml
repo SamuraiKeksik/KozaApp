@@ -91,11 +91,14 @@
     <string name="cancel">Отменить</string>
     <string name="date">Дата</string>
     <string name="sickness">Заболевание</string>
+    <string name="sickness_type">Болезнь</string>
     <string name="medication">Препарат</string>
     <string name="warning_label">Внимание!</string>
     <string name="delete_warning">Вы уверены что хотите удалить %s %s? </string>
     <string name="add_vaccination_label">Добавление прививки </string>
+    <string name="edit_vaccination_label">Изменение прививки </string>
     <string name="add_sickness_label">Добавление заболевания </string>
+    <string name="edit_sickness_label">Изменение заболевания </string>
 
     <!-- Пол -->
     <string name="gender_label">Пол</string>

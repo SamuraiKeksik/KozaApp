@@ -7,13 +7,11 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -26,14 +24,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Mode
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -45,6 +44,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -73,12 +73,9 @@ import com.example.app_data.animals.Sickness
 import com.example.app_data.animals.SicknessType
 import com.example.app_data.animals.Vaccination
 import com.example.app_data.animals.goats.GoatEntity
-import com.example.app_features.CustomizableSearchBar
 import com.example.app_features.DatePickerModal
 import com.example.app_features.ExpandLabel
 import com.example.app_features.R
-import com.example.app_features.SelectSearchBar
-import com.example.app_features.SimpleSearchBar
 import com.example.app_features.theme.AppTheme
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -121,13 +118,14 @@ private fun GoatDetailsBody(
     var addVaccinationRequired by rememberSaveable { mutableStateOf(false) }
     var addSicknessRequired by rememberSaveable { mutableStateOf(false) }
 
-    var updateVaccinationRequired by rememberSaveable { mutableStateOf(false) }
+    var editVaccinationRequired by rememberSaveable { mutableStateOf(false) }
 
     var dateSelectionRequired by rememberSaveable { mutableStateOf(false) }
     val dateFormat = SimpleDateFormat("dd.MM.yyyy")
 
     Column(
-        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+        modifier = modifier
+            .padding(dimensionResource(id = R.dimen.padding_medium))
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
@@ -139,13 +137,14 @@ private fun GoatDetailsBody(
             vaccinationsList = uiState.goatVaccinations,
             sicknessTypesList = sicknessTypesList.sicknessTypesList,
             onAddClick = {
+                viewModel.clearVaccinationUiState()
                 addVaccinationRequired = true
             },
             onEditClick = {
                 coroutineScope.launch {
                     viewModel.getVaccination(id = it)
                 }
-                updateVaccinationRequired = true
+                editVaccinationRequired = true
             },
             onDeleteClick = {
                 viewModel.updateVaccinationUiState(
@@ -178,13 +177,18 @@ private fun GoatDetailsBody(
                     }
                 },
                 onDeleteCancel = { deleteConfirmationRequired = false },
-                warningText = stringResource(R.string.delete_warning, "Козу", uiState.goatDetails.name),
+                warningText = stringResource(
+                    R.string.delete_warning,
+                    "Козу",
+                    uiState.goatDetails.name
+                ),
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             )
         }
 
         if (addVaccinationRequired) {
-            AddVaccinationDialog(
+            VaccinationDialog(
+                label = stringResource(R.string.add_vaccination_label),
                 vaccinationDetails = viewModel.vaccinationUiState.vaccinationDetails,
                 isEntryValid = viewModel.vaccinationUiState.isEntryValid,
                 onAddConfirm = {
@@ -204,18 +208,19 @@ private fun GoatDetailsBody(
             )
         }
 
-        if (updateVaccinationRequired) {
-            AddVaccinationDialog(
+        if (editVaccinationRequired) {
+            VaccinationDialog(
+                label = stringResource(R.string.edit_vaccination_label),
                 vaccinationDetails = viewModel.vaccinationUiState.vaccinationDetails,
                 isEntryValid = viewModel.vaccinationUiState.isEntryValid,
                 onAddConfirm = {
                     coroutineScope.launch {
                         viewModel.updateVaccination()
                     }
-                    updateVaccinationRequired = false
+                    editVaccinationRequired = false
 
                 },
-                onAddCancel = { updateVaccinationRequired = false },
+                onAddCancel = { editVaccinationRequired = false },
                 onDateFocused = { dateSelectionRequired = true },
                 onDateUnFocused = { dateSelectionRequired = false },
                 onValueChange = { viewModel.updateVaccinationUiState(it) },
@@ -236,7 +241,7 @@ private fun GoatDetailsBody(
                 onDeleteCancel = {
                     deleteVaccinationConfirmationRequired = false
                     viewModel.clearVaccinationUiState()
-                    },
+                },
                 warningText = stringResource(R.string.delete_warning, "прививку", ""),
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             )
@@ -443,17 +448,20 @@ private fun GoatVaccinations(
                                 modifier = modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Row(modifier = Modifier){
+                                Row(modifier = Modifier) {
                                     Text(text = dateFormat.format(vaccination.date))
                                     Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
-                                    Text(text = sicknessTypesList.find { it.id == vaccination.sicknessTypeId }?.name ?: "")
+                                    Text(
+                                        text = sicknessTypesList.find { it.id == vaccination.sicknessTypeId }?.name
+                                            ?: ""
+                                    )
                                     Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
                                     Text(text = vaccination.medication)
                                     Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
                                 }
                                 Row(
                                     modifier = Modifier.widthIn(min = 24.dp)
-                                ){
+                                ) {
                                     IconButton(
                                         modifier = Modifier.size(24.dp),
                                         onClick = { onEditClick(vaccination.id) }
@@ -480,7 +488,9 @@ private fun GoatVaccinations(
                         }
                     }
                     if (vaccinationsList.size > 10) {
-                        Button(modifier = Modifier.fillMaxWidth(), onClick = {}) { Text ("Переход на экран прививок")}
+                        Button(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {}) { Text("Переход на экран прививок") }
                         //ToDo:Переход на экран прививок
                     }
                 }
@@ -571,7 +581,8 @@ private fun GoatDetailsRow(
 }
 
 @Composable
-private fun AddVaccinationDialog(
+private fun VaccinationDialog(
+    label: String,
     vaccinationDetails: VaccinationDetails,
     sicknessTypesList: List<SicknessType>,
     isEntryValid: Boolean,
@@ -590,7 +601,7 @@ private fun AddVaccinationDialog(
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             ) {
                 Text(
-                    text = stringResource(R.string.add_vaccination_label),
+                    text = label,
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.weight(1f)
                 )
@@ -644,16 +655,15 @@ private fun AddVaccinationDialog(
                     SicknessTypeSelector(
                         sicknessTypesList = sicknessTypesList,
                         selectedSicknessName = vaccinationDetails.sicknessName,
-                        onSicknessSelected = {
+                        onSicknessUpdate = { id, name ->
                             onValueChange(
                                 vaccinationDetails.copy(
-                                    sicknessTypeId = it,
-                                    sicknessName = sicknessTypesList.first { s -> s.id == it }.name
+                                    sicknessTypeId = id,
+                                    sicknessName = name
                                 )
                             )
                         },
                     )
-                    SelectSearchBar()
                     Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
                     OutlinedTextField(
                         value = vaccinationDetails.medication,
@@ -742,11 +752,10 @@ private fun DeleteConfirmationDialog(
 fun SicknessTypeSelector(
     sicknessTypesList: List<SicknessType>,
     selectedSicknessName: String,
-    onSicknessSelected: (Int) -> Unit,
+    onSicknessUpdate: (Int, String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var text by remember { mutableStateOf("") }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -754,28 +763,38 @@ fun SicknessTypeSelector(
         modifier = modifier
     ) {
         OutlinedTextField(
-            value = text,
-            onValueChange = { text = it },
+            value = selectedSicknessName,
+            onValueChange = {
+                expanded = true
+                onSicknessUpdate(0, it)
+            },
             readOnly = false,
-            label = { Text(stringResource(R.string.sickness)) },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            modifier = Modifier.menuAnchor()
+            label = { Text(stringResource(R.string.sickness_type)) },
+            leadingIcon = { Icon(imageVector = Icons.Filled.Search, contentDescription = null) },
+            trailingIcon = {
+                IconButton(onClick = { onSicknessUpdate(0, "") }) {
+                    Icon(imageVector = Icons.Filled.Clear, contentDescription = null)
+                }
+            },
+            modifier = Modifier
+                .menuAnchor(MenuAnchorType.PrimaryEditable, true)
         )
         ExposedDropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            sicknessTypesList.forEach { sicknessType ->
-                DropdownMenuItem(
-                    text = { Text(sicknessType.name) },
-                    //text = { Text(stringResource(breed.labelResId)) },
-                    onClick = {
-                        onSicknessSelected(sicknessType.id)
-                        expanded = false
-                    },
-                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                )
-            }
+            sicknessTypesList
+                .filter { it.name.contains(selectedSicknessName, ignoreCase = true) || it.id == 1 }
+                .forEach { sicknessType ->
+                    DropdownMenuItem(
+                        text = { Text(sicknessType.name) },
+                        onClick = {
+                            onSicknessUpdate(sicknessType.id, sicknessType.name)
+                            expanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
+                }
         }
     }
 }

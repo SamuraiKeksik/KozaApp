@@ -83,7 +83,10 @@ class GoatDetailsViewModel @Inject constructor(
     suspend fun getVaccination(id: UUID) {
         val vaccination = animalsRepository.getVaccination(id)
         if (vaccination != null) {
-            updateVaccinationUiState(vaccination.toVaccinationDetails())
+            val sickness = sicknessTypesList.value.sicknessTypesList.find { it.id == vaccination.sicknessTypeId }
+            updateVaccinationUiState(
+                vaccination.toVaccinationDetails().copy(sicknessName = sickness?.name ?: "")
+            )
         }
     }
 
