@@ -134,10 +134,9 @@ class GoatDetailsViewModel @Inject constructor(
     suspend fun getSickness(id: UUID) {
         val sickness = animalsRepository.getSickness(id)
         if (sickness != null) {
-            val sickness =
-                sicknessTypesList.value.sicknessTypesList.find { it.id == sickness.sicknessTypeId }
+            val sicknessType = sicknessTypesList.value.sicknessTypesList.find { it.id == sickness.sicknessTypeId }
             updateSicknessUiState(
-                sickness.toSicknessDetails().copy(sicknessName = sickness?.name ?: "")
+                sickness.toSicknessDetails().copy(sicknessName = sicknessType?.name ?: "")
             )
         }
     }

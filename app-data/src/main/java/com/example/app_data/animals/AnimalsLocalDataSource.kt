@@ -9,9 +9,16 @@ class AnimalsLocalDataSource @Inject constructor(
         private val animalsDao: AnimalsDao
 ) {
     fun getAllSicknessTypesFlow(): Flow<List<SicknessType>> = animalsDao.getAllSicknessTypes()
+    //Vaccination
     suspend fun getVaccination(id: UUID): Vaccination? = animalsDao.getVaccination(id)
     suspend fun insertVaccination(vaccination: Vaccination) = animalsDao.insertVaccination(vaccination)
     suspend fun deleteVaccination(vaccination: Vaccination) = animalsDao.deleteVaccination(vaccination)
     suspend fun updateVaccination(vaccination: Vaccination) = animalsDao.updateVaccination(vaccination)
+
+    //Sickness
+    suspend fun getSickness(id: UUID): Sickness? = animalsDao.getSickness(id)
+    suspend fun insertSickness(sickness: Sickness) = animalsDao.insertSickness(sickness)
+    suspend fun deleteSickness(sickness: Sickness) = animalsDao.deleteSickness(sickness)
+    suspend fun updateSickness(sickness: Sickness) = animalsDao.updateSickness(sickness)
 }
 

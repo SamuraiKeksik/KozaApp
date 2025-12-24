@@ -15,18 +15,26 @@ interface AnimalsDao {
 
     @Query("SELECT * FROM sickness_types")
     fun getAllSicknessTypes(): Flow<List<SicknessType>>
-
-    @Query("SELECT * FROM vaccinations WHERE id = :id")
-    suspend fun getVaccination(id: UUID): Vaccination?
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertSicknessType(sicknessType: SicknessType)
 
+    //Vaccination
+    @Query("SELECT * FROM vaccinations WHERE id = :id")
+    suspend fun getVaccination(id: UUID): Vaccination?
     @Insert
     suspend fun insertVaccination(vaccination: Vaccination)
-
     @Delete
     suspend fun deleteVaccination(vaccination: Vaccination)
     @Update
     suspend fun updateVaccination(vaccination: Vaccination)
+
+    //Sickness
+    @Query("SELECT * FROM sicknesses WHERE id = :id")
+    suspend fun getSickness(id: UUID): Sickness?
+    @Insert
+    suspend fun insertSickness(sickness: Sickness)
+    @Delete
+    suspend fun deleteSickness(sickness: Sickness)
+    @Update
+    suspend fun updateSickness(sickness: Sickness)
 }

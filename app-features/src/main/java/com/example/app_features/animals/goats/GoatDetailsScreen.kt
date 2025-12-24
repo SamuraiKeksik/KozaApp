@@ -114,11 +114,13 @@ private fun GoatDetailsBody(
 
     var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
     var deleteVaccinationConfirmationRequired by rememberSaveable { mutableStateOf(false) }
+    var deleteSicknessConfirmationRequired by rememberSaveable { mutableStateOf(false) }
 
     var addVaccinationRequired by rememberSaveable { mutableStateOf(false) }
     var addSicknessRequired by rememberSaveable { mutableStateOf(false) }
 
     var editVaccinationRequired by rememberSaveable { mutableStateOf(false) }
+    var editSicknessRequired by rememberSaveable { mutableStateOf(false) }
 
     var dateSelectionRequired by rememberSaveable { mutableStateOf(false) }
     val dateFormat = SimpleDateFormat("dd.MM.yyyy")
@@ -156,7 +158,24 @@ private fun GoatDetailsBody(
         )
         GoatSicknesses(
             sicknessesList = uiState.goatSicknesses,
-            onAddClick = { addSicknessRequired = true }
+            sicknessTypesList = sicknessTypesList.sicknessTypesList,
+            onAddClick = {
+                viewModel.clearVaccinationUiState()
+                addSicknessRequired = true
+            },
+            onEditClick = {
+                coroutineScope.launch {
+                    viewModel.getVaccination(id = it)
+                }
+                editSicknessRequired = true
+            },
+            onDeleteClick = {
+                viewModel.updateSicknessUiState(
+                    viewModel.sicknessUiState.sicknessDetails.copy(id = it)
+                )
+                deleteSicknessConfirmationRequired = true
+            },
+            dateFormat = dateFormat
         )
 
         OutlinedButton(
@@ -230,6 +249,28 @@ private fun GoatDetailsBody(
             )
         }
 
+        if (editSicknessRequired) {
+            SicknessDialog(
+                label = stringResource(R.string.edit_sickness_label),
+                sicknessDetails = viewModel.sicknessUiState.sicknessDetails,
+                isEntryValid = viewModel.sicknessUiState.isEntryValid,
+                onAddConfirm = {
+                    coroutineScope.launch {
+                        viewModel.updateSickness()
+                    }
+                    editSicknessRequired = false
+
+                },
+                onAddCancel = { editSicknessRequired = false },
+                onDateFocused = { dateSelectionRequired = true },
+                onDateUnFocused = { dateSelectionRequired = false },
+                onValueChange = { viewModel.updateSicknessUiState(it) },
+                sicknessTypesList = sicknessTypesList.sicknessTypesList,
+                dateFormat = dateFormat,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            )
+        }
+
         if (deleteVaccinationConfirmationRequired) {
             DeleteConfirmationDialog(
                 onDeleteConfirm = {
@@ -247,22 +288,39 @@ private fun GoatDetailsBody(
             )
         }
 
+        if (deleteSicknessConfirmationRequired) {
+            DeleteConfirmationDialog(
+                onDeleteConfirm = {
+                    deleteSicknessConfirmationRequired = false
+                    coroutineScope.launch {
+                        viewModel.deleteSickness()
+                    }
+                },
+                onDeleteCancel = {
+                    deleteSicknessConfirmationRequired = false
+                    viewModel.clearSicknessUiState()
+                },
+                warningText = stringResource(R.string.delete_warning, "заболевание", ""),
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            )
+        }
+
         if (addSicknessRequired) {
             SicknessDialog(
-                label = stringResource(R.string.add_vaccination_label),
-                sicknessDetails = viewModel.sicknessUiState.sicknessDatails,
+                label = stringResource(R.string.add_sickness_label),
+                sicknessDetails = viewModel.sicknessUiState.sicknessDetails,
                 isEntryValid = viewModel.sicknessUiState.isEntryValid,
                 onAddConfirm = {
                     coroutineScope.launch {
-                        viewModel.insertVaccination()
+                        viewModel.insertSickness()
                     }
-                    addVaccinationRequired = false
+                    addSicknessRequired = false
 
                 },
-                onAddCancel = { addVaccinationRequired = false },
+                onAddCancel = { addSicknessRequired = false },
                 onDateFocused = { dateSelectionRequired = true },
                 onDateUnFocused = { dateSelectionRequired = false },
-                onValueChange = { viewModel.updateVaccinationUiState(it) },
+                onValueChange = { viewModel.updateSicknessUiState(it) },
                 sicknessTypesList = sicknessTypesList.sicknessTypesList,
                 dateFormat = dateFormat,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
@@ -510,9 +568,13 @@ private fun GoatVaccinations(
 @Composable
 private fun GoatSicknesses(
     sicknessesList: List<Sickness>,
+    sicknessTypesList: List<SicknessType>,
     onAddClick: () -> Unit,
+    onEditClick: (UUID) -> Unit,
+    onDeleteClick: (UUID) -> Unit,
+    dateFormat: SimpleDateFormat,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     var expanded by remember { mutableStateOf(false) }
     Card(
@@ -558,14 +620,52 @@ private fun GoatSicknesses(
 
                 } else {
                     LazyColumn(
-                        modifier = modifier,
+                        modifier = modifier.heightIn(max = 400.dp),
                         contentPadding = contentPadding,
                     ) {
-                        items(items = sicknessesList, key = { it.id }) { vaccination ->
-                            Row(modifier = modifier) {
-                                Text(text = vaccination.startDate.toString())
-                                Spacer(modifier = Modifier.weight(1f))
-                                Text(text = vaccination.endDate.toString())
+                        items(items = sicknessesList.take(10), key = { it.id }) { sickness ->
+                            Row(
+                                modifier = modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Row(modifier = Modifier) {
+                                    Text(text = dateFormat.format(sickness.startDate))
+                                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
+                                    Text(text = " - ")
+                                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
+                                    Text(text = if (sickness.endDate != null) dateFormat.format(sickness.endDate) else "")
+                                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
+                                    Text(
+                                        text = sicknessTypesList.find { it.id == sickness.sicknessTypeId }?.name
+                                            ?: ""
+                                    )
+                                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
+                                }
+                                Row(
+                                    modifier = Modifier.widthIn(min = 24.dp)
+                                ) {
+                                    IconButton(
+                                        modifier = Modifier.size(24.dp),
+                                        onClick = { onEditClick(sickness.id) }
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier.size(20.dp),
+                                            imageVector = Icons.Filled.Mode,
+                                            contentDescription = ""
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
+                                    IconButton(
+                                        modifier = Modifier.size(24.dp),
+                                        onClick = { onDeleteClick(sickness.id) }
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier.size(20.dp),
+                                            imageVector = Icons.Filled.Delete,
+                                            contentDescription = ""
+                                        )
+                                    }
+                                }
                             }
                         }
                     }
@@ -779,8 +879,8 @@ private fun SicknessDialog(
                         },
                     )
                     OutlinedTextField(
-                        value = dateFormat.format(sicknessDetails.endDate),
-                        onValueChange = { onValueChange(sicknessDetails.copy(endDate = it.toLong())) },
+                        value = if (sicknessDetails.endDate == null) "" else dateFormat.format(sicknessDetails.endDate),
+                        onValueChange = { onValueChange(sicknessDetails.copy(endDate = it.toLongOrNull() )) },
                         label = { Text(stringResource(R.string.end_date)) },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -802,10 +902,10 @@ private fun SicknessDialog(
                     Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
                     SicknessTypeSelector(
                         sicknessTypesList = sicknessTypesList,
-                        selectedSicknessName = vaccinationDetails.sicknessName,
+                        selectedSicknessName = sicknessDetails.sicknessName,
                         onSicknessUpdate = { id, name ->
                             onValueChange(
-                                vaccinationDetails.copy(
+                                sicknessDetails.copy(
                                     sicknessTypeId = id,
                                     sicknessName = name
                                 )

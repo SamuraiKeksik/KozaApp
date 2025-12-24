@@ -91,7 +91,7 @@
     <string name="cancel">Отменить</string>
     <string name="date">Дата</string>
     <string name="start_date">Начало</string>
-    <string name="dend_date">Конец</string>
+    <string name="end_date">Конец</string>
     <string name="sickness">Заболевание</string>
     <string name="sickness_type">Болезнь</string>
     <string name="medication">Препарат</string>
