@@ -123,6 +123,8 @@ private fun GoatDetailsBody(
     var editSicknessRequired by rememberSaveable { mutableStateOf(false) }
 
     var dateSelectionRequired by rememberSaveable { mutableStateOf(false) }
+    var startDateSelectionRequired by rememberSaveable { mutableStateOf(false) }
+    var endDateSelectionRequired by rememberSaveable { mutableStateOf(false) }
     val dateFormat = SimpleDateFormat("dd.MM.yyyy")
 
     Column(
@@ -165,7 +167,7 @@ private fun GoatDetailsBody(
             },
             onEditClick = {
                 coroutineScope.launch {
-                    viewModel.getVaccination(id = it)
+                    viewModel.getSickness(id = it)
                 }
                 editSicknessRequired = true
             },
@@ -262,8 +264,10 @@ private fun GoatDetailsBody(
 
                 },
                 onAddCancel = { editSicknessRequired = false },
-                onDateFocused = { dateSelectionRequired = true },
-                onDateUnFocused = { dateSelectionRequired = false },
+                onStartDateFocused = { startDateSelectionRequired = true },
+                onStartDateUnFocused = { startDateSelectionRequired = false },
+                onEndDateFocused = { endDateSelectionRequired = true },
+                onEndDateUnFocused = { endDateSelectionRequired = false },
                 onValueChange = { viewModel.updateSicknessUiState(it) },
                 sicknessTypesList = sicknessTypesList.sicknessTypesList,
                 dateFormat = dateFormat,
@@ -318,8 +322,10 @@ private fun GoatDetailsBody(
 
                 },
                 onAddCancel = { addSicknessRequired = false },
-                onDateFocused = { dateSelectionRequired = true },
-                onDateUnFocused = { dateSelectionRequired = false },
+                onStartDateFocused = { startDateSelectionRequired = true },
+                onStartDateUnFocused = { startDateSelectionRequired = false },
+                onEndDateFocused = { endDateSelectionRequired = true },
+                onEndDateUnFocused = { endDateSelectionRequired = false },
                 onValueChange = { viewModel.updateSicknessUiState(it) },
                 sicknessTypesList = sicknessTypesList.sicknessTypesList,
                 dateFormat = dateFormat,
@@ -340,6 +346,40 @@ private fun GoatDetailsBody(
                 },
                 onDismiss = {
                     dateSelectionRequired = false
+                }
+            )
+        }
+        if (startDateSelectionRequired) {
+            DatePickerModal(
+                onDateSelected = {
+                    viewModel.updateSicknessUiState(
+                        sicknessDetails = it.let {
+                            viewModel.sicknessUiState.sicknessDetails.copy(
+                                startDate = it!!
+                            )
+                        }
+                    )
+                    startDateSelectionRequired = false
+                },
+                onDismiss = {
+                    startDateSelectionRequired = false
+                }
+            )
+        }
+        if (endDateSelectionRequired) {
+            DatePickerModal(
+                onDateSelected = {
+                    viewModel.updateSicknessUiState(
+                        sicknessDetails = it.let {
+                            viewModel.sicknessUiState.sicknessDetails.copy(
+                                endDate = it!!
+                            )
+                        }
+                    )
+                    endDateSelectionRequired = false
+                },
+                onDismiss = {
+                    endDateSelectionRequired = false
                 }
             )
         }
@@ -815,8 +855,10 @@ private fun SicknessDialog(
     isEntryValid: Boolean,
     onAddConfirm: () -> Unit,
     onAddCancel: () -> Unit,
-    onDateFocused: () -> Unit,
-    onDateUnFocused: () -> Unit,
+    onStartDateFocused: () -> Unit,
+    onStartDateUnFocused: () -> Unit,
+    onEndDateFocused: () -> Unit,
+    onEndDateUnFocused: () -> Unit,
     onValueChange: (SicknessDetails) -> Unit,
     dateFormat: SimpleDateFormat,
     modifier: Modifier = Modifier,
@@ -864,13 +906,13 @@ private fun SicknessDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .onFocusChanged {
-                                if (it.isFocused) onDateFocused() else onDateUnFocused()
+                                if (it.isFocused) onStartDateFocused() else onStartDateUnFocused()
                             },
                         readOnly = true,
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                         trailingIcon = {
-                            IconButton(onClick = onDateFocused) {
+                            IconButton(onClick = onStartDateFocused) {
                                 Icon(
                                     imageVector = Icons.Filled.CalendarMonth,
                                     contentDescription = null
@@ -885,13 +927,13 @@ private fun SicknessDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .onFocusChanged {
-                                if (it.isFocused) onDateFocused() else onDateUnFocused()
+                                if (it.isFocused) onEndDateFocused() else onEndDateUnFocused()
                             },
                         readOnly = true,
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                         trailingIcon = {
-                            IconButton(onClick = onDateFocused) {
+                            IconButton(onClick = onEndDateFocused) {
                                 Icon(
                                     imageVector = Icons.Filled.CalendarMonth,
                                     contentDescription = null
