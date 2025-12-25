@@ -138,5 +138,13 @@
     <string name="vaccinations_label">Прививки</string>
     <string name="empty_sicknesses_list_label">Заболевания отсутствуют</string>
     <string name="sicknesses_label">Заболевания</string>
+    <string name="empty_milk_yields_list_label">Удои отсутствуют</string>
+    <string name="milk_yields_label">Удои</string>
+    <string name="litres_of_milk">Литров молока</string>
+    <plurals name="numberOfMilkYields">
+        <item quantity="one">%s литр</item>
+        <item quantity="few">%s литра</item>
+        <item quantity="other">%s литров</item>
+    </plurals>
 
 </resources>

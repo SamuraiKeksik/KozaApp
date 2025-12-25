@@ -37,4 +37,14 @@ interface AnimalsDao {
     suspend fun deleteSickness(sickness: Sickness)
     @Update
     suspend fun updateSickness(sickness: Sickness)
+
+    //MilkYield
+    @Query("SELECT * FROM milk_yields WHERE id = :id")
+    suspend fun getMilkYield(id: UUID): MilkYield?
+    @Insert
+    suspend fun insertMilkYield(milkYield: MilkYield)
+    @Delete
+    suspend fun deleteMilkYield(milkYield: MilkYield)
+    @Update
+    suspend fun updateMilkYield(milkYield: MilkYield)
 }

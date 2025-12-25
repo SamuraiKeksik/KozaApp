@@ -18,8 +18,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import java.time.LocalDate
-import java.util.Date
 import java.util.UUID
 import javax.inject.Inject
 
@@ -56,16 +54,11 @@ class GoatDetailsViewModel @Inject constructor(
                 initialValue = GoatDetailsUiState()
             )
 
-    var vaccinationUiState by mutableStateOf(
-        VaccinationUiState(
-            vaccinationDetails = VaccinationDetails(
-                goatId = goatId
-            )
-        )
-    )
+    var vaccinationUiState by mutableStateOf(VaccinationUiState(vaccinationDetails = VaccinationDetails(goatId = goatId)))
         private set
-
     var sicknessUiState by mutableStateOf(SicknessUiState(sicknessDetails = SicknessDetails(goatId = goatId)))
+        private set
+    var milkYieldUiState by mutableStateOf(MilkYieldUiState(milkYieldDetails = MilkYieldDetails(goatId = goatId)))
         private set
 
     suspend fun deleteGoat() {
@@ -167,8 +160,43 @@ class GoatDetailsViewModel @Inject constructor(
     fun clearSicknessUiState() =
         updateSicknessUiState(sicknessDetails = SicknessDetails(goatId = goatId))
 
-    //Sicknesses
 
+    //MilkYields
+    fun updateMilkYieldUiState(milkYieldDetails: MilkYieldDetails) {
+        milkYieldUiState = MilkYieldUiState(milkYieldDetails = milkYieldDetails)
+    }
+
+    suspend fun getMilkYield(id: UUID) {
+        val milkYield = animalsRepository.getMilkYield(id)
+        if (milkYield != null) updateMilkYieldUiState(milkYield.toMilkYieldDetails())
+    }
+
+    suspend fun insertMilkYield() {
+        if (milkYieldUiState.isEntryValid) {
+            animalsRepository.insertMilkYield(milkYieldUiState.milkYieldDetails.toMilkYield())
+        }
+        //Обнуляем поля
+        clearMilkYieldUiState()
+    }
+
+    suspend fun updateMilkYield() {
+        if (milkYieldUiState.isEntryValid) {
+            animalsRepository.updateMilkYield(milkYieldUiState.milkYieldDetails.toMilkYield())
+        }
+        clearMilkYieldUiState()
+    }
+
+    suspend fun deleteMilkYield() {
+        val milkYield = animalsRepository.getMilkYield(milkYieldUiState.milkYieldDetails.id)
+        if (milkYield != null) {
+            animalsRepository.deleteMilkYield(milkYield)
+        }
+        clearMilkYieldUiState()
+    }
+
+    fun clearMilkYieldUiState() = updateMilkYieldUiState(milkYieldDetails = MilkYieldDetails(goatId = goatId))
+
+    //------------------------------------\\
 
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
@@ -246,4 +274,31 @@ fun Sickness.toSicknessDetails() = SicknessDetails(
     endDate = endDate,
     sicknessTypeId = sicknessTypeId,
     goatId = animalId,
+)
+
+//MilkYields
+data class MilkYieldUiState(
+    val milkYieldDetails: MilkYieldDetails = MilkYieldDetails(),
+    val isEntryValid: Boolean = true
+)
+
+data class MilkYieldDetails(
+    val id: UUID = UUID.randomUUID(),
+    val goatId: UUID = UUID.randomUUID(),
+    val amount: Double? = 0.0,
+    val date: Long = System.currentTimeMillis(),
+)
+
+fun MilkYieldDetails.toMilkYield() = MilkYield(
+    id = id,
+    animalId = goatId,
+    amount = amount ?: 0.0,
+    date = date,
+)
+
+fun MilkYield.toMilkYieldDetails() = MilkYieldDetails(
+    id = id,
+    goatId = animalId,
+    amount = amount,
+    date = date,
 )

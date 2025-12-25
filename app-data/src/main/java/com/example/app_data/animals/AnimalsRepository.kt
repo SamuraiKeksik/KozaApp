@@ -19,6 +19,12 @@ interface AnimalsRepository {
     suspend fun insertSickness(sickness: Sickness)
     suspend fun deleteSickness(sickness: Sickness)
     suspend fun updateSickness(sickness: Sickness)
+
+    //MilkYields
+    suspend fun getMilkYield(id: UUID) : MilkYield?
+    suspend fun insertMilkYield(milkYield: MilkYield)
+    suspend fun deleteMilkYield(milkYield: MilkYield)
+    suspend fun updateMilkYield(milkYield: MilkYield)
 }
 
 class DefaultAnimalsRepository @Inject constructor(
@@ -37,4 +43,10 @@ class DefaultAnimalsRepository @Inject constructor(
     override suspend fun insertSickness(sickness: Sickness) = animalsLocalDataSource.insertSickness(sickness)
     override suspend fun deleteSickness(sickness: Sickness) = animalsLocalDataSource.deleteSickness(sickness)
     override suspend fun updateSickness(sickness: Sickness) = animalsLocalDataSource.updateSickness(sickness)
+
+    //MilkYield
+    override suspend fun getMilkYield(id: UUID): MilkYield? = animalsLocalDataSource.getMilkYield(id)
+    override suspend fun insertMilkYield(milkYield: MilkYield) = animalsLocalDataSource.insertMilkYield(milkYield)
+    override suspend fun deleteMilkYield(milkYield: MilkYield) = animalsLocalDataSource.deleteMilkYield(milkYield)
+    override suspend fun updateMilkYield(milkYield: MilkYield) = animalsLocalDataSource.updateMilkYield(milkYield)
 }

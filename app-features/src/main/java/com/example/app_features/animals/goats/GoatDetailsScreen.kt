@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Mode
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -61,14 +62,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.app_data.animals.MilkYield
 import com.example.app_data.animals.Sickness
 import com.example.app_data.animals.SicknessType
 import com.example.app_data.animals.Vaccination
@@ -115,14 +119,18 @@ private fun GoatDetailsBody(
     var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
     var deleteVaccinationConfirmationRequired by rememberSaveable { mutableStateOf(false) }
     var deleteSicknessConfirmationRequired by rememberSaveable { mutableStateOf(false) }
+    var deleteMilkYieldConfirmationRequired by rememberSaveable { mutableStateOf(false) }
 
     var addVaccinationRequired by rememberSaveable { mutableStateOf(false) }
     var addSicknessRequired by rememberSaveable { mutableStateOf(false) }
+    var addMilkYieldRequired by rememberSaveable { mutableStateOf(false) }
 
     var editVaccinationRequired by rememberSaveable { mutableStateOf(false) }
     var editSicknessRequired by rememberSaveable { mutableStateOf(false) }
+    var editMilkYieldRequired by rememberSaveable { mutableStateOf(false) }
 
     var dateSelectionRequired by rememberSaveable { mutableStateOf(false) }
+    var milkYieldDateSelectionRequired by rememberSaveable { mutableStateOf(false) }
     var startDateSelectionRequired by rememberSaveable { mutableStateOf(false) }
     var endDateSelectionRequired by rememberSaveable { mutableStateOf(false) }
     val dateFormat = SimpleDateFormat("dd.MM.yyyy")
@@ -176,6 +184,27 @@ private fun GoatDetailsBody(
                     viewModel.sicknessUiState.sicknessDetails.copy(id = it)
                 )
                 deleteSicknessConfirmationRequired = true
+            },
+            dateFormat = dateFormat
+        )
+
+        GoatMilkYields(
+            milkYieldsList = uiState.goatMilkYields,
+            onAddClick = {
+                viewModel.clearMilkYieldUiState()
+                addMilkYieldRequired = true
+            },
+            onEditClick = {
+                coroutineScope.launch {
+                    viewModel.getSickness(id = it)
+                }
+                editMilkYieldRequired = true
+            },
+            onDeleteClick = {
+                viewModel.updateMilkYieldUiState(
+                    viewModel.milkYieldUiState.milkYieldDetails.copy(id = it)
+                )
+                deleteMilkYieldConfirmationRequired = true
             },
             dateFormat = dateFormat
         )
@@ -309,6 +338,23 @@ private fun GoatDetailsBody(
             )
         }
 
+        if (deleteMilkYieldConfirmationRequired) {
+            DeleteConfirmationDialog(
+                onDeleteConfirm = {
+                    deleteMilkYieldConfirmationRequired = false
+                    coroutineScope.launch {
+                        viewModel.deleteMilkYield()
+                    }
+                },
+                onDeleteCancel = {
+                    deleteMilkYieldConfirmationRequired = false
+                    viewModel.clearMilkYieldUiState()
+                },
+                warningText = stringResource(R.string.delete_warning, "удой", ""),
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            )
+        }
+
         if (addSicknessRequired) {
             SicknessDialog(
                 label = stringResource(R.string.add_sickness_label),
@@ -328,6 +374,26 @@ private fun GoatDetailsBody(
                 onEndDateUnFocused = { endDateSelectionRequired = false },
                 onValueChange = { viewModel.updateSicknessUiState(it) },
                 sicknessTypesList = sicknessTypesList.sicknessTypesList,
+                dateFormat = dateFormat,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            )
+        }
+        if (addMilkYieldRequired) {
+            MilkYieldDialog(
+                label = stringResource(R.string.add_sickness_label),
+                milkYieldDetails = viewModel.milkYieldUiState.milkYieldDetails,
+                isEntryValid = viewModel.milkYieldUiState.isEntryValid,
+                onAddConfirm = {
+                    coroutineScope.launch {
+                        viewModel.insertMilkYield()
+                    }
+                    addMilkYieldRequired = false
+
+                },
+                onAddCancel = { addMilkYieldRequired = false },
+                onDateFocused = { milkYieldDateSelectionRequired = true },
+                onDateUnFocused = { milkYieldDateSelectionRequired = false },
+                onValueChange = { viewModel.updateMilkYieldUiState(it) },
                 dateFormat = dateFormat,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             )
@@ -673,7 +739,11 @@ private fun GoatSicknesses(
                                     Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
                                     Text(text = " - ")
                                     Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
-                                    Text(text = if (sickness.endDate != null) dateFormat.format(sickness.endDate) else "")
+                                    Text(
+                                        text = if (sickness.endDate != null) dateFormat.format(
+                                            sickness.endDate
+                                        ) else ""
+                                    )
                                     Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
                                     Text(
                                         text = sicknessTypesList.find { it.id == sickness.sicknessTypeId }?.name
@@ -698,6 +768,116 @@ private fun GoatSicknesses(
                                     IconButton(
                                         modifier = Modifier.size(24.dp),
                                         onClick = { onDeleteClick(sickness.id) }
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier.size(20.dp),
+                                            imageVector = Icons.Filled.Delete,
+                                            contentDescription = ""
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun GoatMilkYields(
+    milkYieldsList: List<MilkYield>,
+    onAddClick: () -> Unit,
+    onEditClick: (UUID) -> Unit,
+    onDeleteClick: (UUID) -> Unit,
+    dateFormat: SimpleDateFormat,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp)
+) {
+    var expanded by remember { mutableStateOf(false) }
+    Card(
+        modifier = modifier
+            .border(
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                shape = RoundedCornerShape(10.dp)
+            )
+            .animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioNoBouncy,
+                    stiffness = Spring.StiffnessMediumLow
+                )
+            ),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    ) {
+        ExpandLabel(
+            label = stringResource(R.string.milk_yields_label),
+            expanded = expanded,
+            onExpandClick = { expanded = !expanded },
+            onActionClick = onAddClick,
+            imageVector = Icons.Filled.Add,
+        )
+        if (expanded) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+            ) {
+                if (milkYieldsList.isEmpty()) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.empty_milk_yields_list_label),
+                            //style = MaterialTheme.typography.headlineSmall,
+                            textAlign = TextAlign.Center,
+                        )
+                    }
+
+                } else {
+                    LazyColumn(
+                        modifier = modifier.heightIn(max = 400.dp),
+                        contentPadding = contentPadding,
+                    ) {
+                        items(items = milkYieldsList.take(10), key = { it.id }) { milkYield ->
+                            Row(
+                                modifier = modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Row(modifier = Modifier) {
+                                    Text(text = dateFormat.format(milkYield.date))
+                                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
+                                    Text(text = " - ")
+                                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
+                                    Text(
+                                        text = pluralStringResource(
+                                            R.plurals.numberOfMilkYields,
+                                            milkYield.amount.toInt(),
+                                            String.format("%.2f", milkYield.amount)
+                                        )
+                                    )
+                                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
+                                }
+                                Row(
+                                    modifier = Modifier.widthIn(min = 24.dp)
+                                ) {
+                                    IconButton(
+                                        modifier = Modifier.size(24.dp),
+                                        onClick = { onEditClick(milkYield.id) }
+                                    ) {
+                                        Icon(
+                                            modifier = Modifier.size(20.dp),
+                                            imageVector = Icons.Filled.Mode,
+                                            contentDescription = ""
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
+                                    IconButton(
+                                        modifier = Modifier.size(24.dp),
+                                        onClick = { onDeleteClick(milkYield.id) }
                                     ) {
                                         Icon(
                                             modifier = Modifier.size(20.dp),
@@ -921,8 +1101,10 @@ private fun SicknessDialog(
                         },
                     )
                     OutlinedTextField(
-                        value = if (sicknessDetails.endDate == null) "" else dateFormat.format(sicknessDetails.endDate),
-                        onValueChange = { onValueChange(sicknessDetails.copy(endDate = it.toLongOrNull() )) },
+                        value = if (sicknessDetails.endDate == null) "" else dateFormat.format(
+                            sicknessDetails.endDate
+                        ),
+                        onValueChange = { onValueChange(sicknessDetails.copy(endDate = it.toLongOrNull())) },
                         label = { Text(stringResource(R.string.end_date)) },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -951,6 +1133,119 @@ private fun SicknessDialog(
                                     sicknessTypeId = id,
                                     sicknessName = name
                                 )
+                            )
+                        },
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    TextButton(
+                        onClick = { onAddCancel() },
+                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+                    ) {
+                        Text(stringResource(R.string.cancel))
+                    }
+                    TextButton(
+                        onClick = { onAddConfirm() },
+                        enabled = isEntryValid,
+                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+                    ) {
+                        Text(stringResource(R.string.save))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun MilkYieldDialog(
+    label: String,
+    milkYieldDetails: MilkYieldDetails,
+    isEntryValid: Boolean,
+    onAddConfirm: () -> Unit,
+    onAddCancel: () -> Unit,
+    onDateFocused: () -> Unit,
+    onDateUnFocused: () -> Unit,
+    onValueChange: (MilkYieldDetails) -> Unit,
+    dateFormat: SimpleDateFormat,
+    modifier: Modifier = Modifier,
+) {
+    Dialog(onDismissRequest = { /* Do nothing */ }) {
+        Card {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            ) {
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.weight(1f)
+                )
+                IconButton(
+                    modifier = Modifier.padding(0.dp),
+                    onClick = { onAddCancel() }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Close,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.secondary
+                    )
+                }
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        dimensionResource(id = R.dimen.padding_medium),
+                        0.dp,
+                        dimensionResource(id = R.dimen.padding_medium),
+                        dimensionResource(id = R.dimen.padding_medium),
+                    ),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Column {
+                    OutlinedTextField(
+                        value = dateFormat.format(milkYieldDetails.date),
+                        onValueChange = { onValueChange(milkYieldDetails.copy(date = it.toLong())) },
+                        label = { Text(stringResource(R.string.date)) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .onFocusChanged {
+                                if (it.isFocused) onDateFocused() else onDateUnFocused()
+                            },
+                        readOnly = true,
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+                        trailingIcon = {
+                            IconButton(onClick = onDateFocused) {
+                                Icon(
+                                    imageVector = Icons.Filled.CalendarMonth,
+                                    contentDescription = null
+                                )
+                            }
+                        },
+                    )
+                    Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
+                    OutlinedTextField(
+                        value = milkYieldDetails.amount.toString(),
+                        onValueChange = { onValueChange(milkYieldDetails.copy(amount = it.toDoubleOrNull())) },
+                        label = { Text(stringResource(R.string.litres_of_milk)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Done
+                        ),
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Filled.WaterDrop,
+                                contentDescription = null
                             )
                         },
                     )
