@@ -163,7 +163,10 @@ class GoatDetailsViewModel @Inject constructor(
 
     //MilkYields
     fun updateMilkYieldUiState(milkYieldDetails: MilkYieldDetails) {
-        milkYieldUiState = MilkYieldUiState(milkYieldDetails = milkYieldDetails)
+        milkYieldUiState = MilkYieldUiState(
+            milkYieldDetails = milkYieldDetails,
+            isEntryValid = milkYieldDetails.amount?.toDoubleOrNull() != null
+        )
     }
 
     suspend fun getMilkYield(id: UUID) {
@@ -279,26 +282,26 @@ fun Sickness.toSicknessDetails() = SicknessDetails(
 //MilkYields
 data class MilkYieldUiState(
     val milkYieldDetails: MilkYieldDetails = MilkYieldDetails(),
-    val isEntryValid: Boolean = true
+    val isEntryValid: Boolean = false
 )
 
 data class MilkYieldDetails(
     val id: UUID = UUID.randomUUID(),
     val goatId: UUID = UUID.randomUUID(),
-    val amount: Double? = 0.0,
+    val amount: String? = "0",
     val date: Long = System.currentTimeMillis(),
 )
 
 fun MilkYieldDetails.toMilkYield() = MilkYield(
     id = id,
     animalId = goatId,
-    amount = amount ?: 0.0,
+    amount = amount?.toDouble() ?: 0.0,
     date = date,
 )
 
 fun MilkYield.toMilkYieldDetails() = MilkYieldDetails(
     id = id,
     goatId = animalId,
-    amount = amount,
+    amount = amount.toString(),
     date = date,
 )

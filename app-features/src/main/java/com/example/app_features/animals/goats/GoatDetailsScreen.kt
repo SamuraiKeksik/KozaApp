@@ -196,7 +196,7 @@ private fun GoatDetailsBody(
             },
             onEditClick = {
                 coroutineScope.launch {
-                    viewModel.getSickness(id = it)
+                    viewModel.getMilkYield(id = it)
                 }
                 editMilkYieldRequired = true
             },
@@ -299,6 +299,27 @@ private fun GoatDetailsBody(
                 onEndDateUnFocused = { endDateSelectionRequired = false },
                 onValueChange = { viewModel.updateSicknessUiState(it) },
                 sicknessTypesList = sicknessTypesList.sicknessTypesList,
+                dateFormat = dateFormat,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
+            )
+        }
+
+        if (editMilkYieldRequired) {
+            MilkYieldDialog(
+                label = stringResource(R.string.edit_milk_yield_label),
+                milkYieldDetails = viewModel.milkYieldUiState.milkYieldDetails,
+                isEntryValid = viewModel.milkYieldUiState.isEntryValid,
+                onAddConfirm = {
+                    coroutineScope.launch {
+                        viewModel.updateMilkYield()
+                    }
+                    editMilkYieldRequired = false
+
+                },
+                onAddCancel = { editMilkYieldRequired = false },
+                onDateFocused = { milkYieldDateSelectionRequired = true },
+                onDateUnFocused = { milkYieldDateSelectionRequired = false },
+                onValueChange = { viewModel.updateMilkYieldUiState(it) },
                 dateFormat = dateFormat,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium))
             )
@@ -446,6 +467,23 @@ private fun GoatDetailsBody(
                 },
                 onDismiss = {
                     endDateSelectionRequired = false
+                }
+            )
+        }
+        if (milkYieldDateSelectionRequired) {
+            DatePickerModal(
+                onDateSelected = {
+                    viewModel.updateMilkYieldUiState(
+                        milkYieldDetails = it.let {
+                            viewModel.milkYieldUiState.milkYieldDetails.copy(
+                                date = it!!
+                            )
+                        }
+                    )
+                    milkYieldDateSelectionRequired = false
+                },
+                onDismiss = {
+                    milkYieldDateSelectionRequired = false
                 }
             )
         }
@@ -856,7 +894,7 @@ private fun GoatMilkYields(
                                         text = pluralStringResource(
                                             R.plurals.numberOfMilkYields,
                                             milkYield.amount.toInt(),
-                                            String.format("%.2f", milkYield.amount)
+                                            String.format("%.2f", milkYield.amount.toDouble())
                                         )
                                     )
                                     Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
@@ -1234,7 +1272,9 @@ private fun MilkYieldDialog(
                     Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
                     OutlinedTextField(
                         value = milkYieldDetails.amount.toString(),
-                        onValueChange = { onValueChange(milkYieldDetails.copy(amount = it.toDoubleOrNull())) },
+                        onValueChange = { onValueChange(milkYieldDetails.copy(
+                            amount = it.replace(",", "."))
+                        ) },
                         label = { Text(stringResource(R.string.litres_of_milk)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,

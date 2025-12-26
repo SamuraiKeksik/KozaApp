@@ -101,6 +101,7 @@
     <string name="edit_vaccination_label">Изменение прививки </string>
     <string name="add_sickness_label">Добавление заболевания </string>
     <string name="edit_sickness_label">Изменение заболевания </string>
+    <string name="edit_milk_yield_label">Изменение удоя </string>
 
     <!-- Пол -->
     <string name="gender_label">Пол</string>
