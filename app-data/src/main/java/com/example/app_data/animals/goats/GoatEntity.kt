@@ -8,6 +8,8 @@ import androidx.room.PrimaryKey
 data class GoatEntity(
     @PrimaryKey()
     val id: UUID = UUID.randomUUID(),
+    val motherId: UUID?,
+    val fatherId: UUID?,
     val name: String,
     val gender: Gender,
     val breed: Breed,

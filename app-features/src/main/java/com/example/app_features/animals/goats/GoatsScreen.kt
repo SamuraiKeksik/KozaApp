@@ -208,13 +208,16 @@ fun GoatsBodyPreview() {
     AppTheme {
         GoatsBody(listOf(
             GoatEntity(id = UUID.randomUUID(),
-                "Biba",
+                name = "Biba",
+                motherId = null,
+                fatherId = null,
                 gender = Gender.FEMALE,
                 breed = Breed.OTHER,
                 description = "Very good goat!",
                 status = Status.OTHER,
                 weight = 8,
-                birthDate = ""),
+                birthDate = "",
+            ),
         ), onGoatClick = {})
     }
 }

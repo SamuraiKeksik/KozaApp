@@ -27,6 +27,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowRightAlt
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Close
@@ -76,6 +77,7 @@ import com.example.app_data.animals.MilkYield
 import com.example.app_data.animals.Sickness
 import com.example.app_data.animals.SicknessType
 import com.example.app_data.animals.Vaccination
+import com.example.app_data.animals.goats.Gender
 import com.example.app_data.animals.goats.GoatEntity
 import com.example.app_features.DatePickerModal
 import com.example.app_features.ExpandLabel
@@ -143,7 +145,10 @@ private fun GoatDetailsBody(
     ) {
         GoatDetails(
             goatEntity = uiState.goatDetails.toGoat(),
-            onActionClick = { navigateToEditGoat(uiState.goatDetails.id) }
+            onEditClick = { navigateToEditGoat(uiState.goatDetails.id) },
+            onParentInfoClick = {},
+            onParentAddClick = {id, gender -> },
+            onChildrenInfoClick = {},
         )
         GoatVaccinations(
             vaccinationsList = uiState.goatVaccinations,
@@ -495,7 +500,10 @@ private fun GoatDetailsBody(
 fun GoatDetails(
     goatEntity: GoatEntity,
     modifier: Modifier = Modifier,
-    onActionClick: () -> Unit,
+    onEditClick: () -> Unit,
+    onParentInfoClick: (UUID) -> Unit, //UUID родителя
+    onParentAddClick: (UUID, Gender) -> Unit,  //UUID ребенка
+    onChildrenInfoClick: (UUID) -> Unit, ////UUID родителя
 ) {
     var expanded by remember { mutableStateOf(true) }
     Card(
@@ -519,7 +527,7 @@ fun GoatDetails(
             label = stringResource(R.string.goat_details_screen_label),
             expanded = expanded,
             onExpandClick = { expanded = !expanded },
-            onActionClick = onActionClick,
+            onActionClick = onEditClick,
             imageVector = Icons.Filled.Mode,
         )
         if (expanded) {
@@ -590,6 +598,46 @@ fun GoatDetails(
                         horizontal = dimensionResource(id = R.dimen.padding_medium)
                     )
                 )
+                Row(modifier = modifier) {
+                    Text(text = stringResource(R.string.mother))
+                    Spacer(modifier = Modifier.weight(1f))
+                    if (goatEntity.motherId != null) {
+                        //Text(text = goatEntity.mother.name, fontWeight = FontWeight.Bold
+                        Text("Mother")
+                        IconButton(onClick = { onParentInfoClick(goatEntity.motherId!!) })
+                        {
+                            Icon(Icons.Filled.ArrowRightAlt, contentDescription = "Mother")
+                        }
+                    } else {
+                        Button(onClick = { onParentAddClick(goatEntity.id, Gender.FEMALE) }) {
+                            Text(text = stringResource(R.string.add_mother))
+                        }
+                    }
+                }
+                Row(modifier = modifier) {
+                    Text(text = stringResource(R.string.father))
+                    Spacer(modifier = Modifier.weight(1f))
+                    if (goatEntity.fatherId != null) {
+                        //Text(text = goatEntity.mother.name, fontWeight = FontWeight.Bold
+                        Text("Father")
+                        IconButton(onClick = { onParentInfoClick(goatEntity.motherId!!) })
+                        {
+                            Icon(Icons.Filled.ArrowRightAlt, contentDescription = "Mother")
+                        }
+                    } else {
+                        Button(onClick = { onParentAddClick(goatEntity.id, Gender.MALE) }) {
+                            Text(text = stringResource(R.string.add_father))
+                        }
+                    }
+                }
+                Row(modifier = modifier) {
+                    Text(text = stringResource(R.string.children))
+                    Spacer(modifier = Modifier.weight(1f))
+                    Button(onClick = { onChildrenInfoClick(goatEntity.id) }) {
+                        Text(text = stringResource(R.string.children_count, 0))
+                    }
+
+                }
             }
         }
     }
@@ -1272,9 +1320,13 @@ private fun MilkYieldDialog(
                     Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.padding_small)))
                     OutlinedTextField(
                         value = milkYieldDetails.amount.toString(),
-                        onValueChange = { onValueChange(milkYieldDetails.copy(
-                            amount = it.replace(",", "."))
-                        ) },
+                        onValueChange = {
+                            onValueChange(
+                                milkYieldDetails.copy(
+                                    amount = it.replace(",", ".")
+                                )
+                            )
+                        },
                         label = { Text(stringResource(R.string.litres_of_milk)) },
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,

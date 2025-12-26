@@ -83,6 +83,12 @@
     <string name="goat_birth_date_label">Дата рождения</string>
     <string name="goat_description_label">Описание</string>
     <string name="goat_required_fields_label">Заполните поля</string>
+    <string name="mother">Мать</string>
+    <string name="add_mother">Добавить мать</string>
+    <string name="father">Отец</string>
+    <string name="add_father">Добавить отца</string>
+    <string name="children">Дети</string>
+    <string name="children_count">Детей %d</string>
 
     <string name="yes">Да</string>
     <string name="no">Нет</string>
