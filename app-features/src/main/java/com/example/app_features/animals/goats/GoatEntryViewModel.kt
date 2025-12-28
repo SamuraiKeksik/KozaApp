@@ -46,6 +46,8 @@ data class GoatUiState(
 
 data class GoatDetails(
     val id: UUID = UUID.randomUUID(),
+    val motherId: UUID? = null,
+    val fatherId: UUID? = null,
     val name: String = "",
     val gender: String = Gender.UNKNOWN.toString(),
     val breed: String = Breed.OTHER.toString(),

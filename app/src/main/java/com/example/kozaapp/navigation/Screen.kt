@@ -1,6 +1,7 @@
 package com.example.kozaapp.navigation
 
 import androidx.annotation.StringRes
+import com.example.app_data.animals.goats.Gender
 import com.example.kozaapp.R
 import java.util.UUID
 
@@ -22,6 +23,7 @@ sealed class Screen(
 
                 GoatsScreen.Goats,
                 GoatsScreen.GoatCreation,
+                GoatsScreen.GoatParentAdding,
                 GoatsScreen.GoatDetails,
                 GoatsScreen.GoatEdit,
 
@@ -145,6 +147,15 @@ sealed class GoatsScreen(
         route = "animals/goats/creation",
         title = R.string.goat_creation_screen_label
     )
+
+    object GoatParentAdding : Screen(
+        route = "animals/goats/parent_Adding/{id}/{parent_gender}",
+        title = R.string.goat_adding_parent_screen_label
+    ){
+        fun passIdWithGender(id: UUID, parentGender: Gender): String {
+            return "animals/goats/parent_Adding/${id}/${parentGender}"
+        }
+    }
 
 }
 

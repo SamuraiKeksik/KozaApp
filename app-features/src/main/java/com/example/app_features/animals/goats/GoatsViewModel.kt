@@ -16,7 +16,7 @@ class GoatsViewModel @Inject constructor(
     goatRepository: GoatRepository
 ): ViewModel() {
     val goatsUiState: StateFlow<GoatsUiState> =
-        goatRepository.goatsList.map { GoatsUiState(it) }
+        goatRepository.goatsList.map { GoatsUiState(it, isLoading = false) }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
@@ -27,4 +27,7 @@ class GoatsViewModel @Inject constructor(
     }
 }
 
-data class GoatsUiState(val goatsList: List<GoatEntity> = listOf())
+data class GoatsUiState(
+    val goatsList: List<GoatEntity> = listOf(),
+    val isLoading: Boolean = true
+)

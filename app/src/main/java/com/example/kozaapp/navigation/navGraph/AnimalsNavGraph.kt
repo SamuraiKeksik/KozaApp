@@ -13,6 +13,7 @@ import com.example.app_features.animals.goats.GoatEditScreen
 import com.example.app_features.animals.goats.GoatEntryScreen
 import com.example.app_features.animals.goats.GoatsScreen
 import com.example.app_features.animals.AnimalsCardsScreen
+import com.example.app_features.animals.goats.GoatAddParentScreen
 import com.example.kozaapp.navigation.AnimalsScreen
 import com.example.kozaapp.navigation.GoatsScreen
 
@@ -63,6 +64,10 @@ fun NavGraphBuilder.animalsNavGraph(
                 GoatDetailsScreen(
                     navigateBack = { navController.popBackStack() },
                     navigateToEditGoat = { navController.navigate(GoatsScreen.GoatEdit.passId(it)) },
+                    navigateToAddParent = { id, gender ->
+                        navController.navigate(GoatsScreen.GoatParentAdding.passIdWithGender(id, gender)
+                    )}
+
                 )
             }
             composable(
@@ -72,6 +77,17 @@ fun NavGraphBuilder.animalsNavGraph(
                 })
             ) {
                 GoatEditScreen(
+                    navigateBack = { navController.popBackStack() },
+                )
+            }
+            composable(
+                route = GoatsScreen.GoatParentAdding.route,
+                arguments = listOf(
+                    navArgument("id") {type = NavType.StringType},
+                    navArgument("parent_gender") {type = NavType.StringType}
+                    )
+            ) {
+                GoatAddParentScreen(
                     navigateBack = { navController.popBackStack() },
                 )
             }

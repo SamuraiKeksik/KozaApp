@@ -91,7 +91,7 @@ fun GoatsScreen(
 }
 
 @Composable
-private fun GoatsBody(
+fun GoatsBody(
     goatsList: List<GoatEntity>,
     onGoatClick: (UUID) -> Unit,
     modifier: Modifier = Modifier,
@@ -141,7 +141,7 @@ private fun GoatsBody(
 }
 
 @Composable
-private fun GoatsList(
+fun GoatsList(
     goatsList: List<GoatEntity>,
     onGoatClick: (GoatEntity) -> Unit,
     contentPadding: PaddingValues,
@@ -163,7 +163,7 @@ private fun GoatsList(
 }
 
 @Composable
-private fun GoatCard(
+fun GoatCard(
     goatEntity: GoatEntity,
     modifier: Modifier = Modifier
 ) {

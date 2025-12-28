@@ -20,6 +20,8 @@ fun GoatDetails.toGoat(): GoatEntity {
 
     return GoatEntity(
         id = id,
+        motherId = motherId,
+        fatherId = fatherId,
         name = name,
         gender = enumGender,
         birthDate = birthDate,
@@ -30,6 +32,7 @@ fun GoatDetails.toGoat(): GoatEntity {
 
         isEdited = isEdited,
         isDeleted = isDeleted,
+
         //serverId = serverId,
     )
 }

@@ -28,6 +28,7 @@ fun ExpandLabel(
     onExpandClick: () -> Unit,
     onActionClick: () -> Unit,
     imageVector: ImageVector,
+    canModify: Boolean = true,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth().border(
