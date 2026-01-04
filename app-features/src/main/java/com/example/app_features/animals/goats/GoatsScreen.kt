@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -21,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -60,33 +62,45 @@ fun GoatsScreen(
     navigateToGoatDetails: (UUID) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: GoatsViewModel = hiltViewModel(),
-    contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     val goatsUiState by viewModel.goatsUiState.collectAsState()
-    val scrollState = rememberScrollState()
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        GoatsBody(
-            goatsList = goatsUiState.goatsList,
-            onGoatClick = navigateToGoatDetails,
-            modifier = modifier.fillMaxSize(),
-        )
-        FloatingActionButton(
-            onClick = { navigateToGoatEntry() },
-            shape = MaterialTheme.shapes.medium,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(dimensionResource(R.dimen.padding_large))
-        ) {
-            Icon(
-                imageVector = Icons.Default.Add,
-                contentDescription = null
+    if(goatsUiState.isLoading) {
+        Box(
+            Modifier.fillMaxSize().padding(0.dp, 50.dp, 0.dp, 0.dp),
+            contentAlignment = Alignment.TopCenter
+        ){
+            CircularProgressIndicator(
+                modifier = Modifier.width(64.dp),
+                color = MaterialTheme.colorScheme.secondary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
         }
     }
+    else{
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            GoatsBody(
+                goatsList = goatsUiState.goatsList,
+                onGoatClick = navigateToGoatDetails,
+                modifier = modifier.fillMaxSize(),
+            )
+            FloatingActionButton(
+                onClick = { navigateToGoatEntry() },
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(dimensionResource(R.dimen.padding_large))
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = null
+                )
+            }
+        }
+    }
+
 
 }
 
