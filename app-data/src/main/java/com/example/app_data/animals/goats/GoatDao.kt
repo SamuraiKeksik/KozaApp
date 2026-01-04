@@ -22,7 +22,12 @@ interface GoatDao {
     fun getAllGoats(): Flow<List<GoatEntity>>
     @Transaction
     @Query("SELECT * FROM goats WHERE id = :id AND isDeleted = 0")
-    fun getGoat(id: UUID): Flow<GoatModel?>
+    fun getGoatModel(id: UUID): Flow<GoatModel?>
+
+    @Query("SELECT Name FROM goats WHERE id = :id")
+    suspend fun getGoatName(id: UUID): String?
+    @Query("SELECT Gender FROM goats WHERE id = :id")
+    suspend fun getGoatGender(id: UUID): String
 
 //    @Query("SELECT * FROM goats WHERE isDeleted = 1")
 //    suspend fun getDeletedGoats(): List<Goat>

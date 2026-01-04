@@ -106,8 +106,10 @@ fun AppBar(
 fun BottomBar(navController: NavHostController) {
     val screens = listOf(
         BottomBarScreen.Animals,
+        BottomBarScreen.VaccinationsCalendar,
+        BottomBarScreen.Advices,
         BottomBarScreen.Profile,
-        BottomBarScreen.Settings,
+        //BottomBarScreen.Settings,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination

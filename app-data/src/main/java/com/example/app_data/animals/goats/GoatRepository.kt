@@ -4,12 +4,16 @@ package com.example.app_data.animals.goats
 //import com.example.kozaapp.features.animals.goats.data.schemas.toGoatModel
 //import com.example.kozaapp.features.animals.goats.data.schemas.toGoatRequest
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import java.util.UUID
 import javax.inject.Inject
 
-interface GoatRepository{
+interface GoatRepository {
     val goatsList: Flow<List<GoatEntity>>
-    fun getGoat(id: UUID): Flow<GoatModel?>
+    fun getGoatChildren(id: UUID): Flow<List<GoatEntity>>
+    suspend fun getGoatName(id: UUID): String?
+    suspend fun getGoatGender(id: UUID): Gender
+    fun getGoatModel(id: UUID): Flow<GoatModel?>
     suspend fun insertGoat(goatEntity: GoatEntity)
     suspend fun updateGoat(goatEntity: GoatEntity)
     suspend fun deleteGoat(goatEntity: GoatEntity)
@@ -19,10 +23,22 @@ interface GoatRepository{
 class DefaultGoatRepository @Inject constructor(
     private val localDataSource: GoatLocalDataSource,
     private val remoteDataSource: GoatRemoteDataSource,
-):GoatRepository{
+) : GoatRepository {
 
     override val goatsList: Flow<List<GoatEntity>> = localDataSource.getAllGoatsStream()
-    override fun getGoat(id: UUID): Flow<GoatModel?> = localDataSource.getGoatStream(id)
+    override fun getGoatChildren(id: UUID): Flow<List<GoatEntity>> {
+        return localDataSource.getAllGoatsStream().map { childrenList ->
+            childrenList.filter {
+                it.id != id && (it.motherId == id || it.fatherId == id)
+            }
+        }
+    }
+
+    override suspend fun getGoatName(id: UUID): String? = localDataSource.getGoatNameStream(id)
+    override suspend fun getGoatGender(id: UUID): Gender =
+        Gender.valueOf(localDataSource.getGoatGender(id))
+
+    override fun getGoatModel(id: UUID): Flow<GoatModel?> = localDataSource.getGoatModelStream(id)
 
     override suspend fun insertGoat(goatEntity: GoatEntity) {
         val changedGoat = goatEntity.copy(isEdited = true)

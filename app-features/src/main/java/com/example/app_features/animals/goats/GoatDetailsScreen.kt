@@ -43,9 +43,10 @@ import java.util.UUID
 fun GoatDetailsScreen(
     navigateToEditGoat: (UUID) -> Unit,
     navigateToAddParent: (UUID, Gender) -> Unit,
-//    navigateToParentInfo: (UUID) -> Unit,
-//    navigateToChildren: (UUID) -> Unit,
+    navigateToParentInfo: (UUID) -> Unit,
+    navigateToChildren: (UUID) -> Unit,
     navigateBack: () -> Unit,
+    canEdit: Boolean = true,
     modifier: Modifier = Modifier,
     viewModel: GoatDetailsViewModel = hiltViewModel()
 ) {
@@ -57,8 +58,10 @@ fun GoatDetailsScreen(
             navigateBack = navigateBack,
             navigateToEditGoat = navigateToEditGoat,
             navigateToAddParent = navigateToAddParent,
-//
-        )//
+            navigateToParentInfo = navigateToParentInfo,
+            navigateToChildren = navigateToChildren,
+            canEdit = canEdit,
+        )
     }
 }
 
@@ -67,7 +70,10 @@ private fun GoatDetailsBody(
     viewModel: GoatDetailsViewModel,
     navigateToEditGoat: (UUID) -> Unit,
     navigateToAddParent: (UUID, Gender) -> Unit,
+    navigateToParentInfo: (UUID) -> Unit,
+    navigateToChildren: (UUID) -> Unit,
     navigateBack: () -> Unit,
+    canEdit: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val uiState = viewModel.uiState.collectAsState().value
@@ -100,13 +106,14 @@ private fun GoatDetailsBody(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         GoatDetailsComposable(
-            goatEntity = uiState.goatDetails.toGoat(),
+            goatDetails = uiState.goatDetails,
             onEditClick = { navigateToEditGoat(uiState.goatDetails.id) },
-            onParentInfoClick = {},
+            onParentInfoClick = navigateToParentInfo,
             onParentAddClick = { id, gender ->
                 navigateToAddParent(id, gender)
             },
-            onChildrenInfoClick = {},
+            onChildrenInfoClick = navigateToChildren,
+            canEdit = canEdit
         )
         AnimalVaccinations(
             vaccinationsList = uiState.goatVaccinations,
@@ -127,7 +134,8 @@ private fun GoatDetailsBody(
                 )
                 deleteVaccinationConfirmationRequired = true
             },
-            dateFormat = dateFormat
+            dateFormat = dateFormat,
+            canEdit = canEdit
         )
         AnimalSicknesses(
             sicknessesList = uiState.goatSicknesses,
@@ -148,7 +156,8 @@ private fun GoatDetailsBody(
                 )
                 deleteSicknessConfirmationRequired = true
             },
-            dateFormat = dateFormat
+            dateFormat = dateFormat,
+            canEdit = canEdit
         )
 
         AnimalMilkYields(
@@ -169,16 +178,20 @@ private fun GoatDetailsBody(
                 )
                 deleteMilkYieldConfirmationRequired = true
             },
-            dateFormat = dateFormat
+            dateFormat = dateFormat,
+            canEdit = canEdit
         )
-
-        OutlinedButton(
-            onClick = { deleteConfirmationRequired = true },
-            shape = MaterialTheme.shapes.small,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(stringResource(R.string.goat_delete_button_label))
+        if(canEdit) {
+            OutlinedButton(
+                onClick = { deleteConfirmationRequired = true },
+                shape = MaterialTheme.shapes.small,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(stringResource(R.string.goat_delete_button_label))
+            }
         }
+
+
 
         if (deleteConfirmationRequired) {
             DeleteConfirmationDialog(

@@ -58,7 +58,7 @@ fun AnimalVaccinations(
     dateFormat: SimpleDateFormat,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
-    canModify: Boolean = true,
+    canEdit: Boolean = true,
 ) {
     var expanded by remember { mutableStateOf(false) }
     Card(
@@ -84,7 +84,7 @@ fun AnimalVaccinations(
             onExpandClick = { expanded = !expanded },
             onActionClick = onAddClick,
             imageVector = Icons.Filled.Add,
-            canModify = canModify,
+            canEdit = canEdit,
         )
         if (expanded) {
             Column(

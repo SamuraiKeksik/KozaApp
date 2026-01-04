@@ -56,7 +56,8 @@ fun AnimalSicknesses(
     onDeleteClick: (UUID) -> Unit,
     dateFormat: SimpleDateFormat,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp)
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+    canEdit: Boolean = true
 ) {
     var expanded by remember { mutableStateOf(false) }
     Card(
@@ -82,6 +83,7 @@ fun AnimalSicknesses(
             onExpandClick = { expanded = !expanded },
             onActionClick = onAddClick,
             imageVector = Icons.Filled.Add,
+            canEdit = canEdit
         )
         if (expanded) {
             Column(

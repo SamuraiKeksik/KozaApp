@@ -90,6 +90,8 @@
     <string name="children">Дети</string>
     <string name="children_count">Детей %d</string>
 
+
+    <string name="missing">Отсутствует</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="add">Добавить</string>

@@ -157,6 +157,31 @@ sealed class GoatsScreen(
         }
     }
 
+    object GoatParentInfo : Screen(
+        route = "animals/goats/parent_info/{id}",
+        title = R.string.goat_parent_info_screen_label,
+    ) {
+        fun passId(id: UUID): String {
+            return "animals/goats/parent_info/${id}"
+        }
+    }
+    object GoatChildren : Screen(
+        route = "animals/goats/goat_children/{id}",
+        title = R.string.goat_children_screen_label,
+    ) {
+        fun passId(id: UUID): String {
+            return "animals/goats/goat_children/${id}"
+        }
+    }
+    object GoatChildInfo : Screen(
+        route = "animals/goats/goat_child_info/{id}",
+        title = R.string.goat_child_info_screen_label,
+    ) {
+        fun passId(id: UUID): String {
+            return "animals/goats/goat_child_info/${id}"
+        }
+    }
+
 }
 
 

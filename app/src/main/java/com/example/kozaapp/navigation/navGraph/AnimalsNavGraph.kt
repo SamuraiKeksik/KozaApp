@@ -14,6 +14,7 @@ import com.example.app_features.animals.goats.GoatEntryScreen
 import com.example.app_features.animals.goats.GoatsScreen
 import com.example.app_features.animals.AnimalsCardsScreen
 import com.example.app_features.animals.goats.GoatAddParentScreen
+import com.example.app_features.animals.goats.GoatChildrenScreen
 import com.example.kozaapp.navigation.AnimalsScreen
 import com.example.kozaapp.navigation.GoatsScreen
 
@@ -66,8 +67,26 @@ fun NavGraphBuilder.animalsNavGraph(
                     navigateToEditGoat = { navController.navigate(GoatsScreen.GoatEdit.passId(it)) },
                     navigateToAddParent = { id, gender ->
                         navController.navigate(GoatsScreen.GoatParentAdding.passIdWithGender(id, gender)
-                    )}
+                    )},
+                    navigateToParentInfo = { navController.navigate(GoatsScreen.GoatParentInfo.passId(it)) },
+                    navigateToChildren = { navController.navigate(GoatsScreen.GoatChildren.passId(it))  },
+                    canEdit = true,
 
+                )
+            }
+            composable(
+                route = GoatsScreen.GoatParentInfo.route,
+                arguments = listOf(navArgument("id") {
+                    type = NavType.StringType
+                })
+            ) {
+                GoatDetailsScreen(
+                    navigateBack = { navController.popBackStack() },
+                    navigateToEditGoat = { },
+                    navigateToAddParent = { id, gender -> {} },
+                    navigateToParentInfo = { navController.navigate(GoatsScreen.GoatParentInfo.passId(it)) },
+                    navigateToChildren = { navController.navigate(GoatsScreen.GoatChildren.passId(it)) },
+                    canEdit = false
                 )
             }
             composable(
@@ -89,6 +108,41 @@ fun NavGraphBuilder.animalsNavGraph(
             ) {
                 GoatAddParentScreen(
                     navigateBack = { navController.popBackStack() },
+                )
+            }
+            composable(
+                route = GoatsScreen.GoatChildren.route,
+                arguments = listOf(
+                    navArgument("id") {type = NavType.StringType},
+                    )
+            ) {
+                GoatChildrenScreen(
+                    navigateToGoatDetails = {navController.navigate(GoatsScreen.GoatDetails.passId(it))}
+                )
+            }
+            composable(
+                route = GoatsScreen.GoatChildren.route,
+                arguments = listOf(
+                    navArgument("id") {type = NavType.StringType},
+                    )
+            ) {
+                GoatChildrenScreen(
+                    navigateToGoatDetails = {navController.navigate(GoatsScreen.GoatChildInfo.passId(it))}
+                )
+            }
+            composable(
+                route = GoatsScreen.GoatChildInfo.route,
+                arguments = listOf(
+                    navArgument("id") {type = NavType.StringType},
+                    )
+            ) {
+                GoatDetailsScreen(
+                    navigateBack = { navController.popBackStack() },
+                    navigateToEditGoat = { },
+                    navigateToAddParent = { id, gender -> {} },
+                    navigateToParentInfo = { navController.navigate(GoatsScreen.GoatParentInfo.passId(it)) },
+                    navigateToChildren = { navController.navigate(GoatsScreen.GoatChildren.passId(it)) },
+                    canEdit = false
                 )
             }
         }

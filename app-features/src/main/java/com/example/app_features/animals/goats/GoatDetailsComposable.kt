@@ -41,12 +41,13 @@ import java.util.UUID
 
 @Composable
 fun GoatDetailsComposable(
-    goatEntity: GoatEntity,
+    goatDetails: GoatDetails,
     modifier: Modifier = Modifier,
     onEditClick: () -> Unit,
     onParentInfoClick: (UUID) -> Unit, //UUID родителя
     onParentAddClick: (UUID, Gender) -> Unit,  //UUID ребенка
     onChildrenInfoClick: (UUID) -> Unit, ////UUID родителя
+    canEdit: Boolean,                   //Можно ли менять информацию
 ) {
     var expanded by remember { mutableStateOf(true) }
     Card(
@@ -72,6 +73,7 @@ fun GoatDetailsComposable(
             onExpandClick = { expanded = !expanded },
             onActionClick = onEditClick,
             imageVector = Icons.Filled.Mode,
+            canEdit = canEdit
         )
         if (expanded) {
             Column(
@@ -82,7 +84,7 @@ fun GoatDetailsComposable(
             ) {
                 GoatDetailsRow(
                     labelResID = R.string.goat_name_label,
-                    goatDetail = goatEntity.name,
+                    goatDetail = goatDetails.name,
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(
                             id = R.dimen
@@ -92,7 +94,7 @@ fun GoatDetailsComposable(
                 )
                 GoatDetailsRow(
                     labelResID = R.string.goat_gender_label,
-                    goatDetail = goatEntity.gender.toString(),
+                    goatDetail = goatDetails.gender.toString(),
                     //goatDetail = stringResource(goat.gender.labelResId),
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(
@@ -103,7 +105,7 @@ fun GoatDetailsComposable(
                 )
                 GoatDetailsRow(
                     labelResID = R.string.breed_label,
-                    goatDetail = goatEntity.breed.toString(),
+                    goatDetail = goatDetails.breed.toString(),
                     //goatDetail = stringResource(goat.breed.labelResId),
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(
@@ -114,7 +116,7 @@ fun GoatDetailsComposable(
                 )
                 GoatDetailsRow(
                     labelResID = R.string.status_label,
-                    goatDetail = goatEntity.status.toString(),
+                    goatDetail = goatDetails.status.toString(),
                     //goatDetail = stringResource(goat.status.labelResId),
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(id = R.dimen.padding_medium)
@@ -122,21 +124,21 @@ fun GoatDetailsComposable(
                 )
                 GoatDetailsRow(
                     labelResID = R.string.goat_weight_label,
-                    goatDetail = goatEntity.weight.toString(),
+                    goatDetail = goatDetails.weight.toString(),
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(id = R.dimen.padding_medium)
                     )
                 )
                 GoatDetailsRow(
                     labelResID = R.string.goat_birth_date_label,
-                    goatDetail = goatEntity.birthDate ?: "",
+                    goatDetail = goatDetails.birthDate ?: "",
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(id = R.dimen.padding_medium)
                     )
                 )
                 GoatDetailsRow(
                     labelResID = R.string.goat_description_label,
-                    goatDetail = goatEntity.description ?: "",
+                    goatDetail = goatDetails.description ?: "",
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(id = R.dimen.padding_medium)
                     )
@@ -144,39 +146,51 @@ fun GoatDetailsComposable(
                 Row(modifier = modifier) {
                     Text(text = stringResource(R.string.mother))
                     Spacer(modifier = Modifier.weight(1f))
-                    if (goatEntity.motherId != null) {
+                    if (goatDetails.motherId != null) {
                         //Text(text = goatEntity.mother.name, fontWeight = FontWeight.Bold
-                        Text("Mother")
-                        IconButton(onClick = { onParentInfoClick(goatEntity.motherId!!) })
+                        Text(goatDetails.motherName!!)
+                        IconButton(onClick = { onParentInfoClick(goatDetails.motherId) })
                         {
                             Icon(Icons.Filled.ArrowRightAlt, contentDescription = "Mother")
                         }
                     } else {
-                        Button(onClick = { onParentAddClick(goatEntity.id, Gender.FEMALE) }) {
-                            Text(text = stringResource(R.string.add_mother))
+                        if(canEdit){
+                            Button(onClick = { onParentAddClick(goatDetails.id, Gender.FEMALE) }) {
+                                Text(text = stringResource(R.string.add_mother))
+                            }
                         }
+                        else{
+                            Text(text = stringResource(R.string.missing))
+                        }
+
                     }
                 }
                 Row(modifier = modifier) {
                     Text(text = stringResource(R.string.father))
                     Spacer(modifier = Modifier.weight(1f))
-                    if (goatEntity.fatherId != null) {
+                    if (goatDetails.fatherId != null) {
                         //Text(text = goatEntity.mother.name, fontWeight = FontWeight.Bold
-                        Text("Father")
-                        IconButton(onClick = { onParentInfoClick(goatEntity.motherId!!) })
+                        Text(goatDetails.fatherName!!)
+                        IconButton(onClick = { onParentInfoClick(goatDetails.fatherId) })
                         {
                             Icon(Icons.Filled.ArrowRightAlt, contentDescription = "Mother")
                         }
                     } else {
-                        Button(onClick = { onParentAddClick(goatEntity.id, Gender.MALE) }) {
-                            Text(text = stringResource(R.string.add_father))
+                        if(canEdit){
+                            Button(onClick = { onParentAddClick(goatDetails.id, Gender.MALE) }) {
+                                Text(text = stringResource(R.string.add_father))
+                            }
                         }
+                        else{
+                            Text(text = stringResource(R.string.missing))
+                        }
+
                     }
                 }
                 Row(modifier = modifier) {
                     Text(text = stringResource(R.string.children))
                     Spacer(modifier = Modifier.weight(1f))
-                    Button(onClick = { onChildrenInfoClick(goatEntity.id) }) {
+                    Button(onClick = { onChildrenInfoClick(goatDetails.id) }) {
                         Text(text = stringResource(R.string.children_count, 0))
                     }
 

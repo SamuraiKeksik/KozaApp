@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,7 +29,7 @@ fun ExpandLabel(
     onExpandClick: () -> Unit,
     onActionClick: () -> Unit,
     imageVector: ImageVector,
-    canModify: Boolean = true,
+    canEdit: Boolean = true,
 ) {
     Row(
         modifier = Modifier.fillMaxWidth().border(
@@ -52,6 +53,10 @@ fun ExpandLabel(
         ActionButton(
             onClick = onActionClick,
             imageVector = imageVector,
+            modifier = Modifier.alpha(
+                if (canEdit) 1f else 0f
+            ),
+
         )
     }
 }
@@ -68,6 +73,24 @@ fun ExpandLabelPreview() {
                 {},
                 {},
                 Icons.Filled.Add,
+            )
+        }
+    }
+}
+
+@Composable
+@Preview
+fun ExpandLabelWithoutEditPreview() {
+    AppTheme {
+        Box(modifier = Modifier.background(Color.White))
+        {
+            ExpandLabel(
+                "Label",
+                true,
+                {},
+                {},
+                Icons.Filled.Add,
+                canEdit = false,
             )
         }
     }

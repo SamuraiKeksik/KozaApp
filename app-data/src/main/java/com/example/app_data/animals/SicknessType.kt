@@ -1,4 +1,4 @@
-package com.example.app_data.animals
+ package com.example.app_data.animals
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -27,7 +27,7 @@ class GoatEditViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            goatUiState = goatRepository.getGoat(goatId)
+            goatUiState = goatRepository.getGoatModel(goatId)
                 .filterNotNull()
                 .first()
                 .goat

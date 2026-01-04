@@ -44,6 +44,8 @@ fun GoatEntity.toGoatUiState(isEntryValid: Boolean = false): GoatUiState = GoatU
 
 fun GoatEntity.toGoatDetails(): GoatDetails = GoatDetails(
     id = id,
+    motherId = motherId,
+    fatherId = fatherId,
     name = name,
     gender = gender.toString(),
     birthDate = birthDate,

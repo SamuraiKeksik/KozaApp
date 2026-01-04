@@ -39,11 +39,14 @@ class GoatDetailsViewModel @Inject constructor(
         )
 
     var uiState: StateFlow<GoatDetailsUiState> =
-        goatRepository.getGoat(goatId)
+        goatRepository.getGoatModel(goatId)
             .filterNotNull()
             .map {
                 GoatDetailsUiState(
-                    goatDetails = it.goat.toGoatDetails(),
+                    goatDetails = it.goat.toGoatDetails().copy(
+                        motherName = it.goat.motherId?.let { id -> goatRepository.getGoatName(id) },
+                        fatherName = it.goat.fatherId?.let { id -> goatRepository.getGoatName(id) }
+                    ),
                     goatVaccinations = it.vaccinations.sortedBy { vac -> vac.date },
                     goatSicknesses = it.sicknesses,
                     goatMilkYields = it.milkYields

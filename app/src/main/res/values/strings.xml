@@ -59,6 +59,8 @@
 
 
     <string name="animals">Животные</string>
+    <string name="vaccinations_calendar">Животные</string>
+    <string name="advices">Советы</string>
     <string name="advertisements">Объявления</string>
     <string name="profile">Профиль</string>
 
@@ -75,6 +77,9 @@
     <string name="goat_creation_screen_label">Добавление козы</string>
     <string name="goat_adding_parent_screen_label">Добавление родителя</string>
     <string name="goat_details_screen_label">Информация о козе</string>
+    <string name="goat_parent_info_screen_label">Информация о родителе</string>
+    <string name="goat_children_screen_label">Потомство</string>
+    <string name="goat_child_info_screen_label">Информация о детеныше</string>
     <string name="goat_edit_screen_label">Редактирование козы</string>
     <string name="goat_save_button_label">Сохранить</string>
     <string name="goat_delete_button_label">Удалить</string>
