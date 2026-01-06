@@ -5,11 +5,8 @@ import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.ListAlt
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.kozaapp.R
 
@@ -29,9 +26,9 @@ sealed class BottomBarScreen(
         title = R.string.vaccinations_calendar,
         icon = Icons.Default.CalendarMonth
     )
-    object Advices : BottomBarScreen(
-        route = AnimalsScreen.Animals.route,
-        title = R.string.advices,
+    object Dictionary : BottomBarScreen(
+        route = DictionaryScreen.Animals.route,
+        title = R.string.dictionary,
         icon = Icons.Default.Lightbulb
     )
 

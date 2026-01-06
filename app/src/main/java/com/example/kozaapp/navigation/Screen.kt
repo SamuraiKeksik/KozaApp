@@ -1,6 +1,7 @@
 package com.example.kozaapp.navigation
 
 import androidx.annotation.StringRes
+import com.example.app_data.animals.AnimalType
 import com.example.app_data.animals.goats.Gender
 import com.example.kozaapp.R
 import java.util.UUID
@@ -184,6 +185,23 @@ sealed class GoatsScreen(
 
 }
 
+sealed class DictionaryScreen(
+    val route: String,
+    @StringRes val title: Int
+) {
+    object Animals : Screen(
+        route = "dictionary/animals",
+        title = R.string.dictionary,
+    )
+    object Categories : Screen(
+        route = "dictionary/{animal}/categories",
+        title = R.string.dictionary,
+    ){
+        fun passAnimal(animal: AnimalType) : String{
+            return "dictionary/${animal}/categories"
+        }
+    }
+}
 
 sealed class CowsScreen(val route: String) {
     object Cows : CowsScreen(route = "animals/goats")

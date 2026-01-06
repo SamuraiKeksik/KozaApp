@@ -66,6 +66,10 @@
     <string name="buy">Покупка</string>
     <string name="sell">Продажа</string>
 
+    <string name="categories">Категории</string>
+    <string name="feeding">Питание</string>
+    <string name="breeding">Разведение</string>
+
     <string name="main_screen_label">Ваша ферма</string>
     <string name="goats_label">Козы</string>
     <string name="cows_label">Коровы</string>
@@ -134,10 +138,10 @@
     <!-- Статус коз -->
     <string name="status_label">Статус</string>
     <string name="status_details_label">Статус: %s</string>
-    <string name="milk">Молоко</string>
-    <string name="meat">Мясо</string>
-    <string name="wool">Шерсть</string>
-    <string name="breeding">Племя</string>
+    <string name="status_milk">Молоко</string>
+    <string name="status_meat">Мясо</string>
+    <string name="status_wool">Шерсть</string>
+    <string name="status_breeding">Племя</string>
 
 
     <string name="empty_animals_list_label1">В данный момент здесь пусто.</string>
@@ -156,4 +160,6 @@
         <item quantity="other">%s литров</item>
     </plurals>
 
+
+    <string name="select_animal">Выберите животное</string>
 </resources>

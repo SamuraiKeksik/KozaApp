@@ -1,4 +1,4 @@
-package com.example.app_features.animals
+package com.example.app_features.dictionary
 
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes
@@ -8,16 +8,24 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.QuestionMark
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,21 +34,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.app_data.animals.AnimalType
 import com.example.app_features.R
 import com.example.app_features.theme.AppTheme
 
 @Composable
-fun AnimalsCardsScreen(
+fun DictionaryAnimalsScreen(
     modifier: Modifier = Modifier,
-    navigateToGoatsScreen: () -> Unit,
-    navigateToCowsScreen: () -> Unit,
-    navigateToChickenScreen: () -> Unit,
+    navigateToCategoriesScreen: (AnimalType) -> Unit,
 ){
     Column(
         modifier = modifier.padding(
@@ -51,29 +59,56 @@ fun AnimalsCardsScreen(
     verticalArrangement = Arrangement.Top,
     ) {
         Text(
-            text = stringResource(R.string.main_screen_label),
+            text = stringResource(R.string.select_animal),
             style = MaterialTheme.typography.displaySmall,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 30.dp),
         )
-        Column {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround,
-            ) {
-                AnimalInfoCard(
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 110.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            item {
+                AnimalCard(
                     labelRes = R.string.goats_label,
-                    backgroundRes = R.drawable.goats_background,
-                    modifier = Modifier.height(250.dp),
-                    onButtonClick = { navigateToGoatsScreen() }
+                    icon = Icons.Outlined.QuestionMark,
+                    onButtonClick = navigateToCategoriesScreen,
+                    animalType = AnimalType.Goat
                 )
-                AnimalInfoCard(
+            }
+            item {
+                AnimalCard(
                     labelRes = R.string.cows_label,
-                    backgroundRes = R.drawable.cows_background,
-                    modifier = Modifier.height(250.dp),
-                    onButtonClick = { navigateToCowsScreen() }
+                    icon = Icons.Outlined.QuestionMark,
+                    onButtonClick = navigateToCategoriesScreen,
+                    animalType = AnimalType.Cow
+                )
+            }
+            item {
+                AnimalCard(
+                    labelRes = R.string.cows_label,
+                    icon = Icons.Outlined.QuestionMark,
+                    onButtonClick = navigateToCategoriesScreen,
+                    animalType = AnimalType.Cow
+                )
+            }
+            item {
+                AnimalCard(
+                    labelRes = R.string.cows_label,
+                    icon = Icons.Outlined.QuestionMark,
+                    onButtonClick = navigateToCategoriesScreen,
+                    animalType = AnimalType.Cow
+                )
+            }
+            item {
+                AnimalCard(
+                    labelRes = R.string.cows_label,
+                    icon = Icons.Outlined.QuestionMark,
+                    onButtonClick = navigateToCategoriesScreen,
+                    animalType = AnimalType.Cow
                 )
             }
         }
@@ -82,31 +117,23 @@ fun AnimalsCardsScreen(
 }
 
 @Composable
-fun AnimalInfoCard(
+fun AnimalCard(
     @StringRes labelRes: Int,
-    @DrawableRes backgroundRes: Int,
+    icon: ImageVector,
     modifier: Modifier = Modifier,
-    onButtonClick: () -> Unit
+    onButtonClick: (AnimalType) -> Unit,
+    animalType: AnimalType,
 ) {
     Card(
         modifier = modifier
-            .width(175.dp)
-            .height(200.dp),
+            .widthIn(128.dp)
+            .height(100.dp),
         border = BorderStroke(1.dp, color = Color.Black),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            Image(
-                painter = painterResource(backgroundRes),
-                contentDescription = null,
-                modifier = modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
-            //Invisible button
+        Box{
             Button(
-                onClick = { onButtonClick() },
+                onClick = { onButtonClick(animalType) },
                 modifier = Modifier
                     .align(Alignment.Center)
                     .fillMaxSize()
@@ -114,19 +141,19 @@ fun AnimalInfoCard(
                 shape = RoundedCornerShape(0.dp),
             ) { }
             Column(
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = stringResource(labelRes),
-                    modifier = Modifier.padding(15.dp),
+                    modifier = Modifier.padding(10.dp),
                     style = MaterialTheme.typography.headlineSmall,
-
-                    )
-                Text(
-                    text = stringResource(R.string.quantity_label, 0),
-                    modifier = Modifier.padding(15.dp),
-                    style = MaterialTheme.typography.headlineSmall,
+                )
+                Icon(
+                    modifier = Modifier.padding(10.dp, 0.dp, 10.dp, 10.dp),
+                    imageVector = icon,
+                    contentDescription = ""
                 )
             }
         }
@@ -135,12 +162,13 @@ fun AnimalInfoCard(
 
 @Preview
 @Composable
-fun AnimalInfoCardPreview() {
-    AnimalInfoCard(
+fun AnimalCardPreview() {
+    AnimalCard(
         labelRes = R.string.goats_label,
-        backgroundRes = R.drawable.goats_background,
+        icon = Icons.Outlined.QuestionMark,
         modifier = Modifier,
-        onButtonClick = {}
+        onButtonClick = {},
+        animalType = AnimalType.Goat
     )
 }
 

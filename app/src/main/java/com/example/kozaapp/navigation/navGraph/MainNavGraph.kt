@@ -27,11 +27,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.kozaapp.navigation.AdvertisementsScreen
 import com.example.kozaapp.navigation.AnimalsScreen
 import com.example.kozaapp.navigation.BottomBarScreen
+import com.example.kozaapp.navigation.DictionaryScreen
 import com.example.kozaapp.navigation.ProfileScreen
 import com.example.kozaapp.navigation.Screen
+import com.example.kozaapp.navigation.navGraph.animals.animalsNavGraph
 
 @Composable
 fun MainNavGraph() {
@@ -56,6 +57,7 @@ fun MainNavGraph() {
                 startDestination = NavGraph.ANIMALS_NAV_GRAPH_ROUTE
             ) {
                 animalsNavGraph(navController)
+                dictionaryNavGraph(navController)
                 //advertisementsNavGraph(navController)
                 //ProfileNavGraph(navController)
             }
@@ -74,7 +76,7 @@ fun AppBar(
 
     val mainScreensList = listOf(
         AnimalsScreen.Animals.route,
-        AdvertisementsScreen.Advertisements.route,
+        DictionaryScreen.Animals.route,
         ProfileScreen.Profile.route,
     )
 
@@ -107,7 +109,7 @@ fun BottomBar(navController: NavHostController) {
     val screens = listOf(
         BottomBarScreen.Animals,
         BottomBarScreen.VaccinationsCalendar,
-        BottomBarScreen.Advices,
+        BottomBarScreen.Dictionary,
         BottomBarScreen.Profile,
         //BottomBarScreen.Settings,
     )

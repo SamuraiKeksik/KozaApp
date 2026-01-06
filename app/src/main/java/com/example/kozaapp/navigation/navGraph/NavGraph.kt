@@ -8,4 +8,5 @@ object NavGraph {
     const val GOATS_NAV_GRAPH_ROUTE = "goats_graph"
     const val COWS_NAV_GRAPH_ROUTE = "cows_graph"
     const val ADVERTISEMENTS_NAV_GRAPH_ROUTE = "advertisements_graph"
+    const val DICTIONARY_NAV_GRAPH_ROUTE = "dictionary_graph"
 }
