@@ -166,6 +166,10 @@
     <string name="dictionary">Справочник</string>
     <string name="sicknesses_missing">Болезни отсутствуют</string>
     <string name="sicknesses_will_automaticly_load">Болезни автоматически загрузятся при наличии интернета</string>
+
+    <string name="advices_missing">Советы отсутствуют</string>
+    <string name="advice">Совет</string>
+    <string name="advices_will_automaticly_load">Советы автоматически загрузятся при наличии интернета</string>
     <string name="feeding">Питание</string>
     <string name="breeding">Разведение</string>
     <string name="category_label">Категория: %s</string>

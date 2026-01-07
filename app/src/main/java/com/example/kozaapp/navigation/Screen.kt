@@ -35,7 +35,6 @@ sealed class Screen(
                 DictionaryScreen.Categories,
                 DictionaryScreen.Sicknesses,
                 DictionaryScreen.ArticlesList,
-                DictionaryScreen.Article,
 
                 AdvertisementsScreen.Advertisements,
                 AdvertisementsScreen.AdvertisementDetails,
@@ -224,14 +223,6 @@ sealed class DictionaryScreen(
     ){
         fun passAnimalWithCategory(animalType: AnimalType, articleCategory: ArticleCategory) : String{
             return "dictionary/${animalType}/${articleCategory}/articles"
-        }
-    }
-    object Article : Screen(
-        route = "dictionary/articles/{article_id}",
-        title = R.string.dictionary,
-    ){
-        fun passAnimalWithCategory(articleId: Int) : String{
-            return "dictionary/articles/${articleId}"
         }
     }
 }

@@ -61,15 +61,8 @@ fun NavGraphBuilder.dictionaryNavGraph(
                 navArgument("article_category") {type = NavType.StringType},
             )
         ) {
-            DictionaryArticlesListScreen ( ){}
+            DictionaryArticlesListScreen ( )
         }
-        composable(
-            route = DictionaryScreen.Article.route,
-            arguments = listOf(
-                navArgument("article_id") {type = NavType.IntType},
-            )
-        ) {
-            DictionaryArticlesListScreen ( ){}
-        }
+
     }
 }
