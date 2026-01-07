@@ -1,12 +1,15 @@
 package com.example.app_data.database
 
 import android.content.Context
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.SQLiteConnection
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.app_data.R
 import com.example.app_data.animals.AnimalType
 import com.example.app_data.animals.AnimalsDao
 import com.example.app_data.animals.MilkYield
@@ -82,7 +85,7 @@ abstract class AppDatabase : RoomDatabase() {
                             SicknessType(
                                 id = 2,
                                 name = "Тимпания ",
-                                description = "",
+                                description = context.resources.getString(R.string.tempania_description),
                                 animalType = AnimalType.Goat
                             )
                         )

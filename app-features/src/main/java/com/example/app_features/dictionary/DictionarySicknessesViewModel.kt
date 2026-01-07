@@ -35,6 +35,9 @@ class DictionarySicknessesViewModel @Inject constructor(
             initialValue = SicknessesUiState(),
         )
 
+    fun selectSicknessType(sicknessType: SicknessType) {
+        sicknessesUiState.value.selectedSicknessType = sicknessType
+    }
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
     }
@@ -42,6 +45,7 @@ class DictionarySicknessesViewModel @Inject constructor(
 
 data class SicknessesUiState(
     val sicknessesTypesList: List<SicknessType> = listOf(),
+    var selectedSicknessType: SicknessType? = null,
     val isLoading: Boolean = true
 )
 
