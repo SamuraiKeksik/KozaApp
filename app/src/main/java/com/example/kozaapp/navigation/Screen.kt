@@ -3,6 +3,7 @@ package com.example.kozaapp.navigation
 import androidx.annotation.StringRes
 import com.example.app_data.animals.AnimalType
 import com.example.app_data.animals.goats.Gender
+import com.example.app_data.dictionary.ArticleCategory
 import com.example.kozaapp.R
 import java.util.UUID
 
@@ -27,6 +28,14 @@ sealed class Screen(
                 GoatsScreen.GoatParentAdding,
                 GoatsScreen.GoatDetails,
                 GoatsScreen.GoatEdit,
+                GoatsScreen.GoatParentInfo,
+                GoatsScreen.GoatChildren,
+                GoatsScreen.GoatChildInfo,
+
+                DictionaryScreen.Categories,
+                DictionaryScreen.Sicknesses,
+                DictionaryScreen.ArticlesList,
+                DictionaryScreen.Article,
 
                 AdvertisementsScreen.Advertisements,
                 AdvertisementsScreen.AdvertisementDetails,
@@ -194,11 +203,35 @@ sealed class DictionaryScreen(
         title = R.string.dictionary,
     )
     object Categories : Screen(
-        route = "dictionary/{animal}/categories",
+        route = "dictionary/{animal_type}/categories",
+        title = R.string.categories,
+    ){
+        fun passAnimal(animalType: AnimalType) : String{
+            return "dictionary/${animalType}/categories"
+        }
+    }
+    object Sicknesses : Screen(
+        route = "dictionary/{animal_type}/sicknesses",
+        title = R.string.sicknesses,
+    ){
+        fun passAnimalType(animalType: AnimalType) : String{
+            return "dictionary/${animalType}/sicknesses"
+        }
+    }
+    object ArticlesList : Screen(
+        route = "dictionary/{animal_type}/{article_category}/articles",
+        title = R.string.advices,
+    ){
+        fun passAnimalWithCategory(animalType: AnimalType, articleCategory: ArticleCategory) : String{
+            return "dictionary/${animalType}/${articleCategory}/articles"
+        }
+    }
+    object Article : Screen(
+        route = "dictionary/articles/{article_id}",
         title = R.string.dictionary,
     ){
-        fun passAnimal(animal: AnimalType) : String{
-            return "dictionary/${animal}/categories"
+        fun passAnimalWithCategory(articleId: Int) : String{
+            return "dictionary/articles/${articleId}"
         }
     }
 }

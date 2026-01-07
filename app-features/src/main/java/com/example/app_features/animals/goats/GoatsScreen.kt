@@ -44,6 +44,7 @@ import com.example.app_data.animals.goats.Breed
 import com.example.app_data.animals.goats.Gender
 import com.example.app_data.animals.goats.GoatEntity
 import com.example.app_data.animals.goats.Status
+import com.example.app_features.EmptyScreenFiller
 import com.example.app_features.R
 import com.example.app_features.theme.AppTheme
 import java.util.UUID
@@ -116,30 +117,11 @@ fun GoatsBody(
         modifier = modifier,
     ) {
         if (goatsList.isEmpty()) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Spacer(modifier = Modifier.size(200.dp))
-                Text(
-                    text = stringResource(R.string.empty_animals_list_label1),
-                    style = MaterialTheme.typography.headlineSmall,
-                    textAlign = TextAlign.Center,
-                )
-                Spacer(modifier = Modifier.size(3.dp))
-                Text(
-                    text = stringResource(R.string.empty_animals_list_label2),
-                    style = MaterialTheme.typography.headlineSmall,
-                    textAlign = TextAlign.Center,
-                )
-                Spacer(modifier = Modifier.size(10.dp))
-                Image(
-                    painterResource(R.drawable.missing_pet),
-                    contentDescription = null,
-                    modifier = Modifier.size(100.dp)
-                )
-            }
-
+            EmptyScreenFiller(
+                header = R.string.empty_animals_list_label1,
+                text = R.string.empty_animals_list_label2,
+                image = R.drawable.missing_pet
+            )
         } else {
             GoatsList(
                 goatsList = goatsList,

@@ -67,8 +67,6 @@
     <string name="sell">Продажа</string>
 
     <string name="categories">Категории</string>
-    <string name="feeding">Питание</string>
-    <string name="breeding">Разведение</string>
 
     <string name="main_screen_label">Ваша ферма</string>
     <string name="goats_label">Козы</string>
@@ -106,6 +104,7 @@
     <string name="end_date">Конец</string>
     <string name="sickness">Заболевание</string>
     <string name="sickness_type">Болезнь</string>
+    <string name="sickness_types">Болезни</string>
     <string name="medication">Препарат</string>
     <string name="warning_label">Внимание!</string>
     <string name="delete_warning">Вы уверены что хотите удалить %s %s? </string>
@@ -120,7 +119,7 @@
     <string name="gender_details_label">Пол: %s</string>
     <string name="gender_male">Самец</string>
     <string name="gender_female">Самка</string>
-    <string name="gender_unknown">Неизвестно</string>
+    <string name="unknown">Неизвестно</string>
 
     <!-- Породы коз -->
     <string name="breed_label">Порода</string>
@@ -162,4 +161,9 @@
 
 
     <string name="select_animal">Выберите животное</string>
+    <string name="dictionary">Справочник</string>
+    <string name="sicknesses_missing">Болезни отсутствуют</string>
+    <string name="sicknesses_will_automaticly_load">Болезни автоматически загрузятся при наличии интернета</string>
+    <string name="feeding">Питание</string>
+    <string name="breeding">Разведение</string>
 </resources>

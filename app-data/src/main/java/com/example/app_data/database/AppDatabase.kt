@@ -16,6 +16,8 @@ import com.example.app_data.animals.Vaccination
 import com.example.app_data.animals.Weight
 import com.example.app_data.animals.goats.GoatDao
 import com.example.app_data.animals.goats.GoatEntity
+import com.example.app_data.dictionary.ArticleEntity
+import com.example.app_data.dictionary.DictionaryDao
 import com.example.database.Converters
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,12 +35,14 @@ import java.util.concurrent.Executors
         Sickness::class,
         Vaccination::class,
         Weight::class,
-    ], version = 14, exportSchema = false
+        ArticleEntity::class
+    ], version = 15, exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun goatDao(): GoatDao
     abstract fun animalsDao(): AnimalsDao
+    abstract fun dictionaryDao(): DictionaryDao
 
     //abstract fun advertisementDao(): AdvertisementDao
     companion object {

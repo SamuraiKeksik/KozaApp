@@ -1,5 +1,6 @@
 package com.example.app_features.dictionary
 
+import android.content.res.Configuration
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -9,19 +10,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DonutSmall
-import androidx.compose.material.icons.filled.Pets
+import androidx.compose.material.icons.outlined.QuestionMark
+import androidx.compose.material.icons.outlined.Sick
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,78 +34,78 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.app_data.dictionary.DictionaryCategory
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.example.app_data.animals.AnimalType
+import com.example.app_data.dictionary.ArticleCategory
 import com.example.app_features.R
+import com.example.app_features.theme.AppTheme
 
 @Composable
 fun DictionaryCategoriesScreen(
     modifier: Modifier = Modifier,
-    navigateToGoatsDictionaryScreen: () -> Unit,
-    navigateToCowsDictionaryScreen: () -> Unit,
-    navigateToChickenDictionaryScreen: () -> Unit,
+    viewModel: DictionaryCategoriesViewModel = hiltViewModel(),
+    navigateToArticlesScreen: (AnimalType, ArticleCategory) -> Unit,
+    navigateToSicknessTypesScreen:(AnimalType) -> Unit,
 ){
+    val uiState = viewModel.categoriesUiState
     Column(
         modifier = modifier.padding(
-        start = 30.dp,
-        end = 30.dp,
-    ),
-    horizontalAlignment = Alignment.CenterHorizontally,
-    verticalArrangement = Arrangement.Top,
+            start = 30.dp,
+            end = 30.dp,
+        ),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top,
     ) {
-        Text(
-            text = stringResource(R.string.main_screen_label),
-            style = MaterialTheme.typography.displaySmall,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 30.dp),
-        )
-        Column {
-            LazyVerticalGrid(
-                columns = GridCells.Adaptive(minSize = 120.dp)
-            ) {
-                item(span = {
-                    GridItemSpan(maxLineSpan)
-                }) {
-                    CategoryCard(
-                        DictionaryCategory.FEEDING,
-                        R.string.feeding,
-                        Icons.Filled.DonutSmall,
-                        onButtonClick = { navigateToGoatsDictionaryScreen() }
-                    )
-                }
-                item(span = {
-                    GridItemSpan(maxLineSpan)
-                }) {
-                    CategoryCard(
-                        DictionaryCategory.BREEDING,
-                        R.string.breeding,
-                        Icons.Filled.Pets,
-                        onButtonClick = { navigateToGoatsDictionaryScreen() }
-                    )
-                }
-                item(span = {
-                    GridItemSpan(maxLineSpan)
-                }) {
-                    CategoryCard(
-                        DictionaryCategory.BREEDING,
-                        R.string.breeding,
-                        Icons.Filled.Pets,
-                        onButtonClick = { navigateToGoatsDictionaryScreen() }
-                    )
-                }
-                item(span = {
-                    GridItemSpan(maxLineSpan)
-                }) {
-                    CategoryCard(
-                        DictionaryCategory.BREEDING,
-                        R.string.breeding,
-                        Icons.Filled.Pets,
-                        onButtonClick = { navigateToGoatsDictionaryScreen() }
-                    )
-                }
+        LazyVerticalGrid(
+            columns = GridCells.Adaptive(minSize = 150.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            item {
+                CategoryCard(
+                    labelRes = R.string.sickness_types,
+                    icon = Icons.Outlined.Sick,
+                    onButtonClick = {
+                        navigateToSicknessTypesScreen(uiState.selectedAnimalType)
+                    },
+                )
             }
-
+            item {
+                CategoryCard(
+                    labelRes = R.string.feeding,
+                    icon = Icons.Outlined.QuestionMark,
+                    onButtonClick = {
+                        navigateToArticlesScreen(uiState.selectedAnimalType, ArticleCategory.FEEDING)
+                    },
+                )
+            }
+            item {
+                CategoryCard(
+                    labelRes = R.string.breeding,
+                    icon = Icons.Outlined.QuestionMark,
+                    onButtonClick = {
+                        navigateToArticlesScreen(uiState.selectedAnimalType, ArticleCategory.BREEDING)
+                    },
+                )
+            }
+            item {
+                CategoryCard(
+                    labelRes = R.string.unknown,
+                    icon = Icons.Outlined.QuestionMark,
+                    onButtonClick = {
+                        navigateToArticlesScreen(uiState.selectedAnimalType, ArticleCategory.FEEDING)
+                    },
+                )
+            }
+            item {
+                CategoryCard(
+                    labelRes = R.string.unknown,
+                    icon = Icons.Outlined.QuestionMark,
+                    onButtonClick = {
+                        navigateToArticlesScreen(uiState.selectedAnimalType, ArticleCategory.FEEDING)
+                    },
+                )
+            }
         }
 
     }
@@ -112,24 +113,21 @@ fun DictionaryCategoriesScreen(
 
 @Composable
 fun CategoryCard(
-    category: DictionaryCategory,
     @StringRes labelRes: Int,
     icon: ImageVector,
     modifier: Modifier = Modifier,
-    onButtonClick: (DictionaryCategory) -> Unit
+    onButtonClick: () -> Unit,
 ) {
     Card(
         modifier = modifier
-            .width(200.dp)
-            .height(200.dp),
+            .widthIn(128.dp, 256.dp)
+            .height(100.dp),
         border = BorderStroke(1.dp, color = Color.Black),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-        ) {
+        Box{
             Button(
-                onClick = { onButtonClick(category) },
+                onClick = onButtonClick,
                 modifier = Modifier
                     .align(Alignment.Center)
                     .fillMaxSize()
@@ -137,15 +135,20 @@ fun CategoryCard(
                 shape = RoundedCornerShape(0.dp),
             ) { }
             Column(
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = stringResource(labelRes),
-                    modifier = Modifier.padding(15.dp),
+                    modifier = Modifier.padding(10.dp),
                     style = MaterialTheme.typography.headlineSmall,
                 )
-                Icon(imageVector = icon, contentDescription = null)
+                Icon(
+                    modifier = Modifier.padding(10.dp, 0.dp, 10.dp, 10.dp),
+                    imageVector = icon,
+                    contentDescription = ""
+                )
             }
         }
     }
@@ -153,10 +156,22 @@ fun CategoryCard(
 
 @Preview
 @Composable
-fun DictionaryCategoriesPreview() {
-    DictionaryCategoriesScreen(
-        navigateToChickenDictionaryScreen = {},
-        navigateToCowsDictionaryScreen = {},
-        navigateToGoatsDictionaryScreen = {}
+fun CategoryCardPreview() {
+    CategoryCard(
+        labelRes = R.string.goats_label,
+        icon = Icons.Outlined.QuestionMark,
+        modifier = Modifier,
+        onButtonClick = {},
     )
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun CategoryCardsScreenPreview(){
+    AppTheme{
+        Surface(modifier = Modifier.fillMaxSize()) {
+            //AnimalsScreen()
+        }
+    }
 }

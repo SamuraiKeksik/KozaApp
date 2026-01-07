@@ -100,7 +100,7 @@
     <string name="gender_details_label">Пол: %s</string>
     <string name="gender_male">Самец</string>
     <string name="gender_female">Самка</string>
-    <string name="gender_unknown">Неизвестно</string>
+    <string name="unknown">Неизвестно</string>
 
     <!-- Породы коз -->
     <string name="breed_label">Порода</string>
@@ -127,6 +127,7 @@
     <string name="empty_animals_list_label2">Добавьте новое животное.</string>
 
     <string name="dictionary">Справочник</string>
+    <string name="sicknesses">Болезни</string>
     <string name="categories">Категории</string>
 
 </resources>

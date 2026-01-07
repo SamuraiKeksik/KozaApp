@@ -59,7 +59,7 @@ fun DictionaryAnimalsScreen(
     verticalArrangement = Arrangement.Top,
     ) {
         Text(
-            text = stringResource(R.string.select_animal),
+            text = stringResource(R.string.dictionary),
             style = MaterialTheme.typography.displaySmall,
             textAlign = TextAlign.Center,
             modifier = Modifier
