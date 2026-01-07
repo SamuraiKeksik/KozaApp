@@ -70,8 +70,10 @@
 
     <string name="main_screen_label">Ваша ферма</string>
     <string name="goats_label">Козы</string>
+    <string name="all">Все</string>
     <string name="cows_label">Коровы</string>
     <string name="chickens_label">Курицы</string>
+    <string name="pigs">Свиньи</string>
     <string name="quantity_label">%d шт.</string>
 
     <string name="goat_creation_screen_label">Добавление козы</string>

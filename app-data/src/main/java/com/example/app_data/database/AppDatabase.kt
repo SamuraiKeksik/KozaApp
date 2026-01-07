@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
         Vaccination::class,
         Weight::class,
         ArticleEntity::class
-    ], version = 15, exportSchema = false
+    ], version = 16, exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -75,7 +75,7 @@ abstract class AppDatabase : RoomDatabase() {
                                 id = 1,
                                 name = "Неизвестно",
                                 description = "",
-                                animalType = AnimalType.Unknown
+                                animalType = AnimalType.UNKNOWN
                             )
                         )
                         animalsDao.insertSicknessType(
@@ -83,7 +83,7 @@ abstract class AppDatabase : RoomDatabase() {
                                 id = 2,
                                 name = "Тимпания ",
                                 description = context.resources.getString(R.string.tempania_description),
-                                animalType = AnimalType.Goat
+                                animalType = AnimalType.GOAT
                             )
                         )
                         animalsDao.insertSicknessType(
@@ -91,7 +91,7 @@ abstract class AppDatabase : RoomDatabase() {
                                 id = 3,
                                 name = "Сибирская язва",
                                 description = "",
-                                animalType = AnimalType.Goat
+                                animalType = AnimalType.GOAT
                             )
                         )
                     }
@@ -112,7 +112,7 @@ abstract class AppDatabase : RoomDatabase() {
                                 id = 1,
                                 name = "Как кормить коз для увеличения удоя",
                                 description = context.resources.getString(R.string.goat_feeding_article_description),
-                                animalType = AnimalType.Goat,
+                                animalType = AnimalType.GOAT,
                                 category = ArticleCategory.FEEDING
                             )
                         )

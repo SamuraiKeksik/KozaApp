@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.app_data.animals.AnimalType
-import com.example.app_data.dictionary.ArticleCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 
@@ -23,6 +22,6 @@ class DictionaryCategoriesViewModel @Inject constructor(
 }
 
 data class CategoriesUiState(
-    val selectedAnimalType: AnimalType = AnimalType.Unknown,
+    val selectedAnimalType: AnimalType = AnimalType.UNKNOWN,
 )
 

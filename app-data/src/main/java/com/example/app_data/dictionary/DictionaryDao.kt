@@ -14,7 +14,13 @@ interface DictionaryDao {
     fun getAllArticles(): Flow<List<ArticleEntity>>
 
     @Query("SELECT * FROM articles WHERE category = :articleCategory AND animalType = :animalType")
-    fun getArticlesByCategory(animalType: AnimalType, articleCategory: ArticleCategory): Flow<List<ArticleEntity>>
+    fun getArticlesByCategoryAndAnimalType(animalType: AnimalType, articleCategory: ArticleCategory): Flow<List<ArticleEntity>>
+
+    @Query("SELECT * FROM articles WHERE category = :articleCategory")
+    fun getArticlesByCategory(articleCategory: ArticleCategory): Flow<List<ArticleEntity>>
+
+    @Query("SELECT * FROM sickness_types EXCEPT SELECT * FROM sickness_types WHERE name = 'Неизвестно'")
+    fun getAllSicknessesTypes(): Flow<List<SicknessType>>
 
     @Query("SELECT * FROM sickness_types WHERE animalType = :animalType")
     fun getSicknessesTypesByAnimalType(animalType: AnimalType): Flow<List<SicknessType>>

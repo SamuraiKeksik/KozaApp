@@ -8,24 +8,17 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.QuestionMark
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -34,8 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -73,42 +64,42 @@ fun DictionaryAnimalsScreen(
         ) {
             item {
                 AnimalCard(
+                    labelRes = R.string.all,
+                    image = R.drawable.animals,
+                    onButtonClick = navigateToCategoriesScreen,
+                    animalType = AnimalType.ALL
+                )
+            }
+            item {
+                AnimalCard(
                     labelRes = R.string.goats_label,
-                    icon = Icons.Outlined.QuestionMark,
+                    image = R.drawable.goat,
                     onButtonClick = navigateToCategoriesScreen,
-                    animalType = AnimalType.Goat
+                    animalType = AnimalType.GOAT
                 )
             }
             item {
                 AnimalCard(
                     labelRes = R.string.cows_label,
-                    icon = Icons.Outlined.QuestionMark,
+                    image = R.drawable.cow,
                     onButtonClick = navigateToCategoriesScreen,
-                    animalType = AnimalType.Cow
+                    animalType = AnimalType.COW
                 )
             }
             item {
                 AnimalCard(
-                    labelRes = R.string.cows_label,
-                    icon = Icons.Outlined.QuestionMark,
+                    labelRes = R.string.chickens_label,
+                    image = R.drawable.chicken,
                     onButtonClick = navigateToCategoriesScreen,
-                    animalType = AnimalType.Cow
+                    animalType = AnimalType.CHICKEN
                 )
             }
             item {
                 AnimalCard(
-                    labelRes = R.string.cows_label,
-                    icon = Icons.Outlined.QuestionMark,
+                    labelRes = R.string.pigs,
+                    image = R.drawable.pig,
                     onButtonClick = navigateToCategoriesScreen,
-                    animalType = AnimalType.Cow
-                )
-            }
-            item {
-                AnimalCard(
-                    labelRes = R.string.cows_label,
-                    icon = Icons.Outlined.QuestionMark,
-                    onButtonClick = navigateToCategoriesScreen,
-                    animalType = AnimalType.Cow
+                    animalType = AnimalType.PIG
                 )
             }
         }
@@ -119,7 +110,7 @@ fun DictionaryAnimalsScreen(
 @Composable
 fun AnimalCard(
     @StringRes labelRes: Int,
-    icon: ImageVector,
+    @DrawableRes image: Int,
     modifier: Modifier = Modifier,
     onButtonClick: (AnimalType) -> Unit,
     animalType: AnimalType,
@@ -150,10 +141,10 @@ fun AnimalCard(
                     modifier = Modifier.padding(10.dp),
                     style = MaterialTheme.typography.headlineSmall,
                 )
-                Icon(
+                Image(
                     modifier = Modifier.padding(10.dp, 0.dp, 10.dp, 10.dp),
-                    imageVector = icon,
-                    contentDescription = ""
+                    painter = painterResource(image),
+                    contentDescription = null,
                 )
             }
         }
@@ -165,10 +156,10 @@ fun AnimalCard(
 fun AnimalCardPreview() {
     AnimalCard(
         labelRes = R.string.goats_label,
-        icon = Icons.Outlined.QuestionMark,
+        image = R.drawable.animals,
         modifier = Modifier,
         onButtonClick = {},
-        animalType = AnimalType.Goat
+        animalType = AnimalType.GOAT
     )
 }
 

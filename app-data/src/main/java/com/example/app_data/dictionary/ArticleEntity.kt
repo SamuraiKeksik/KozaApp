@@ -15,5 +15,5 @@ data class ArticleEntity (
 )
 
 enum class ArticleCategory {
-    UNKNOWN, FEEDING, BREEDING
+    UNKNOWN, ALL, FEEDING, BREEDING
 }

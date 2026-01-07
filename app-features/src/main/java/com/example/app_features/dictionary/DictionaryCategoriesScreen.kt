@@ -1,8 +1,10 @@
 package com.example.app_features.dictionary
 
 import android.content.res.Configuration
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -64,7 +67,7 @@ fun DictionaryCategoriesScreen(
             item {
                 CategoryCard(
                     labelRes = R.string.sickness_types,
-                    icon = Icons.Outlined.Sick,
+                    image = R.drawable.categories,
                     onButtonClick = {
                         navigateToSicknessTypesScreen(uiState.selectedAnimalType)
                     },
@@ -73,7 +76,7 @@ fun DictionaryCategoriesScreen(
             item {
                 CategoryCard(
                     labelRes = R.string.feeding,
-                    icon = Icons.Outlined.QuestionMark,
+                    image = R.drawable.feeding,
                     onButtonClick = {
                         navigateToArticlesScreen(uiState.selectedAnimalType, ArticleCategory.FEEDING)
                     },
@@ -82,27 +85,9 @@ fun DictionaryCategoriesScreen(
             item {
                 CategoryCard(
                     labelRes = R.string.breeding,
-                    icon = Icons.Outlined.QuestionMark,
+                    image = R.drawable.breeding,
                     onButtonClick = {
                         navigateToArticlesScreen(uiState.selectedAnimalType, ArticleCategory.BREEDING)
-                    },
-                )
-            }
-            item {
-                CategoryCard(
-                    labelRes = R.string.unknown,
-                    icon = Icons.Outlined.QuestionMark,
-                    onButtonClick = {
-                        navigateToArticlesScreen(uiState.selectedAnimalType, ArticleCategory.FEEDING)
-                    },
-                )
-            }
-            item {
-                CategoryCard(
-                    labelRes = R.string.unknown,
-                    icon = Icons.Outlined.QuestionMark,
-                    onButtonClick = {
-                        navigateToArticlesScreen(uiState.selectedAnimalType, ArticleCategory.FEEDING)
                     },
                 )
             }
@@ -114,7 +99,7 @@ fun DictionaryCategoriesScreen(
 @Composable
 fun CategoryCard(
     @StringRes labelRes: Int,
-    icon: ImageVector,
+    @DrawableRes image: Int,
     modifier: Modifier = Modifier,
     onButtonClick: () -> Unit,
 ) {
@@ -144,10 +129,10 @@ fun CategoryCard(
                     modifier = Modifier.padding(10.dp),
                     style = MaterialTheme.typography.headlineSmall,
                 )
-                Icon(
+                Image(
                     modifier = Modifier.padding(10.dp, 0.dp, 10.dp, 10.dp),
-                    imageVector = icon,
-                    contentDescription = ""
+                    painter = painterResource(image),
+                    contentDescription = null,
                 )
             }
         }
@@ -159,7 +144,7 @@ fun CategoryCard(
 fun CategoryCardPreview() {
     CategoryCard(
         labelRes = R.string.goats_label,
-        icon = Icons.Outlined.QuestionMark,
+        image = R.drawable.animals,
         modifier = Modifier,
         onButtonClick = {},
     )
