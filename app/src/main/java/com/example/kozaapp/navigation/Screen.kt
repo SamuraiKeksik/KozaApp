@@ -12,8 +12,8 @@ sealed class Screen(
     @StringRes val title: Int
 ) {
     companion object {
-        val list by lazy {
-            listOf(
+        val list: List<Screen> by lazy {
+            listOf<Screen>(
                 AuthScreen.Greetings,
                 AuthScreen.Login,
                 AuthScreen.PasswordRecovery1,
@@ -38,7 +38,7 @@ sealed class Screen(
 
                 AdvertisementsScreen.Advertisements,
                 AdvertisementsScreen.AdvertisementDetails,
-                )
+            )
         }
     }
 }
@@ -49,6 +49,16 @@ sealed class AnimalsScreen(
 ) {
     object Animals : AnimalsScreen(
         route = "animals",
+        title = R.string.empty_string
+    )
+}
+
+sealed class VaccinationsCalendarScreen(
+    val route: String,
+    @StringRes val title: Int
+) {
+    object Calendar : VaccinationsCalendarScreen(
+        route = "vaccinations_calendar",
         title = R.string.empty_string
     )
 }
@@ -106,6 +116,7 @@ sealed class AdvertisementsScreen(
         route = "advertisements",
         title = R.string.advertisements,
     )
+
     object AdvertisementDetails : Screen(
         route = "advertisements/details/{id}",
         title = R.string.advertisement_details,
@@ -125,6 +136,7 @@ sealed class ProfileScreen(
         title = R.string.profile,
     )
 }
+
 sealed class GoatsScreen(
     val route: String,
     @StringRes val title: Int
@@ -160,7 +172,7 @@ sealed class GoatsScreen(
     object GoatParentAdding : Screen(
         route = "animals/goats/parent_Adding/{id}/{parent_gender}",
         title = R.string.goat_adding_parent_screen_label
-    ){
+    ) {
         fun passIdWithGender(id: UUID, parentGender: Gender): String {
             return "animals/goats/parent_Adding/${id}/${parentGender}"
         }
@@ -174,6 +186,7 @@ sealed class GoatsScreen(
             return "animals/goats/parent_info/${id}"
         }
     }
+
     object GoatChildren : Screen(
         route = "animals/goats/goat_children/{id}",
         title = R.string.goat_children_screen_label,
@@ -182,6 +195,7 @@ sealed class GoatsScreen(
             return "animals/goats/goat_children/${id}"
         }
     }
+
     object GoatChildInfo : Screen(
         route = "animals/goats/goat_child_info/{id}",
         title = R.string.goat_child_info_screen_label,
@@ -201,27 +215,33 @@ sealed class DictionaryScreen(
         route = "dictionary/animals",
         title = R.string.dictionary,
     )
+
     object Categories : Screen(
         route = "dictionary/{animal_type}/categories",
         title = R.string.categories,
-    ){
-        fun passAnimal(animalType: AnimalType) : String{
+    ) {
+        fun passAnimal(animalType: AnimalType): String {
             return "dictionary/${animalType}/categories"
         }
     }
+
     object Sicknesses : Screen(
         route = "dictionary/{animal_type}/sicknesses",
         title = R.string.sicknesses,
-    ){
-        fun passAnimalType(animalType: AnimalType) : String{
+    ) {
+        fun passAnimalType(animalType: AnimalType): String {
             return "dictionary/${animalType}/sicknesses"
         }
     }
+
     object ArticlesList : Screen(
         route = "dictionary/{animal_type}/{article_category}/articles",
         title = R.string.advices,
-    ){
-        fun passAnimalWithCategory(animalType: AnimalType, articleCategory: ArticleCategory) : String{
+    ) {
+        fun passAnimalWithCategory(
+            animalType: AnimalType,
+            articleCategory: ArticleCategory
+        ): String {
             return "dictionary/${animalType}/${articleCategory}/articles"
         }
     }

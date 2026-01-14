@@ -22,7 +22,7 @@ sealed class BottomBarScreen(
         icon = Icons.Default.Apps
     )
     object VaccinationsCalendar : BottomBarScreen(
-        route = AnimalsScreen.Animals.route,
+        route = VaccinationsCalendarScreen.Calendar.route,
         title = R.string.vaccinations_calendar,
         icon = Icons.Default.CalendarMonth
     )

@@ -13,6 +13,7 @@ fun RootNavGraph(navController: NavHostController = rememberNavController()) {
         route = NavGraph.ROOT_NAV_GRAPH_ROUTE,
         startDestination = NavGraph.MAIN_NAV_GRAPH_ROUTE
     ) {
+
         composable(route = NavGraph.AUTH_NAV_GRAPH_ROUTE){
 //            AuthNavGraph(
 //                onLoginSuccess = {

@@ -25,13 +25,16 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.app_features.vaccinationsCalendar.DashboardUI
 import com.example.kozaapp.navigation.AnimalsScreen
 import com.example.kozaapp.navigation.BottomBarScreen
 import com.example.kozaapp.navigation.DictionaryScreen
 import com.example.kozaapp.navigation.ProfileScreen
 import com.example.kozaapp.navigation.Screen
+import com.example.kozaapp.navigation.VaccinationsCalendarScreen
 import com.example.kozaapp.navigation.navGraph.animals.animalsNavGraph
 
 @Composable
@@ -58,6 +61,9 @@ fun MainNavGraph() {
             ) {
                 animalsNavGraph(navController)
                 dictionaryNavGraph(navController)
+                composable(VaccinationsCalendarScreen.Calendar.route) {
+                    DashboardUI()
+                }
                 //advertisementsNavGraph(navController)
                 //ProfileNavGraph(navController)
             }
@@ -76,6 +82,7 @@ fun AppBar(
 
     val mainScreensList = listOf(
         AnimalsScreen.Animals.route,
+        VaccinationsCalendarScreen.Calendar.route,
         DictionaryScreen.Animals.route,
         ProfileScreen.Profile.route,
     )
@@ -110,7 +117,7 @@ fun BottomBar(navController: NavHostController) {
         BottomBarScreen.Animals,
         BottomBarScreen.VaccinationsCalendar,
         BottomBarScreen.Dictionary,
-        BottomBarScreen.Profile,
+        //BottomBarScreen.Profile,
         //BottomBarScreen.Settings,
     )
     val navBackStackEntry by navController.currentBackStackEntryAsState()
