@@ -9,7 +9,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
+import com.example.app_features.R
 
 //import dev.baseio.googlecalendar.commonui.theme.GoogleCalendarColorProvider
 
@@ -38,14 +40,27 @@ fun DashboardAppBar(toggleDrawer: () -> Unit, onToggleMonth: () -> Unit) {
 
 @Composable
 fun CalendarMonthPicker(onToggleMonth: () -> Unit) {
-    Row(Modifier.clickable {
-        onToggleMonth.invoke()
-    }, verticalAlignment = Alignment.CenterVertically) {
-        Text("February")
-        Icon(
-            Icons.Filled.ArrowDropDown,
-            contentDescription = null,
-            modifier = Modifier.padding(start = 4.dp)
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        IconButton(onClick = { /*TODO*/ }) {
+            Icon(
+                Icons.Filled.ArrowLeft,
+                contentDescription = null,
+                modifier = Modifier.padding(start = dimensionResource(R.dimen.padding_small))
+            )
+        }
+        Text(
+            text = "Январь 2025",
+            modifier = Modifier.clickable {
+                onToggleMonth.invoke()
+            },
         )
+        IconButton(onClick = { /*TODO*/ }) {
+            Icon(
+                Icons.Filled.ArrowRight,
+                contentDescription = null,
+                modifier = Modifier.padding(start = dimensionResource(R.dimen.padding_small))
+            )
+        }
+
     }
 }
