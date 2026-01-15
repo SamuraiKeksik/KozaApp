@@ -15,7 +15,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dev.baseio.libjetcalendar.data.JetDay
 import dev.baseio.libjetcalendar.data.JetMonth
-import dev.baseio.libjetcalendar.data.dayNames
 import java.time.DayOfWeek
 
 @Composable

@@ -30,5 +30,6 @@ fun RootNavGraph(navController: NavHostController = rememberNavController()) {
         composable(route = NavGraph.MAIN_NAV_GRAPH_ROUTE) {
             MainNavGraph()
         }
+
     }
 }

@@ -32,7 +32,7 @@ fun CalendarEventsCards() {
   LazyColumn(
     state = listState
   ) {
-    for (item in 0..200) {
+    for (item in 0..30) {
       if (item % 10 == 0) {
         stickyHeader {
           CalendarCardHeader(isAccepted = item % 2 == 0, showDate = true)

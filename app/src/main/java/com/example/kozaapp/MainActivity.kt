@@ -22,6 +22,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         //schedulePeriodicGoatsSync(applicationContext)
         enableEdgeToEdge()
+
         setContent {
             val view = LocalView.current
             AppTheme {

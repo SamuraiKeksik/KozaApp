@@ -6,16 +6,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import dev.baseio.libjetcalendar.data.JetDay
-import dev.baseio.libjetcalendar.data.JetWeek
 
 @Composable
 fun JetCalendarWeekView(
@@ -46,8 +47,7 @@ fun JetCalendarWeekView(
         Text(
           text = date.date.dayOfMonth.toString(),
           textAlign = TextAlign.Center,
-//          style = GoogleCalendarTypography.subtitle1
-//            .copy(color = if (date.isPartOfMonth) GoogleCalendarColorProvider.colors.appBarTextTitleColor else Color.Transparent)
+          style = textStyle(selectedDates, date)
         )
       }
     }
@@ -59,5 +59,18 @@ private fun bgColor(
   selectedDates: JetDay,
   date: JetDay
 ) =
-  //if (selectedDates.date.isEqual(date.date)) GoogleCalendarColorProvider.colors.buttonColor else Color.Transparent
-  Color.Transparent
+  if (selectedDates.date.isEqual(date.date)) MaterialTheme.colorScheme.primaryContainer
+  else if (date.isPartOfMonth) Color.Transparent
+  else Color.Transparent
+
+@Composable
+private fun textStyle(
+  selectedDates: JetDay,
+  date: JetDay
+) =
+  TextStyle.Default.copy(
+    color = if(selectedDates.date.isEqual(date.date)) MaterialTheme.colorScheme.onPrimaryContainer
+    else if (date.isPartOfMonth) MaterialTheme.colorScheme.onSurface
+    else Color.Transparent
+  )
+

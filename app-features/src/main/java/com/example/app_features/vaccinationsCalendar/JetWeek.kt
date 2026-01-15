@@ -1,5 +1,7 @@
-package dev.baseio.libjetcalendar.data
+package com.example.app_features.vaccinationsCalendar
 
+import dev.baseio.libjetcalendar.data.JetCalendarType
+import dev.baseio.libjetcalendar.data.JetDay
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle

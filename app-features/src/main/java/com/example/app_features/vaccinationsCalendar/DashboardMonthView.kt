@@ -19,7 +19,6 @@ fun DashboardMonthView(modifier: Modifier) {
     val selectedDates = rememberSaveable(stateSaver = JetDaySaver) {
       mutableStateOf(JetDay(LocalDate.now(), true))
     }
-
     Column(Modifier.fillMaxWidth()) {
       WeekNames(DayOfWeek.MONDAY)
       JetCalendarMonthlyView(
