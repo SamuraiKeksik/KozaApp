@@ -11,7 +11,7 @@ interface AnimalsRepository {
 
     //Vaccination
     suspend fun getVaccination(id: UUID) : Vaccination?
-    suspend fun getVaccinationsByAnimalType(animalType: AnimalType) : List<Vaccination>
+    //suspend fun getVaccinationsByAnimalType(animalType: AnimalType) : List<Vaccination>
     suspend fun insertVaccination(vaccination: Vaccination)
     suspend fun deleteVaccination(vaccination: Vaccination)
     suspend fun updateVaccination(vaccination: Vaccination)
@@ -36,7 +36,7 @@ class DefaultAnimalsRepository @Inject constructor(
 
     //Vaccination
     override suspend fun getVaccination(id: UUID): Vaccination? = animalsLocalDataSource.getVaccination(id)
-    override suspend fun getVaccinationsByAnimalId(animalId: UUID): List<Vaccination> = animalsLocalDataSource.getVaccinationsByAnimalId(animalId)
+    //override suspend fun getVaccinationsByAnimalId(animalId: UUID): List<Vaccination> = animalsLocalDataSource.getVaccinationsByAnimalId(animalId)
     override suspend fun insertVaccination(vaccination: Vaccination) = animalsLocalDataSource.insertVaccination(vaccination)
     override suspend fun deleteVaccination(vaccination: Vaccination) = animalsLocalDataSource.deleteVaccination(vaccination)
     override suspend fun updateVaccination(vaccination: Vaccination) = animalsLocalDataSource.updateVaccination(vaccination)

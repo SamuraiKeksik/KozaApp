@@ -9,24 +9,34 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -34,50 +44,61 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.app_features.R
 import com.example.app_features.theme.AppTheme
+import com.example.app_features.vaccinationsCalendar.CalendarMonthPicker
+import com.example.app_features.vaccinationsCalendar.DashboardAppBar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimalsCardsScreen(
     modifier: Modifier = Modifier,
     navigateToGoatsScreen: () -> Unit,
     navigateToCowsScreen: () -> Unit,
     navigateToChickenScreen: () -> Unit,
-){
-    Column(
-        modifier = modifier.padding(
-        start = 30.dp,
-        end = 30.dp,
-    ),
-    horizontalAlignment = Alignment.CenterHorizontally,
-    verticalArrangement = Arrangement.Top,
-    ) {
-        Text(
-            text = stringResource(R.string.main_screen_label),
-            style = MaterialTheme.typography.displaySmall,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 30.dp),
-        )
-        Column {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround,
+) {
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                ),
+                title = {
+                    Text(
+                        text = stringResource(R.string.main_screen_label),
+                    )
+                },
+            )
+        },
+        contentWindowInsets = WindowInsets(0.dp)
+    ) { padding ->
+        Box(modifier.padding(padding)) {
+            Column(
+                modifier = modifier.padding(dimensionResource(R.dimen.padding_medium)),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top,
             ) {
-                AnimalInfoCard(
-                    labelRes = R.string.goats_label,
-                    backgroundRes = R.drawable.goats_background,
-                    modifier = Modifier.height(250.dp),
-                    onButtonClick = { navigateToGoatsScreen() }
-                )
-                AnimalInfoCard(
-                    labelRes = R.string.cows_label,
-                    backgroundRes = R.drawable.cows_background,
-                    modifier = Modifier.height(250.dp),
-                    onButtonClick = { navigateToCowsScreen() }
-                )
+                Column {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround,
+                    ) {
+                        AnimalInfoCard(
+                            labelRes = R.string.goats_label,
+                            backgroundRes = R.drawable.goats_background,
+                            modifier = Modifier.height(250.dp),
+                            onButtonClick = { navigateToGoatsScreen() }
+                        )
+                        AnimalInfoCard(
+                            labelRes = R.string.cows_label,
+                            backgroundRes = R.drawable.cows_background,
+                            modifier = Modifier.height(250.dp),
+                            onButtonClick = { navigateToCowsScreen() }
+                        )
+                    }
+                }
+
             }
         }
-
     }
 }
 
@@ -147,8 +168,8 @@ fun AnimalInfoCardPreview() {
 @Preview(showBackground = true, showSystemUi = true)
 @Preview(showBackground = true, showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun AnimalCardsScreenPreview(){
-    AppTheme{
+fun AnimalCardsScreenPreview() {
+    AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             //AnimalsScreen()
         }

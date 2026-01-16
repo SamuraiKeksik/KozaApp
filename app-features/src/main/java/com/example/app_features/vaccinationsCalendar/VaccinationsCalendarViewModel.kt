@@ -37,7 +37,7 @@ class VaccinationsCalendarViewModel @Inject constructor(
         )
     }
 
-    private fun getVaccinations() = animalsRepository.getVaccinations()
+    //private fun getVaccinations() = animalsRepository.getVaccinations()
 }
 
 data class VaccinationsCalendarUiState(

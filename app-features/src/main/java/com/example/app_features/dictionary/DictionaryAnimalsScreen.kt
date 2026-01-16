@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,14 +20,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -36,74 +42,83 @@ import com.example.app_data.animals.AnimalType
 import com.example.app_features.R
 import com.example.app_features.theme.AppTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DictionaryAnimalsScreen(
     modifier: Modifier = Modifier,
     navigateToCategoriesScreen: (AnimalType) -> Unit,
-){
-    Column(
-        modifier = modifier.padding(
-        start = 30.dp,
-        end = 30.dp,
-    ),
-    horizontalAlignment = Alignment.CenterHorizontally,
-    verticalArrangement = Arrangement.Top,
-    ) {
-        Text(
-            text = stringResource(R.string.dictionary),
-            style = MaterialTheme.typography.displaySmall,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 30.dp),
-        )
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 110.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            item {
-                AnimalCard(
-                    labelRes = R.string.all,
-                    image = R.drawable.animals,
-                    onButtonClick = navigateToCategoriesScreen,
-                    animalType = AnimalType.ALL
-                )
-            }
-            item {
-                AnimalCard(
-                    labelRes = R.string.goats_label,
-                    image = R.drawable.goat,
-                    onButtonClick = navigateToCategoriesScreen,
-                    animalType = AnimalType.GOAT
-                )
-            }
-            item {
-                AnimalCard(
-                    labelRes = R.string.cows_label,
-                    image = R.drawable.cow,
-                    onButtonClick = navigateToCategoriesScreen,
-                    animalType = AnimalType.COW
-                )
-            }
-            item {
-                AnimalCard(
-                    labelRes = R.string.chickens_label,
-                    image = R.drawable.chicken,
-                    onButtonClick = navigateToCategoriesScreen,
-                    animalType = AnimalType.CHICKEN
-                )
-            }
-            item {
-                AnimalCard(
-                    labelRes = R.string.pigs,
-                    image = R.drawable.pig,
-                    onButtonClick = navigateToCategoriesScreen,
-                    animalType = AnimalType.PIG
-                )
+) {
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                ),
+                title = {
+                    Text(
+                        text = stringResource(R.string.dictionary),
+                    )
+                },
+            )
+        },
+        contentWindowInsets = WindowInsets(0.dp)
+    ) { padding ->
+        Box(modifier.padding(padding)) {
+            Column(
+                modifier = modifier.padding(dimensionResource(R.dimen.padding_medium)),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top,
+            ) {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 110.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    item {
+                        AnimalCard(
+                            labelRes = R.string.all,
+                            image = R.drawable.animals,
+                            onButtonClick = navigateToCategoriesScreen,
+                            animalType = AnimalType.ALL
+                        )
+                    }
+                    item {
+                        AnimalCard(
+                            labelRes = R.string.goats_label,
+                            image = R.drawable.goat,
+                            onButtonClick = navigateToCategoriesScreen,
+                            animalType = AnimalType.GOAT
+                        )
+                    }
+                    item {
+                        AnimalCard(
+                            labelRes = R.string.cows_label,
+                            image = R.drawable.cow,
+                            onButtonClick = navigateToCategoriesScreen,
+                            animalType = AnimalType.COW
+                        )
+                    }
+                    item {
+                        AnimalCard(
+                            labelRes = R.string.chickens_label,
+                            image = R.drawable.chicken,
+                            onButtonClick = navigateToCategoriesScreen,
+                            animalType = AnimalType.CHICKEN
+                        )
+                    }
+                    item {
+                        AnimalCard(
+                            labelRes = R.string.pigs,
+                            image = R.drawable.pig,
+                            onButtonClick = navigateToCategoriesScreen,
+                            animalType = AnimalType.PIG
+                        )
+                    }
+                }
+
             }
         }
-
     }
 }
 
@@ -122,7 +137,7 @@ fun AnimalCard(
         border = BorderStroke(1.dp, color = Color.Black),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
     ) {
-        Box{
+        Box {
             Button(
                 onClick = { onButtonClick(animalType) },
                 modifier = Modifier
@@ -166,8 +181,8 @@ fun AnimalCardPreview() {
 @Preview(showBackground = true, showSystemUi = true)
 @Preview(showBackground = true, showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun AnimalCardsScreenPreview(){
-    AppTheme{
+fun AnimalCardsScreenPreview() {
+    AppTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             //AnimalsScreen()
         }
