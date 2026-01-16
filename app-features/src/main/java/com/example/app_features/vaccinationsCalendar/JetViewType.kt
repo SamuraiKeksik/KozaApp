@@ -1,4 +1,4 @@
-package dev.baseio.libjetcalendar.data
+package com.example.app_features.vaccinationsCalendar
 
 enum class JetViewType {
   MONTHLY,

@@ -13,8 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import dev.baseio.libjetcalendar.data.JetDay
-import dev.baseio.libjetcalendar.data.JetMonth
 import java.time.DayOfWeek
 
 @Composable

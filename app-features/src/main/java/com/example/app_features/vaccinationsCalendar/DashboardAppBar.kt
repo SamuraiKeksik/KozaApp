@@ -17,7 +17,13 @@ import com.example.app_features.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DashboardAppBar(toggleDrawer: () -> Unit, onToggleMonth: () -> Unit) {
+fun DashboardAppBar(
+    onMonthSelect: () -> Unit,
+    onPreviousMonth: () -> Unit,
+    onNextMonth: () -> Unit,
+    onFilterClick: () -> Unit,
+    jetMonth: JetMonth
+) {
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -25,12 +31,15 @@ fun DashboardAppBar(toggleDrawer: () -> Unit, onToggleMonth: () -> Unit) {
             actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         ),
         title = {
-            CalendarMonthPicker {
-                onToggleMonth.invoke()
-            }
+            CalendarMonthPicker(
+                onMonthSelect = onMonthSelect,
+                onPreviousMonth = onPreviousMonth,
+                onNextMonth = onNextMonth,
+                jetMonth = jetMonth
+            )
         },
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = onFilterClick) {
                 Icon(Icons.Filled.FilterList, contentDescription = null)
             }
         },
@@ -39,9 +48,14 @@ fun DashboardAppBar(toggleDrawer: () -> Unit, onToggleMonth: () -> Unit) {
 
 
 @Composable
-fun CalendarMonthPicker(onToggleMonth: () -> Unit) {
+fun CalendarMonthPicker(
+    onMonthSelect: () -> Unit,
+    onPreviousMonth: () -> Unit,
+    onNextMonth: () -> Unit,
+    jetMonth: JetMonth
+) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = onPreviousMonth) {
             Icon(
                 Icons.Filled.ArrowLeft,
                 contentDescription = null,
@@ -49,12 +63,12 @@ fun CalendarMonthPicker(onToggleMonth: () -> Unit) {
             )
         }
         Text(
-            text = "Январь 2025",
+            text = jetMonth.monthYear(),
             modifier = Modifier.clickable {
-                onToggleMonth.invoke()
+                onMonthSelect()
             },
         )
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = onNextMonth) {
             Icon(
                 Icons.Filled.ArrowRight,
                 contentDescription = null,

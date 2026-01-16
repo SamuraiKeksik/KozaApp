@@ -21,6 +21,9 @@ interface AnimalsDao {
     //Vaccination
     @Query("SELECT * FROM vaccinations WHERE id = :id")
     suspend fun getVaccination(id: UUID): Vaccination?
+
+    @Query("SELECT * FROM vaccinations WHERE animalId = :animalId")
+    suspend fun getVaccinationsByAnimalId(animalId: UUID): List<Vaccination>
     @Insert
     suspend fun insertVaccination(vaccination: Vaccination)
     @Delete

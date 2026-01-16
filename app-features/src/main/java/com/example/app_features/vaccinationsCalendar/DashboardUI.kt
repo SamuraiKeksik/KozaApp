@@ -9,10 +9,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.example.app_features.monthPicker.MonthPickerBottomSheet
+import java.util.Calendar
 
 
 @OptIn(
@@ -20,12 +26,19 @@ import androidx.compose.ui.unit.dp
     ExperimentalAnimationApi::class
 )
 @Composable
-fun DashboardUI() {
+fun DashboardUI(
+    viewModel: VaccinationsCalendarViewModel = hiltViewModel(),
+) {
+    var monthPickerRequired by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             DashboardAppBar(
-                onToggleMonth = {},
-                toggleDrawer = {},
+                onMonthSelect = { monthPickerRequired = true },
+                onPreviousMonth = { viewModel.previousMonth() },
+                onNextMonth = { viewModel.nextMonth() },
+                onFilterClick = {},
+                jetMonth = viewModel.uiState.currentMonth
             )
         },
         contentWindowInsets = WindowInsets(0.dp)
@@ -33,11 +46,33 @@ fun DashboardUI() {
         GoogleCalendarSurface(
             modifier = Modifier.padding(padding)
         ) {
+            if (monthPickerRequired) {
+                MonthPickerBottomSheet(
+                    showYear = true,
+                    onDismiss = {
+                        monthPickerRequired = false
+                    },
+                    onUpdateMonth = { month, year ->
+                        val calendar = Calendar.getInstance()
+                        calendar.set(Calendar.MONTH, month)
+                        calendar.set(Calendar.YEAR, year)
+
+//                    monthValue = " ${
+//                        SimpleDateFormat("MMMM").format(calendar.time)
+//                    } - $year"
+                    },
+                )
+            }
             Column(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-                DashboardMonthView(Modifier.fillMaxWidth().padding(6.dp))
+                DashboardMonthView(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(6.dp),
+                    jetMonth = viewModel.uiState.currentMonth
+                )
                 Box {
                     CalendarEventsCards()
                 }
@@ -46,6 +81,7 @@ fun DashboardUI() {
     }
 
 }
+
 
 
 

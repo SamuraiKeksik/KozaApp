@@ -20,6 +20,8 @@ interface GoatDao {
     suspend fun delete(goatEntity: GoatEntity)
     @Query("SELECT * FROM goats WHERE isDeleted = 0 ORDER BY name ASC")
     fun getAllGoats(): Flow<List<GoatEntity>>
+    @Query("SELECT * FROM goats WHERE isDeleted = 0 ORDER BY name ASC")
+    fun getAllGoatsModels(): Flow<List<GoatModel>>
     @Transaction
     @Query("SELECT * FROM goats WHERE id = :id AND isDeleted = 0")
     fun getGoatModel(id: UUID): Flow<GoatModel?>

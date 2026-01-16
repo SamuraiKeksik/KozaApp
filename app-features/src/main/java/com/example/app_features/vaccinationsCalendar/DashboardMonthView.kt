@@ -7,14 +7,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import dev.baseio.libjetcalendar.data.JetDay
-import dev.baseio.libjetcalendar.data.JetMonth
 import java.time.DayOfWeek
 import java.time.LocalDate
 
 
 @Composable
-fun DashboardMonthView(modifier: Modifier) {
+fun DashboardMonthView(
+  modifier: Modifier,
+  jetMonth: JetMonth
+) {
   GoogleCalendarSurface(modifier = modifier) {
     val selectedDates = rememberSaveable(stateSaver = JetDaySaver) {
       mutableStateOf(JetDay(LocalDate.now(), true))
@@ -22,7 +23,7 @@ fun DashboardMonthView(modifier: Modifier) {
     Column(Modifier.fillMaxWidth()) {
       WeekNames(DayOfWeek.MONDAY)
       JetCalendarMonthlyView(
-        jetMonth = JetMonth.current(),
+        jetMonth = jetMonth,
         onDateSelected = {
           selectedDates.value = it
         },

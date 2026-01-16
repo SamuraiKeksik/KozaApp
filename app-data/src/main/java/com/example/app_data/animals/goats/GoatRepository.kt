@@ -10,6 +10,7 @@ import javax.inject.Inject
 
 interface GoatRepository {
     val goatsList: Flow<List<GoatEntity>>
+    val goatsModelsList: Flow<List<GoatModel>>
     fun getGoatChildren(id: UUID): Flow<List<GoatEntity>>
     suspend fun getGoatName(id: UUID): String?
     suspend fun getGoatGender(id: UUID): Gender
@@ -26,6 +27,8 @@ class DefaultGoatRepository @Inject constructor(
 ) : GoatRepository {
 
     override val goatsList: Flow<List<GoatEntity>> = localDataSource.getAllGoatsStream()
+    override val goatsModelsList: Flow<List<GoatModel>> = localDataSource.getAllGoatsModelsStream()
+
     override fun getGoatChildren(id: UUID): Flow<List<GoatEntity>> {
         return localDataSource.getAllGoatsStream().map { childrenList ->
             childrenList.filter {
@@ -39,6 +42,7 @@ class DefaultGoatRepository @Inject constructor(
         Gender.valueOf(localDataSource.getGoatGender(id))
 
     override fun getGoatModel(id: UUID): Flow<GoatModel?> = localDataSource.getGoatModelStream(id)
+
 
     override suspend fun insertGoat(goatEntity: GoatEntity) {
         val changedGoat = goatEntity.copy(isEdited = true)

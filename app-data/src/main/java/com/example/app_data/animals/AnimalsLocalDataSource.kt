@@ -11,6 +11,7 @@ class AnimalsLocalDataSource @Inject constructor(
     fun getAllSicknessTypesFlow(): Flow<List<SicknessType>> = animalsDao.getAllSicknessTypes()
     //Vaccination
     suspend fun getVaccination(id: UUID): Vaccination? = animalsDao.getVaccination(id)
+    suspend fun getVaccinationsByAnimalId(animalId: UUID): List<Vaccination> = animalsDao.getVaccinationsByAnimalId(animalId)
     suspend fun insertVaccination(vaccination: Vaccination) = animalsDao.insertVaccination(vaccination)
     suspend fun deleteVaccination(vaccination: Vaccination) = animalsDao.deleteVaccination(vaccination)
     suspend fun updateVaccination(vaccination: Vaccination) = animalsDao.updateVaccination(vaccination)

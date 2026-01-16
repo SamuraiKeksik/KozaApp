@@ -1,7 +1,5 @@
-package dev.baseio.libjetcalendar.data
+package com.example.app_features.vaccinationsCalendar
 
-import com.example.app_features.vaccinationsCalendar.JetWeek
-import com.example.app_features.vaccinationsCalendar.nextWeek
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -12,8 +10,8 @@ import java.util.*
 
 
 class JetMonth private constructor(
-  val startDate: LocalDate,
-  val endDate: LocalDate,
+  var startDate: LocalDate,
+  var endDate: LocalDate,
   var firstDayOfWeek: DayOfWeek,
 ) : JetCalendarType() {
   lateinit var monthWeeks: List<JetWeek>
@@ -32,6 +30,7 @@ class JetMonth private constructor(
   fun year(): String {
     return startDate.year.toString()
   }
+
 
   companion object {
     fun current(
