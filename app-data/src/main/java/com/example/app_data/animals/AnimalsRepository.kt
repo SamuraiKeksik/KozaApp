@@ -8,6 +8,7 @@ import javax.inject.Inject
 
 interface AnimalsRepository {
     val sicknessTypesList: Flow<List<SicknessType>>
+    suspend fun getSicknessType(id: Int) : SicknessType?
 
     //Vaccination
     suspend fun getVaccination(id: UUID) : Vaccination?
@@ -33,6 +34,7 @@ class DefaultAnimalsRepository @Inject constructor(
     private val animalsLocalDataSource: AnimalsLocalDataSource
 ) : AnimalsRepository {
     override val sicknessTypesList: Flow<List<SicknessType>> = animalsLocalDataSource.getAllSicknessTypesFlow()
+    override suspend fun getSicknessType(id: Int): SicknessType? = animalsLocalDataSource.getSicknessType(id)
 
     //Vaccination
     override suspend fun getVaccination(id: UUID): Vaccination? = animalsLocalDataSource.getVaccination(id)

@@ -8,7 +8,7 @@ class GoatLocalDataSource @Inject constructor(
     private val goatDao: GoatDao
 ) {
     fun getAllGoatsStream(): Flow<List<GoatEntity>> = goatDao.getAllGoats()
-    fun getAllGoatsModelsStream(): Flow<List<GoatModel>> = goatDao.getAllGoatsModels()
+    suspend fun getGoatsModelsList(): List<GoatModel> = goatDao.getGoatsModelsList()
     fun getGoatModelStream(id: UUID): Flow<GoatModel?> = goatDao.getGoatModel(id)
     suspend fun getGoatNameStream(id: UUID): String? = goatDao.getGoatName(id)
     suspend fun getGoatGender(id: UUID): String = goatDao.getGoatGender(id)

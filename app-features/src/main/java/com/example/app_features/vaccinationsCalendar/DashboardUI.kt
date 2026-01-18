@@ -76,7 +76,9 @@ fun DashboardUI(
                     jetMonth = viewModel.uiState.currentMonth
                 )
                 Box {
-                    CalendarEventsCards()
+                    CalendarEventsCards(
+                        vaccinationEvents = viewModel.uiState.vaccinationsEvents
+                    )
                 }
             }
         }
