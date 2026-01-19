@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.ZoneOffset
 
 @HiltViewModel
 class VaccinationsCalendarViewModel @Inject constructor(
@@ -36,7 +37,9 @@ class VaccinationsCalendarViewModel @Inject constructor(
         val goatsModelsList = goatsRepository.getGoatsModelsList()
         val vaccinationsEvents = goatsModelsList.flatMap { goatModel ->
             goatModel.vaccinations.filter {
-                it.date in currentMonth.startDate.toEpochDay()..currentMonth.endDate.toEpochDay()
+                val start = currentMonth.startDate.toEpochDay()
+                val end = currentMonth.endDate.toEpochDay()
+                it.date in start..end
             }.map { vaccination ->
                 AnimalVaccinationEventDetails(
                     date = Instant.ofEpochMilli(vaccination.date)

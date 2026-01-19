@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import java.time.LocalDate
 import java.util.UUID
 import javax.inject.Inject
 
@@ -259,8 +260,8 @@ data class SicknessUiState(
 
 data class SicknessDetails(
     val id: UUID = UUID.randomUUID(),
-    val startDate: Long = System.currentTimeMillis(),
-    val endDate: Long? = null,
+    val startDate: LocalDate = LocalDate.now(),
+    val endDate: LocalDate? = null,
     val sicknessName: String = "",
     val goatId: UUID = UUID.randomUUID(),
     val sicknessTypeId: Int = 0,
@@ -268,16 +269,16 @@ data class SicknessDetails(
 
 fun SicknessDetails.toSickness() = Sickness(
     id = id,
-    startDate = startDate,
-    endDate = endDate,
+    startDate = startDate.toEpochDay(),
+    endDate = endDate?.toEpochDay(),
     sicknessTypeId = sicknessTypeId,
     animalId = goatId,
 )
 
 fun Sickness.toSicknessDetails() = SicknessDetails(
     id = id,
-    startDate = startDate,
-    endDate = endDate,
+    startDate = LocalDate.ofEpochDay(startDate),
+    endDate = if (endDate != null) LocalDate.ofEpochDay(endDate!!) else null,
     sicknessTypeId = sicknessTypeId,
     goatId = animalId,
 )
@@ -292,19 +293,19 @@ data class MilkYieldDetails(
     val id: UUID = UUID.randomUUID(),
     val goatId: UUID = UUID.randomUUID(),
     val amount: String? = "0",
-    val date: Long = System.currentTimeMillis(),
+    val date: LocalDate = LocalDate.now(),
 )
 
 fun MilkYieldDetails.toMilkYield() = MilkYield(
     id = id,
     animalId = goatId,
     amount = amount?.toDouble() ?: 0.0,
-    date = date,
+    date = date.toEpochDay(),
 )
 
 fun MilkYield.toMilkYieldDetails() = MilkYieldDetails(
     id = id,
     goatId = animalId,
     amount = amount.toString(),
-    date = date,
+    date = LocalDate.ofEpochDay(date),
 )

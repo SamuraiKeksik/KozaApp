@@ -18,8 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.app_features.R
 import com.example.app_features.monthPicker.MonthPickerBottomSheet
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 
@@ -37,8 +39,18 @@ fun DashboardUI(
         topBar = {
             DashboardAppBar(
                 onMonthSelect = { monthPickerRequired = true },
-                onPreviousMonth = { viewModel.previousMonth() },
-                onNextMonth = { viewModel.nextMonth() },
+                onPreviousMonth = {
+                    viewModel.previousMonth()
+                    viewModel.viewModelScope.launch {
+                        viewModel.getVaccinations()
+                    }
+                },
+                onNextMonth = {
+                    viewModel.nextMonth()
+                    viewModel.viewModelScope.launch {
+                        viewModel.getVaccinations()
+                    }
+                },
                 onFilterClick = {},
                 jetMonth = viewModel.uiState.currentMonth
             )

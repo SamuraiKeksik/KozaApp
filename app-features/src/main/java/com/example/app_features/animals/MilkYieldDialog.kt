@@ -83,8 +83,10 @@ fun MilkYieldDialog(
             ) {
                 Column {
                     OutlinedTextField(
-                        value = dateFormat.format(milkYieldDetails.date),
-                        onValueChange = { onValueChange(milkYieldDetails.copy(date = it.toLong())) },
+                        value = dateFormat.format(milkYieldDetails.date.toString()),
+                        onValueChange = {
+                            //onValueChange(milkYieldDetails.copy(date = LocalDa it))
+                                        },
                         label = { Text(stringResource(R.string.date)) },
                         modifier = Modifier
                             .fillMaxWidth()

@@ -86,7 +86,9 @@ fun SicknessDialog(
                 Column {
                     OutlinedTextField(
                         value = dateFormat.format(sicknessDetails.startDate),
-                        onValueChange = { onValueChange(sicknessDetails.copy(startDate = it.toLong())) },
+                        onValueChange = {
+                           // onValueChange(sicknessDetails.copy(startDate = it.toLong()))
+                                        },
                         label = { Text(stringResource(R.string.start_date)) },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -109,7 +111,9 @@ fun SicknessDialog(
                         value = if (sicknessDetails.endDate == null) "" else dateFormat.format(
                             sicknessDetails.endDate
                         ),
-                        onValueChange = { onValueChange(sicknessDetails.copy(endDate = it.toLongOrNull())) },
+                        onValueChange = {
+                            //onValueChange(sicknessDetails.copy(endDate = it.toLongOrNull()))
+                                        },
                         label = { Text(stringResource(R.string.end_date)) },
                         modifier = Modifier
                             .fillMaxWidth()

@@ -36,7 +36,13 @@ import com.example.app_features.animals.VaccinationDialog
 import com.example.app_features.theme.AppTheme
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.util.Date
 import java.util.UUID
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,6 +71,7 @@ fun GoatDetailsScreen(
     }
 }
 
+@OptIn(ExperimentalTime::class)
 @Composable
 private fun GoatDetailsBody(
     viewModel: GoatDetailsViewModel,
@@ -97,7 +104,8 @@ private fun GoatDetailsBody(
     var milkYieldDateSelectionRequired by rememberSaveable { mutableStateOf(false) }
     var startDateSelectionRequired by rememberSaveable { mutableStateOf(false) }
     var endDateSelectionRequired by rememberSaveable { mutableStateOf(false) }
-    val dateFormat = SimpleDateFormat("dd.MM.yyyy")
+    val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    //val dateFormat = SimpleDateFormat("dd.MM.yyyy")
 
     Column(
         modifier = modifier
@@ -398,10 +406,11 @@ private fun GoatDetailsBody(
         if (dateSelectionRequired) {
             DatePickerModal(
                 onDateSelected = {
+                    val dateTime = it!!.toEpochDay()
                     viewModel.updateVaccinationUiState(
                         vaccinationDetails = it.let {
                             viewModel.vaccinationUiState.vaccinationDetails.copy(
-                                date = it!!
+                                date = dateTime
                             )
                         }
                     )

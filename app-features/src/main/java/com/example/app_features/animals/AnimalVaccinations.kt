@@ -46,6 +46,7 @@ import com.example.app_data.animals.Vaccination
 import com.example.app_features.ExpandLabel
 import com.example.app_features.R
 import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 @Composable
@@ -55,7 +56,7 @@ fun AnimalVaccinations(
     onAddClick: () -> Unit,
     onEditClick: (UUID) -> Unit,
     onDeleteClick: (UUID) -> Unit,
-    dateFormat: SimpleDateFormat,
+    dateFormat: DateTimeFormatter,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     canEdit: Boolean = true,

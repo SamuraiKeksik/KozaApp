@@ -33,35 +33,43 @@ fun CalendarEventsCards(
     LazyColumn(
         state = listState
     ) {
-        var lastEvent = vaccinationEvents.first()
-        var iterator = 0
-        stickyHeader {
-            CalendarCardHeader(
-                event = lastEvent,
-                isAccepted = iterator++ % 2 == 0,
-                showDate = true,
-            )
+        if (vaccinationEvents.firstOrNull() == null) {
+          item{
+            Text("Пусто")
+          }
         }
-        vaccinationEvents.drop(1).forEach { event ->
+      else{
+          var lastEvent = vaccinationEvents.first()
+          var iterator = 0
+          stickyHeader {
+            CalendarCardHeader(
+              event = lastEvent,
+              isAccepted = iterator++ % 2 == 0,
+              showDate = true,
+            )
+          }
+          vaccinationEvents.drop(1).forEach { event ->
             if (event.date == lastEvent.date) {
-                stickyHeader {
-                    CalendarCardHeader(
-                        isAccepted = iterator++ % 2 == 0,
-                        showDate = false,
-                        event = event,
-                    )
-                }
+              stickyHeader {
+                CalendarCardHeader(
+                  isAccepted = iterator++ % 2 == 0,
+                  showDate = false,
+                  event = event,
+                )
+              }
             } else {
-                item {
-                    CalendarCardHeader(
-                        isAccepted = iterator++ % 2 == 0,
-                        showDate = true,
-                        event = event,
-                        )
-                }
+              item {
+                CalendarCardHeader(
+                  isAccepted = iterator++ % 2 == 0,
+                  showDate = true,
+                  event = event,
+                )
+              }
             }
             lastEvent = event
+          }
         }
+
     }
 
 }

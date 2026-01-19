@@ -11,6 +11,6 @@ data class Vaccination (
     val id: UUID = UUID.randomUUID(),
     val sicknessTypeId: Int,
     val animalId: UUID,
-    val date: Long ,
+    val date: Long,
     val medication: String,
 )
