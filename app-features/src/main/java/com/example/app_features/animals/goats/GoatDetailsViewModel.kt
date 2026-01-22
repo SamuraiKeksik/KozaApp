@@ -48,7 +48,7 @@ class GoatDetailsViewModel @Inject constructor(
                         motherName = it.goat.motherId?.let { id -> goatRepository.getGoatName(id) },
                         fatherName = it.goat.fatherId?.let { id -> goatRepository.getGoatName(id) }
                     ),
-                    goatVaccinations = it.vaccinations.sortedBy { vac -> vac.date },
+                    goatVaccinations = it.vaccinations.filter { vac -> !vac.isPlanned }.sortedBy { vac -> vac.date },
                     goatSicknesses = it.sicknesses,
                     goatMilkYields = it.milkYields
                 )
