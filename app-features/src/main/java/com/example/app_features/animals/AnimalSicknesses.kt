@@ -44,7 +44,9 @@ import com.example.app_data.animals.Sickness
 import com.example.app_data.animals.SicknessType
 import com.example.app_features.ExpandLabel
 import com.example.app_features.R
+import com.example.app_features.animals.goats.toLocalDate
 import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 @Composable
@@ -54,7 +56,7 @@ fun AnimalSicknesses(
     onAddClick: () -> Unit,
     onEditClick: (UUID) -> Unit,
     onDeleteClick: (UUID) -> Unit,
-    dateFormat: SimpleDateFormat,
+    dateFormat: DateTimeFormatter,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     canEdit: Boolean = true
@@ -113,14 +115,14 @@ fun AnimalSicknesses(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Row(modifier = Modifier) {
-                                    Text(text = dateFormat.format(sickness.startDate))
+                                    Text(text = sickness.startDate.toLocalDate().format(dateFormat))
                                     Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
                                     Text(text = " - ")
                                     Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
                                     Text(
-                                        text = if (sickness.endDate != null) dateFormat.format(
-                                            sickness.endDate
-                                        ) else ""
+                                        text = if (sickness.endDate != null)
+                                            sickness.endDate!!.toLocalDate().format(dateFormat)
+                                         else ""
                                     )
                                     Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
                                     Text(

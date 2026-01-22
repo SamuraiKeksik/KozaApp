@@ -30,7 +30,9 @@ import androidx.compose.ui.window.Dialog
 import com.example.app_data.animals.SicknessType
 import com.example.app_features.R
 import com.example.app_features.animals.goats.SicknessDetails
+import com.example.app_features.animals.goats.toLocalDate
 import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun SicknessDialog(
@@ -45,7 +47,7 @@ fun SicknessDialog(
     onEndDateFocused: () -> Unit,
     onEndDateUnFocused: () -> Unit,
     onValueChange: (SicknessDetails) -> Unit,
-    dateFormat: SimpleDateFormat,
+    dateFormat: DateTimeFormatter,
     modifier: Modifier = Modifier,
 ) {
     Dialog(onDismissRequest = { /* Do nothing */ }) {
@@ -85,7 +87,7 @@ fun SicknessDialog(
             ) {
                 Column {
                     OutlinedTextField(
-                        value = dateFormat.format(sicknessDetails.startDate),
+                        value = sicknessDetails.startDate.toLocalDate().format(dateFormat),
                         onValueChange = {
                            // onValueChange(sicknessDetails.copy(startDate = it.toLong()))
                                         },
@@ -108,9 +110,9 @@ fun SicknessDialog(
                         },
                     )
                     OutlinedTextField(
-                        value = if (sicknessDetails.endDate == null) "" else dateFormat.format(
-                            sicknessDetails.endDate
-                        ),
+                        value = if (sicknessDetails.endDate == null) "" else
+                            sicknessDetails.endDate.toLocalDate().format(dateFormat)
+                        ,
                         onValueChange = {
                             //onValueChange(sicknessDetails.copy(endDate = it.toLongOrNull()))
                                         },

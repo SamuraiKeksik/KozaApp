@@ -31,7 +31,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.app_features.R
 import com.example.app_features.animals.goats.MilkYieldDetails
+import com.example.app_features.animals.goats.toLocalDate
 import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun MilkYieldDialog(
@@ -43,7 +45,7 @@ fun MilkYieldDialog(
     onDateFocused: () -> Unit,
     onDateUnFocused: () -> Unit,
     onValueChange: (MilkYieldDetails) -> Unit,
-    dateFormat: SimpleDateFormat,
+    dateFormat: DateTimeFormatter,
     modifier: Modifier = Modifier,
 ) {
     Dialog(onDismissRequest = { /* Do nothing */ }) {
@@ -83,7 +85,7 @@ fun MilkYieldDialog(
             ) {
                 Column {
                     OutlinedTextField(
-                        value = dateFormat.format(milkYieldDetails.date.toString()),
+                        value = milkYieldDetails.date.toLocalDate().format(dateFormat),
                         onValueChange = {
                             //onValueChange(milkYieldDetails.copy(date = LocalDa it))
                                         },

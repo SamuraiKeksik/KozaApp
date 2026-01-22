@@ -229,7 +229,7 @@ data class VaccinationUiState(
 
 data class VaccinationDetails(
     val id: UUID = UUID.randomUUID(),
-    val date: Long = System.currentTimeMillis(),
+    val date: Long = LocalDate.now().toEpochDay(),
     val sicknessName: String = "",
     val goatId: UUID = UUID.randomUUID(),
     val sicknessTypeId: Int = 0,
@@ -260,8 +260,8 @@ data class SicknessUiState(
 
 data class SicknessDetails(
     val id: UUID = UUID.randomUUID(),
-    val startDate: LocalDate = LocalDate.now(),
-    val endDate: LocalDate? = null,
+    val startDate: Long = LocalDate.now().toEpochDay(),
+    val endDate: Long? = null,
     val sicknessName: String = "",
     val goatId: UUID = UUID.randomUUID(),
     val sicknessTypeId: Int = 0,
@@ -269,16 +269,16 @@ data class SicknessDetails(
 
 fun SicknessDetails.toSickness() = Sickness(
     id = id,
-    startDate = startDate.toEpochDay(),
-    endDate = endDate?.toEpochDay(),
+    startDate = startDate,
+    endDate = endDate,
     sicknessTypeId = sicknessTypeId,
     animalId = goatId,
 )
 
 fun Sickness.toSicknessDetails() = SicknessDetails(
     id = id,
-    startDate = LocalDate.ofEpochDay(startDate),
-    endDate = if (endDate != null) LocalDate.ofEpochDay(endDate!!) else null,
+    startDate = startDate,
+    endDate = endDate,
     sicknessTypeId = sicknessTypeId,
     goatId = animalId,
 )
@@ -293,19 +293,19 @@ data class MilkYieldDetails(
     val id: UUID = UUID.randomUUID(),
     val goatId: UUID = UUID.randomUUID(),
     val amount: String? = "0",
-    val date: LocalDate = LocalDate.now(),
+    val date: Long = LocalDate.now().toEpochDay(),
 )
 
 fun MilkYieldDetails.toMilkYield() = MilkYield(
     id = id,
     animalId = goatId,
     amount = amount?.toDouble() ?: 0.0,
-    date = date.toEpochDay(),
+    date = date,
 )
 
 fun MilkYield.toMilkYieldDetails() = MilkYieldDetails(
     id = id,
     goatId = animalId,
     amount = amount.toString(),
-    date = LocalDate.ofEpochDay(date),
+    date = date,
 )

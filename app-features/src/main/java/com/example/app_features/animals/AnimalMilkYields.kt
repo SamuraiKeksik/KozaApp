@@ -44,7 +44,9 @@ import androidx.compose.ui.unit.dp
 import com.example.app_data.animals.MilkYield
 import com.example.app_features.ExpandLabel
 import com.example.app_features.R
+import com.example.app_features.animals.goats.toLocalDate
 import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 @Composable
@@ -53,7 +55,7 @@ fun AnimalMilkYields(
     onAddClick: () -> Unit,
     onEditClick: (UUID) -> Unit,
     onDeleteClick: (UUID) -> Unit,
-    dateFormat: SimpleDateFormat,
+    dateFormat: DateTimeFormatter,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     canEdit: Boolean = true
@@ -112,7 +114,7 @@ fun AnimalMilkYields(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Row(modifier = Modifier) {
-                                    Text(text = dateFormat.format(milkYield.date))
+                                    Text(text = milkYield.date.toLocalDate().format(dateFormat))
                                     Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))
                                     Text(text = " - ")
                                     Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_small)))

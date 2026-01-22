@@ -104,7 +104,7 @@ private fun GoatDetailsBody(
     var milkYieldDateSelectionRequired by rememberSaveable { mutableStateOf(false) }
     var startDateSelectionRequired by rememberSaveable { mutableStateOf(false) }
     var endDateSelectionRequired by rememberSaveable { mutableStateOf(false) }
-    val dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    val dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy")
     //val dateFormat = SimpleDateFormat("dd.MM.yyyy")
 
     Column(
@@ -406,9 +406,9 @@ private fun GoatDetailsBody(
         if (dateSelectionRequired) {
             DatePickerModal(
                 onDateSelected = {
-                    val dateTime = it!!.toEpochDay()
                     viewModel.updateVaccinationUiState(
                         vaccinationDetails = it.let {
+                            val dateTime = it!!.toEpochDay()
                             viewModel.vaccinationUiState.vaccinationDetails.copy(
                                 date = dateTime
                             )
@@ -426,8 +426,9 @@ private fun GoatDetailsBody(
                 onDateSelected = {
                     viewModel.updateSicknessUiState(
                         sicknessDetails = it.let {
+                            val dateTime = it!!.toEpochDay()
                             viewModel.sicknessUiState.sicknessDetails.copy(
-                                startDate = it!!
+                                startDate = dateTime
                             )
                         }
                     )
@@ -443,8 +444,9 @@ private fun GoatDetailsBody(
                 onDateSelected = {
                     viewModel.updateSicknessUiState(
                         sicknessDetails = it.let {
+                            val dateTime = it!!.toEpochDay()
                             viewModel.sicknessUiState.sicknessDetails.copy(
-                                endDate = it!!
+                                endDate = dateTime
                             )
                         }
                     )
@@ -460,8 +462,9 @@ private fun GoatDetailsBody(
                 onDateSelected = {
                     viewModel.updateMilkYieldUiState(
                         milkYieldDetails = it.let {
+                            val dateTime = it!!.toEpochDay()
                             viewModel.milkYieldUiState.milkYieldDetails.copy(
-                                date = it!!
+                                date = dateTime
                             )
                         }
                     )

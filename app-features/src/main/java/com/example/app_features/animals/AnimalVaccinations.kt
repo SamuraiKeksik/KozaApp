@@ -45,6 +45,7 @@ import com.example.app_data.animals.SicknessType
 import com.example.app_data.animals.Vaccination
 import com.example.app_features.ExpandLabel
 import com.example.app_features.R
+import com.example.app_features.animals.goats.toLocalDate
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 import java.util.UUID
@@ -115,7 +116,7 @@ fun AnimalVaccinations(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Row(modifier = Modifier) {
-                                    Text(text = dateFormat.format(vaccination.date))
+                                    Text(text = vaccination.date.toLocalDate().format(dateFormat))
                                     Spacer(modifier = Modifier.width(dimensionResource(R.dimen.padding_medium)))
                                     Text(
                                         text = sicknessTypesList.find { it.id == vaccination.sicknessTypeId }?.name

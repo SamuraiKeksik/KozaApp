@@ -4,6 +4,7 @@ import com.example.app_data.animals.goats.Breed
 import com.example.app_data.animals.goats.Gender
 import com.example.app_data.animals.goats.GoatEntity
 import com.example.app_data.animals.goats.Status
+import java.time.LocalDate
 
 fun GoatDetails.toGoat(): GoatEntity {
     val enumGender = runCatching {
@@ -41,6 +42,9 @@ fun GoatEntity.toGoatUiState(isEntryValid: Boolean = false): GoatUiState = GoatU
     goatDetails = this.toGoatDetails(),
     isEntryValid = isEntryValid
 )
+
+fun Long.toLocalDate(): LocalDate = LocalDate.ofEpochDay(this)
+
 
 fun GoatEntity.toGoatDetails(): GoatDetails = GoatDetails(
     id = id,
