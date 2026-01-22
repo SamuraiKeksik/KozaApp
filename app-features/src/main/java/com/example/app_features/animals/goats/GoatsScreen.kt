@@ -47,6 +47,7 @@ import com.example.app_data.animals.goats.Status
 import com.example.app_features.EmptyScreenFiller
 import com.example.app_features.R
 import com.example.app_features.theme.AppTheme
+import java.time.LocalDate
 import java.util.UUID
 
 //object GoatsDestination : NavigationDestination{
@@ -212,7 +213,7 @@ fun GoatsBodyPreview() {
                 description = "Very good goat!",
                 status = Status.OTHER,
                 weight = 8,
-                birthDate = "",
+                birthDate = LocalDate.now().toEpochDay(),
             ),
         ), onGoatClick = {})
     }

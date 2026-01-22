@@ -10,6 +10,9 @@ data class SicknessType (
     val name: String,
     val description: String,
     val animalType: AnimalType,
+    val isVaccinationMandatory: Boolean,
+    val revaccinationPeriodInDays: Int,
+    val minimalAgeInDays: Int
 )
 
 enum class AnimalType {

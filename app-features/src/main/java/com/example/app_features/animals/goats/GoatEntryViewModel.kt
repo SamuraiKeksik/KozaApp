@@ -10,6 +10,7 @@ import com.example.app_data.animals.goats.GoatRepository
 import com.example.app_data.animals.goats.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
 import kotlin.Boolean
@@ -34,7 +35,17 @@ class GoatEntryViewModel @Inject constructor(
 
     private fun validateInput(uiState: GoatDetails = goatUiState.goatDetails): Boolean {
         return with(uiState) {
-            name.isNotBlank()
+            name.isNotBlank() && isValidDateFormat(birthDate)
+
+        }
+    }
+
+    private fun isValidDateFormat(date: String): Boolean {
+        return try{
+            DateTimeFormatter.ofPattern("dd.MM.yyyy").parse(date)
+            true
+        } catch (e: Exception) {
+            false
         }
     }
 }
@@ -55,7 +66,7 @@ data class GoatDetails(
     val breed: String = Breed.OTHER.toString(),
     val status: String = Status.OTHER.toString(),
     val weight: String = "0",
-    val birthDate: String? = LocalDate.now().toString(),
+    val birthDate: String = LocalDate.now().toString(),
     val description: String = "",
 
     val isEdited: Boolean = false,

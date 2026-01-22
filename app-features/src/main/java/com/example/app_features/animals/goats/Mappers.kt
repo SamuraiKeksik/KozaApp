@@ -5,6 +5,7 @@ import com.example.app_data.animals.goats.Gender
 import com.example.app_data.animals.goats.GoatEntity
 import com.example.app_data.animals.goats.Status
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 fun GoatDetails.toGoat(): GoatEntity {
     val enumGender = runCatching {
@@ -19,13 +20,22 @@ fun GoatDetails.toGoat(): GoatEntity {
         Status.valueOf(status.uppercase())
     }.getOrDefault(Status.OTHER)
 
+    fun formatDate(date: String): Long {
+        try{
+            DateTimeFormatter.ofPattern("dd.MM.yyyy").parse(date)
+            return LocalDate.parse(date, DateTimeFormatter.ofPattern("dd.MM.yyyy")).toEpochDay()
+        } catch (e: Exception) {
+            return LocalDate.now().toEpochDay()
+        }
+    }
+
     return GoatEntity(
         id = id,
         motherId = motherId,
         fatherId = fatherId,
         name = name,
         gender = enumGender,
-        birthDate = birthDate,
+        birthDate = formatDate(birthDate),
         description = description,
         breed = enumBreed,
         status = enumStatus,
@@ -52,7 +62,7 @@ fun GoatEntity.toGoatDetails(): GoatDetails = GoatDetails(
     fatherId = fatherId,
     name = name,
     gender = gender.toString(),
-    birthDate = birthDate,
+    birthDate = LocalDate.ofEpochDay(birthDate).toString(),
     description = description,
     breed = breed.toString(),
     status = status.toString(),

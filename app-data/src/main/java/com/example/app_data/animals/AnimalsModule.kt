@@ -37,8 +37,10 @@ object AnimalsModule {
     fun provideGoatRepository(
         goatLocalDataSource: GoatLocalDataSource,
         goatRemoteDataSource: GoatRemoteDataSource,
+        animalsRepository: AnimalsRepository
     ): GoatRepository {
         return DefaultGoatRepository(
+            animalsRepository,
             goatLocalDataSource,
             goatRemoteDataSource,
         )

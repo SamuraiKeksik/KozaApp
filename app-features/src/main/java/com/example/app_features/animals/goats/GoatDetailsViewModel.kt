@@ -241,7 +241,8 @@ fun VaccinationDetails.toVaccination() = Vaccination(
     sicknessTypeId = sicknessTypeId,
     animalId = goatId,
     medication = medication,
-    date = date
+    date = date,
+    isPlanned = false,
 )
 
 fun Vaccination.toVaccinationDetails() = VaccinationDetails(

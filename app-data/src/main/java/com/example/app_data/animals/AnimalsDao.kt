@@ -17,6 +17,8 @@ interface AnimalsDao {
     fun getAllSicknessTypes(): Flow<List<SicknessType>>
     @Query("SELECT * FROM sickness_types WHERE id = :id")
     suspend fun getSicknessType(id: Int): SicknessType?
+    @Query("SELECT * FROM sickness_types WHERE animalType = :animalType AND isVaccinationMandatory = 1")
+    suspend fun getMandatorySicknessTypes(animalType: AnimalType): List<SicknessType>
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertSicknessType(sicknessType: SicknessType)
 

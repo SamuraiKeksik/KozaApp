@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
         Vaccination::class,
         Weight::class,
         ArticleEntity::class
-    ], version = 16, exportSchema = false
+    ], version = 17, exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -75,23 +75,54 @@ abstract class AppDatabase : RoomDatabase() {
                                 id = 1,
                                 name = "Неизвестно",
                                 description = "",
-                                animalType = AnimalType.UNKNOWN
+                                animalType = AnimalType.UNKNOWN,
+                                isVaccinationMandatory = false,
+                                revaccinationPeriodInDays = 0,
+                                minimalAgeInDays = 0,
                             )
                         )
                         animalsDao.insertSicknessType(
                             SicknessType(
                                 id = 2,
-                                name = "Тимпания ",
+                                name = "Бешенство",
                                 description = context.resources.getString(R.string.tempania_description),
-                                animalType = AnimalType.GOAT
+                                animalType = AnimalType.GOAT,
+                                isVaccinationMandatory = true,
+                                revaccinationPeriodInDays = 365,
+                                minimalAgeInDays = 90,
                             )
                         )
                         animalsDao.insertSicknessType(
                             SicknessType(
                                 id = 3,
                                 name = "Сибирская язва",
-                                description = "",
-                                animalType = AnimalType.GOAT
+                                description = context.resources.getString(R.string.anthrax_description),
+                                animalType = AnimalType.GOAT,
+                                isVaccinationMandatory = true,
+                                revaccinationPeriodInDays = 365,
+                                minimalAgeInDays = 90,
+                            )
+                        )
+                        animalsDao.insertSicknessType(
+                            SicknessType(
+                                id = 4,
+                                name = "Бруцеллёз",
+                                description = context.resources.getString(R.string.brucellosis_description),
+                                animalType = AnimalType.GOAT,
+                                isVaccinationMandatory = true,
+                                revaccinationPeriodInDays = 365,
+                                minimalAgeInDays = 120,
+                            )
+                        )
+                        animalsDao.insertSicknessType(
+                            SicknessType(
+                                id = 4,
+                                name = "Инфекционный мастит",
+                                description = context.resources.getString(R.string.infectious_mastitis_description),
+                                animalType = AnimalType.GOAT,
+                                isVaccinationMandatory = false,
+                                revaccinationPeriodInDays = 0,
+                                minimalAgeInDays = 0,
                             )
                         )
                     }

@@ -3,8 +3,11 @@ package com.example.app_data.animals.goats
 //import com.example.app_data.animals.goats.Goat
 //import com.example.kozaapp.features.animals.goats.data.schemas.toGoatModel
 //import com.example.kozaapp.features.animals.goats.data.schemas.toGoatRequest
+import com.example.app_data.animals.AnimalType
+import com.example.app_data.animals.AnimalsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.time.LocalDate
 import java.util.UUID
 import javax.inject.Inject
 
@@ -22,6 +25,7 @@ interface GoatRepository {
 }
 
 class DefaultGoatRepository @Inject constructor(
+    private val animalsRepository: AnimalsRepository,
     private val localDataSource: GoatLocalDataSource,
     private val remoteDataSource: GoatRemoteDataSource,
 ) : GoatRepository {
@@ -47,6 +51,8 @@ class DefaultGoatRepository @Inject constructor(
     override suspend fun insertGoat(goatEntity: GoatEntity) {
         val changedGoat = goatEntity.copy(isEdited = true)
         localDataSource.insertGoat(changedGoat)
+        val goatAgeInDays = LocalDate.now().toEpochDay() - goatEntity.birthDate
+        animalsRepository.createInitialVaccinations(goatEntity.id, goatAgeInDays.toInt(), AnimalType.GOAT)
     }
 
     override suspend fun updateGoat(goatEntity: GoatEntity) {

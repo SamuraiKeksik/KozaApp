@@ -15,7 +15,7 @@ data class GoatEntity(
     val breed: Breed,
     val status: Status,
     val weight: Int,
-    val birthDate: String?,
+    val birthDate: Long,
     val description: String,
 
     val isEdited: Boolean = false,

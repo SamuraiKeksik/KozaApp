@@ -13,4 +13,5 @@ data class Vaccination (
     val animalId: UUID,
     val date: Long,
     val medication: String,
+    val isPlanned: Boolean,
 )

@@ -37,6 +37,7 @@ import com.example.app_data.animals.goats.Gender
 import com.example.app_data.animals.goats.GoatEntity
 import com.example.app_features.ExpandLabel
 import com.example.app_features.R
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 @Composable
