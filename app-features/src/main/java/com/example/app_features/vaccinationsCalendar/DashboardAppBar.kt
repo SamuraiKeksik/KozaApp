@@ -1,6 +1,7 @@
 package com.example.app_features.vaccinationsCalendar
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -24,26 +25,30 @@ fun DashboardAppBar(
     onFilterClick: () -> Unit,
     jetMonth: JetMonth
 ) {
-    CenterAlignedTopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        ),
-        title = {
-            CalendarMonthPicker(
-                onMonthSelect = onMonthSelect,
-                onPreviousMonth = onPreviousMonth,
-                onNextMonth = onNextMonth,
-                jetMonth = jetMonth
-            )
-        },
-        actions = {
-            IconButton(onClick = onFilterClick) {
-                Icon(Icons.Filled.FilterList, contentDescription = null)
-            }
-        },
-    )
+    Column {
+        CenterAlignedTopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(
+                //containerColor = MaterialTheme.colorScheme.primaryContainer,
+                titleContentColor = MaterialTheme.colorScheme.primary,
+                actionIconContentColor = MaterialTheme.colorScheme.primary,
+            ),
+            title = {
+                CalendarMonthPicker(
+                    onMonthSelect = onMonthSelect,
+                    onPreviousMonth = onPreviousMonth,
+                    onNextMonth = onNextMonth,
+                    jetMonth = jetMonth
+                )
+            },
+            actions = {
+                IconButton(onClick = onFilterClick) {
+                    Icon(Icons.Filled.FilterList, contentDescription = null)
+                }
+            },
+        )
+        HorizontalDivider(color = MaterialTheme.colorScheme.primary, thickness = 1.dp)
+    }
+
 }
 
 

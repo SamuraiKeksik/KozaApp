@@ -17,11 +17,15 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -50,17 +54,20 @@ fun DictionaryAnimalsScreen(
 ) {
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                ),
-                title = {
-                    Text(
-                        text = stringResource(R.string.dictionary),
-                    )
-                },
-            )
+            Column {
+                CenterAlignedTopAppBar(
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        //containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        titleContentColor = MaterialTheme.colorScheme.primary,
+                    ),
+                    title = {
+                        Text(
+                            text = stringResource(R.string.dictionary),
+                        )
+                    },
+                )
+                HorizontalDivider(color = MaterialTheme.colorScheme.primary, thickness = 1.dp)
+            }
         },
         contentWindowInsets = WindowInsets(0.dp)
     ) { padding ->
@@ -130,12 +137,12 @@ fun AnimalCard(
     onButtonClick: (AnimalType) -> Unit,
     animalType: AnimalType,
 ) {
-    Card(
+    ElevatedCard(
         modifier = modifier
             .widthIn(128.dp)
             .height(100.dp),
-        border = BorderStroke(1.dp, color = Color.Black),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
     ) {
         Box {
             Button(
@@ -155,6 +162,10 @@ fun AnimalCard(
                     text = stringResource(labelRes),
                     modifier = Modifier.padding(10.dp),
                     style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+                Icon(
+                    imageVector = Icons.,
                 )
                 Image(
                     modifier = Modifier.padding(10.dp, 0.dp, 10.dp, 10.dp),
