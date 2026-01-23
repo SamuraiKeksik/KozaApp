@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,18 +34,21 @@ fun EmptyScreenFiller(
             text = stringResource(header),
             style = MaterialTheme.typography.headlineSmall,
             textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.size(3.dp))
         Text(
             text = stringResource(text),
             style = MaterialTheme.typography.headlineSmall,
             textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.size(10.dp))
-        Image(
+        Icon(
             painterResource(image),
             contentDescription = null,
-            modifier = Modifier.size(100.dp)
+            modifier = Modifier.size(100.dp),
+            tint = MaterialTheme.colorScheme.primary
         )
     }
 }

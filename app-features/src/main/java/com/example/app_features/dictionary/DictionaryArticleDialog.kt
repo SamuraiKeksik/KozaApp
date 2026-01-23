@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -58,7 +59,9 @@ fun DictionaryArticleDialog(
                     Text(
                         text = title,
                         style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        color = MaterialTheme.colorScheme.primary
+
                     )
                     IconButton(
                         modifier = Modifier.padding(0.dp),
@@ -67,11 +70,11 @@ fun DictionaryArticleDialog(
                         Icon(
                             imageVector = Icons.Filled.Close,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.secondary
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
-                HorizontalDivider()
+                HorizontalDivider(color = MaterialTheme.colorScheme.primary)
                 Column(
                     modifier = Modifier
                         .padding(
@@ -86,20 +89,19 @@ fun DictionaryArticleDialog(
                     horizontalAlignment = Alignment.Start,
 
                 ) {
-
                     Spacer(modifier = Modifier.height(4.dp))
-                    Text(header, fontSize = 18.sp, fontWeight = FontWeight.Medium)
+                    Text(header, fontSize = 18.sp, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.primary)
                     Spacer(modifier = Modifier.height(height = 8.dp))
                     Text(
+                        modifier = Modifier.alpha(0.7f),
                         text = animalType,
-                        fontSize = 12.sp,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Text(
+                        modifier = Modifier.alpha(0.7f),
                         text = category,
-                        fontSize = 12.sp,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.primary,
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Text(
@@ -111,7 +113,8 @@ fun DictionaryArticleDialog(
 
                         ),
                         text = text, fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Button(onClick = onDismiss) {
                         Text(stringResource(R.string.close))

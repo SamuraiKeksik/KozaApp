@@ -27,6 +27,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -137,12 +138,15 @@ fun AnimalCard(
     onButtonClick: (AnimalType) -> Unit,
     animalType: AnimalType,
 ) {
-    ElevatedCard(
+    OutlinedCard(
         modifier = modifier
             .widthIn(128.dp)
             .height(100.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.primary,
+        ),
     ) {
         Box {
             Button(
@@ -165,9 +169,6 @@ fun AnimalCard(
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 Icon(
-                    imageVector = Icons.,
-                )
-                Image(
                     modifier = Modifier.padding(10.dp, 0.dp, 10.dp, 10.dp),
                     painter = painterResource(image),
                     contentDescription = null,

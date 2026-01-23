@@ -1,6 +1,7 @@
 package com.example.app_features.dictionary
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -21,6 +22,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -30,7 +32,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -57,8 +61,8 @@ fun DictionaryArticlesListScreen(
         ) {
             CircularProgressIndicator(
                 modifier = Modifier.width(64.dp),
-                color = MaterialTheme.colorScheme.secondary,
-                trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                color = MaterialTheme.colorScheme.primary,
+                trackColor = MaterialTheme.colorScheme.onPrimary,
             )
         }
     } else {
@@ -69,7 +73,10 @@ fun DictionaryArticlesListScreen(
                 image = R.drawable.missing_article
             )
         } else
-            LazyColumn(modifier = modifier) {
+            LazyColumn(
+                modifier = modifier.padding(dimensionResource(R.dimen.padding_medium)),
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
+            ) {
                 items(articlesUiState.articlesList, key = { it.id }) {
                     ArticleItem(
                         article = it,
@@ -96,12 +103,14 @@ fun DictionaryArticlesListScreen(
 
 @Composable
 fun ArticleItem(article: ArticleEntity, onClick: () -> Unit) {
-    Card(
+    OutlinedCard(
         modifier = Modifier
-            .padding(horizontal = 12.dp, vertical = 4.dp)
             .fillMaxWidth()
             .clickable(onClick = onClick),
-        colors = CardDefaults.cardColors(Color.White),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.primary
+        ),
         elevation = CardDefaults.cardElevation(8.dp),
         shape = RoundedCornerShape(16.dp)
     ) {
@@ -118,7 +127,6 @@ fun ArticleItem(article: ArticleEntity, onClick: () -> Unit) {
             }
             Icon(
                 imageVector = articleIcon(),
-                tint = Color(0xFF3949AB),
                 modifier = Modifier
                     .size(32.dp)
                     .padding(end = 8.dp),
@@ -133,8 +141,9 @@ fun ArticleItem(article: ArticleEntity, onClick: () -> Unit) {
                 )
                 Text(
                     text = article.category.toString(),
-                    color = Color.Gray,
-                    style = MaterialTheme.typography.bodySmall
+                    color = MaterialTheme.colorScheme.primary,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.alpha(0.8f)
                 )
             }
         }

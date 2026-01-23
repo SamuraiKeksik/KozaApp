@@ -8,25 +8,24 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FilterList
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -40,13 +39,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.app_features.R
 import com.example.app_features.theme.AppTheme
-import com.example.app_features.vaccinationsCalendar.CalendarMonthPicker
-import com.example.app_features.vaccinationsCalendar.DashboardAppBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,28 +78,38 @@ fun AnimalsCardsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top,
             ) {
-                Column {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceAround,
-                    ) {
+                LazyVerticalGrid(
+                    columns = GridCells.Adaptive(minSize = 150.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    item {
                         AnimalInfoCard(
                             labelRes = R.string.goats_label,
-                            backgroundRes = R.drawable.goats_background,
-                            modifier = Modifier.height(250.dp),
+                            backgroundRes = R.drawable.goats_background2,
                             onButtonClick = { navigateToGoatsScreen() }
                         )
+                    }
+                    item {
                         AnimalInfoCard(
                             labelRes = R.string.cows_label,
-                            backgroundRes = R.drawable.cows_background,
-                            modifier = Modifier.height(250.dp),
+                            backgroundRes = R.drawable.cows_background2,
                             onButtonClick = { navigateToCowsScreen() }
+                        )
+
+                    }
+                    item {
+                        AnimalInfoCard(
+                            labelRes = R.string.chickens_label,
+                            backgroundRes = R.drawable.chickens_background2,
+                            onButtonClick = { navigateToChickenScreen() }
                         )
                     }
                 }
 
             }
         }
+
     }
 }
 
@@ -114,57 +120,58 @@ fun AnimalInfoCard(
     modifier: Modifier = Modifier,
     onButtonClick: () -> Unit
 ) {
-    Card(
-        modifier = modifier
-            .width(175.dp)
-            .height(200.dp),
-        border = BorderStroke(1.dp, color = Color.Black),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+    OutlinedCard(
+        modifier = modifier,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
         ) {
-            Image(
-                painter = painterResource(backgroundRes),
-                contentDescription = null,
-                modifier = modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
             //Invisible button
             Button(
                 onClick = { onButtonClick() },
                 modifier = Modifier
-                    .align(Alignment.Center)
-                    .fillMaxSize()
+                    .matchParentSize()
                     .alpha(0f),
-                shape = RoundedCornerShape(0.dp),
             ) { }
             Column(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = stringResource(labelRes),
-                    modifier = Modifier.padding(15.dp),
-                    style = MaterialTheme.typography.headlineSmall,
-
-                    )
-                Text(
-                    text = stringResource(R.string.quantity_label, 0),
-                    modifier = Modifier.padding(15.dp),
-                    style = MaterialTheme.typography.headlineSmall,
+                Image(
+                    painter = painterResource(backgroundRes),
+                    contentDescription = null,
+                    modifier = modifier.fillMaxWidth(),
+                    contentScale = ContentScale.Crop
                 )
+                HorizontalDivider(color = MaterialTheme.colorScheme.primary, thickness = 1.dp)
+                Column(
+                ){
+                    Text(
+                        text = stringResource(labelRes),
+                        modifier = Modifier.padding(10.dp, 10.dp,10.dp,0.dp,),
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        text = stringResource(R.string.quantity_label, 0),
+                        modifier = Modifier.padding(10.dp, 0.dp,10.dp,10.dp,),
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+
             }
         }
     }
 }
+
 
 @Preview
 @Composable
 fun AnimalInfoCardPreview() {
     AnimalInfoCard(
         labelRes = R.string.goats_label,
-        backgroundRes = R.drawable.goats_background,
+        backgroundRes = R.drawable.goats_background2,
         modifier = Modifier,
         onButtonClick = {}
     )

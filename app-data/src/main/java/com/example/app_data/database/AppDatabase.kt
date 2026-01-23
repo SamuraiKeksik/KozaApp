@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
         Vaccination::class,
         Weight::class,
         ArticleEntity::class
-    ], version = 17, exportSchema = false
+    ], version = 19, exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
@@ -59,7 +59,6 @@ abstract class AppDatabase : RoomDatabase() {
                     .also { Instance = it }
             }
         }
-
 
         //При открытии БД заполняем таблицу SicknessType
         fun dbSicknessTypesCallBack(context: Context): RoomDatabase.Callback = object : RoomDatabase.Callback() {
@@ -116,7 +115,7 @@ abstract class AppDatabase : RoomDatabase() {
                         )
                         animalsDao.insertSicknessType(
                             SicknessType(
-                                id = 4,
+                                id = 5,
                                 name = "Инфекционный мастит",
                                 description = context.resources.getString(R.string.infectious_mastitis_description),
                                 animalType = AnimalType.GOAT,

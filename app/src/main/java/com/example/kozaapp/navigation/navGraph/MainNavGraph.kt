@@ -101,18 +101,24 @@ fun AppBar(
     )
         Column{
             TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                    navigationIconContentColor = MaterialTheme.colorScheme.primary
+                ),
                 title = {
                     val topBarDestination =
                         Screen.list.firstOrNull() { it.route == currentDestination?.route }
                     if (topBarDestination != null) {
-                        Text(stringResource(topBarDestination.title))
+                        Text(
+                            stringResource(topBarDestination.title),
+                        )
                     }
                 },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = null
+                            contentDescription = null,
                         )
                     }
 

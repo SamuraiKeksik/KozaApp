@@ -24,6 +24,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -52,10 +54,7 @@ fun DictionaryCategoriesScreen(
 ){
     val uiState = viewModel.categoriesUiState
     Column(
-        modifier = modifier.padding(
-            start = 30.dp,
-            end = 30.dp,
-        ),
+        modifier = modifier.padding(dimensionResource(R.dimen.padding_medium)),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
@@ -103,12 +102,15 @@ fun CategoryCard(
     modifier: Modifier = Modifier,
     onButtonClick: () -> Unit,
 ) {
-    Card(
+    OutlinedCard(
         modifier = modifier
             .widthIn(128.dp, 256.dp)
             .height(100.dp),
-        border = BorderStroke(1.dp, color = Color.Black),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.primary,
+        ),
     ) {
         Box{
             Button(
@@ -129,7 +131,7 @@ fun CategoryCard(
                     modifier = Modifier.padding(10.dp),
                     style = MaterialTheme.typography.headlineSmall,
                 )
-                Image(
+                Icon(
                     modifier = Modifier.padding(10.dp, 0.dp, 10.dp, 10.dp),
                     painter = painterResource(image),
                     contentDescription = null,

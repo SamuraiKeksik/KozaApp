@@ -27,6 +27,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -86,14 +87,14 @@ fun GoatsScreen(
             GoatsBody(
                 goatsList = goatsUiState.goatsList,
                 onGoatClick = navigateToGoatDetails,
-                modifier = modifier.fillMaxSize(),
+                modifier = modifier.fillMaxSize().padding(dimensionResource(R.dimen.padding_medium)),
             )
             FloatingActionButton(
                 onClick = { navigateToGoatEntry() },
                 shape = MaterialTheme.shapes.medium,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(dimensionResource(R.dimen.padding_large))
+                    .padding(dimensionResource(R.dimen.padding_extra_large))
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -128,9 +129,7 @@ fun GoatsBody(
                 goatsList = goatsList,
                 onGoatClick = { onGoatClick(it.id) },
                 contentPadding = contentPadding,
-                modifier = Modifier
-                    .padding(horizontal = dimensionResource(id = R.dimen.padding_small))
-                    .fillMaxHeight(),
+                modifier = Modifier.fillMaxHeight(),
 
             )
         }
@@ -147,12 +146,13 @@ fun GoatsList(
     LazyColumn(
         modifier = modifier,
         contentPadding = contentPadding,
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
+
     ) {
         items(items = goatsList, key = { it.id }) {goat ->
             GoatCard(
                 goatEntity = goat,
                 modifier = Modifier
-                    .padding(dimensionResource(id = R.dimen.padding_small))
                     .clickable { onGoatClick(goat) })
 
         }
@@ -164,8 +164,13 @@ fun GoatCard(
     goatEntity: GoatEntity,
     modifier: Modifier = Modifier
 ) {
-    Card(
-        modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    OutlinedCard(
+        modifier = modifier,
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.primary,
+        ),
     ) {
         Column(
             modifier =
