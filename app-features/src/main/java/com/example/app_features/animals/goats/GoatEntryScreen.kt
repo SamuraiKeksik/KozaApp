@@ -134,7 +134,7 @@ fun GoatInputForm(
         BreedSelector(
             selectedBreed = goatDetails.toGoat().breed,
             onBreedSelected = { newBreed ->
-                onValueChange(goatDetails.copy(breed = newBreed.toString()))
+                onValueChange(goatDetails.copy(breed = newBreed))
             },
         )
         StatusSelector(
@@ -231,7 +231,7 @@ fun BreedSelector(
         modifier = modifier
     ) {
         OutlinedTextField(
-            value = selectedBreed.toString(),
+            value = selectedBreed.value,
             //value = stringResource(selectedBreed.labelResId),
             onValueChange = { /* Не изменяем вручную, только через меню */ },
             readOnly = true,
@@ -245,7 +245,7 @@ fun BreedSelector(
         ) {
             Breed.valuesList().forEach { breed ->
                 DropdownMenuItem(
-                    text = { Text(breed.toString()) },
+                    text = { Text(breed.value) },
                     //text = { Text(stringResource(breed.labelResId)) },
                     onClick = {
                         onBreedSelected(breed)

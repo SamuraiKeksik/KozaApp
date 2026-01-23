@@ -106,7 +106,7 @@ fun GoatDetailsComposable(
                 )
                 GoatDetailsRow(
                     labelResID = R.string.breed_label,
-                    goatDetail = goatDetails.breed.toString(),
+                    goatDetail = goatDetails.breed.value,
                     //goatDetail = stringResource(goat.breed.labelResId),
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(

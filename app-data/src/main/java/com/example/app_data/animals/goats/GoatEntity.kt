@@ -1,5 +1,6 @@
 package com.example.app_data.animals.goats
 
+import androidx.annotation.StringRes
 import java.util.UUID
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -30,9 +31,19 @@ enum class Gender() {
     }
 }
 
-enum class Breed(){
-    ZAANENSKAYA, NUBIAN, LA_MANCHA, TOGGENBURGSKAYA, ALPINE,
-    GORNOALTAYSKAYA, ORENBURG, ANGORA, CAMEROONIAN, OTHER;
+enum class Breed(
+    val value: String
+) {
+    ZAANENSKAYA("Зааненская"),
+    NUBIAN("Нубийская"),
+    LA_MANCHA("Ла Манча"),
+    TOGGENBURGSKAYA("Тоггенбургская"),
+    ALPINE("Альпийская"),
+    GORNOALTAYSKAYA("Горно-алтайская"),
+    ORENBURG("Оренбургская"),
+    ANGORA("Ангорская"),
+    CAMEROONIAN("Камерунская"),
+    OTHER("Другая");
 
     companion object {
         fun valuesList(): List<Breed> = entries

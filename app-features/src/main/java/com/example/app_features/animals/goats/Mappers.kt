@@ -12,10 +12,6 @@ fun GoatDetails.toGoat(): GoatEntity {
         Gender.valueOf(gender.uppercase())
     }.getOrDefault(Gender.UNKNOWN)
 
-    val enumBreed = runCatching {
-        Breed.valueOf(breed.uppercase())
-    }.getOrDefault(Breed.OTHER)
-
     val enumStatus = runCatching {
         Status.valueOf(status.uppercase())
     }.getOrDefault(Status.OTHER)
@@ -37,7 +33,7 @@ fun GoatDetails.toGoat(): GoatEntity {
         gender = enumGender,
         birthDate = formatDate(birthDate),
         description = description,
-        breed = enumBreed,
+        breed = breed,
         status = enumStatus,
         weight = weight.toIntOrNull() ?: 0,
 
@@ -64,7 +60,7 @@ fun GoatEntity.toGoatDetails(): GoatDetails = GoatDetails(
     gender = gender.toString(),
     birthDate = LocalDate.ofEpochDay(birthDate).toString(),
     description = description,
-    breed = breed.toString(),
+    breed = breed,
     status = status.toString(),
     weight = weight.toString(),
 

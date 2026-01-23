@@ -63,7 +63,7 @@ data class GoatDetails(
     val fatherName: String? = null,
     val name: String = "",
     val gender: String = Gender.UNKNOWN.toString(),
-    val breed: String = Breed.OTHER.toString(),
+    val breed: Breed = Breed.OTHER,
     val status: String = Status.OTHER.toString(),
     val weight: String = "0",
     val birthDate: String = LocalDate.now().toString(),
