@@ -4,9 +4,12 @@ import android.app.DatePickerDialog
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -125,35 +128,45 @@ fun GoatInputForm(
             enabled = enabled,
             singleLine = true,
         )
-        GenderSelector(
-            selectedGender = goatDetails.toGoat().gender,
-            onGenderSelected = { newGender ->
-                onValueChange(goatDetails.copy(gender = newGender.toString()))
-            },
-        )
-        BreedSelector(
-            selectedBreed = goatDetails.toGoat().breed,
-            onBreedSelected = { newBreed ->
-                onValueChange(goatDetails.copy(breed = newBreed))
-            },
-        )
-        StatusSelector(
-            selectedStatus = goatDetails.toGoat().status,
-            onStatusSelected = { newStatus ->
-                onValueChange(goatDetails.copy(status = newStatus.toString()))
-            },
-        )
-        OutlinedTextField(
-            value = goatDetails.weight,
-            onValueChange = { onValueChange(goatDetails.copy(weight = it)) },
-            label = { Text(stringResource(R.string.goat_weight_label)) },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = enabled,
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number
+        Row(){
+            GenderSelector(
+                modifier = Modifier.weight(1f),
+                selectedGender = goatDetails.toGoat().gender,
+                onGenderSelected = { newGender ->
+                    onValueChange(goatDetails.copy(gender = newGender))
+                },
             )
-        )
+            Spacer(Modifier.width(dimensionResource(id = R.dimen.padding_extra_small)))
+            BreedSelector(
+                modifier = Modifier.weight(1f),
+                selectedBreed = goatDetails.toGoat().breed,
+                onBreedSelected = { newBreed ->
+                    onValueChange(goatDetails.copy(breed = newBreed))
+                },
+            )
+        }
+        Row(){
+            StatusSelector(
+                modifier = Modifier.weight(1f),
+                selectedStatus = goatDetails.toGoat().status,
+                onStatusSelected = { newStatus ->
+                    onValueChange(goatDetails.copy(status = newStatus))
+                },
+            )
+            Spacer(Modifier.width(dimensionResource(id = R.dimen.padding_extra_small)))
+            OutlinedTextField(
+                value = goatDetails.weight,
+                onValueChange = { onValueChange(goatDetails.copy(weight = it)) },
+                label = { Text(stringResource(R.string.goat_weight_label)) },
+                modifier = Modifier.weight(1f),
+                enabled = enabled,
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number
+                )
+            )
+        }
+
         DatePickerField(
             label = "Дата рождения",
             date = goatDetails.birthDate ?: "",
@@ -190,10 +203,10 @@ fun GenderSelector(
         modifier = modifier
     ) {
         OutlinedTextField(
-            value = selectedGender.toString(),
-            //value = stringResource(selectedGender.labelResId),
+            value = stringResource(selectedGender.valueRes),
             onValueChange = { /* Не изменяем вручную, только через меню */ },
             readOnly = true,
+            singleLine = true,
             label = { Text(stringResource(R.string.gender_label)) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier.menuAnchor()
@@ -204,8 +217,7 @@ fun GenderSelector(
         ) {
             Gender.valuesList().forEach { gender ->
                 DropdownMenuItem(
-                    text = { Text(gender.toString()) },
-                    //text = { Text(stringResource(gender.labelResId)) },
+                    text = { Text(stringResource(gender.valueRes)) },
                     onClick = {
                         onGenderSelected(gender)
                         expanded = false
@@ -231,10 +243,10 @@ fun BreedSelector(
         modifier = modifier
     ) {
         OutlinedTextField(
-            value = selectedBreed.value,
-            //value = stringResource(selectedBreed.labelResId),
+            value = stringResource(selectedBreed.valueRes),
             onValueChange = { /* Не изменяем вручную, только через меню */ },
             readOnly = true,
+            singleLine = true,
             label = { Text(stringResource(R.string.breed_label)) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier.menuAnchor()
@@ -245,7 +257,7 @@ fun BreedSelector(
         ) {
             Breed.valuesList().forEach { breed ->
                 DropdownMenuItem(
-                    text = { Text(breed.value) },
+                    text = { Text(stringResource(breed.valueRes)) },
                     //text = { Text(stringResource(breed.labelResId)) },
                     onClick = {
                         onBreedSelected(breed)
@@ -272,10 +284,10 @@ fun StatusSelector(
         modifier = modifier
     ) {
         OutlinedTextField(
-            value = selectedStatus.toString(),
-            //value = stringResource(selectedStatus.labelResId),
+            value = stringResource(selectedStatus.valueRes),
             onValueChange = { /* Не изменяем вручную, только через меню */ },
             readOnly = true,
+            singleLine = true,
             label = { Text(stringResource(R.string.status_label)) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier.menuAnchor()
@@ -286,8 +298,7 @@ fun StatusSelector(
         ) {
             Status.valuesList().forEach { status ->
                 DropdownMenuItem(
-                    text = { Text(status.toString()) },
-                    //text = { Text(stringResource(status.labelResId)) },
+                    text = { Text(stringResource(status.valueRes)) },
                     onClick = {
                         onStatusSelected(status)
                         expanded = false
@@ -371,7 +382,7 @@ private fun GoatEntryScreenPreview() {
         GoatEntryBody(goatUiState = GoatUiState(
             GoatDetails(
                 name = "Goat name",
-                gender = "Female",
+                gender = Gender.FEMALE,
                 birthDate = "01.05.2020",
                 description = "Description"
             )

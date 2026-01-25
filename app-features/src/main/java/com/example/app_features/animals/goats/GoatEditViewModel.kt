@@ -48,7 +48,7 @@ class GoatEditViewModel @Inject constructor(
 
     private fun validateInput(uiState: GoatDetails = goatUiState.goatDetails): Boolean {
         return with(uiState) {
-            name.isNotBlank() && gender.isNotBlank()
+            name.isNotBlank()
         }
     }
 }

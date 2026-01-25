@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
 import kotlin.Boolean
+import kotlin.toString
 
 @HiltViewModel
 class GoatEntryViewModel @Inject constructor(
@@ -62,9 +63,9 @@ data class GoatDetails(
     val fatherId: UUID? = null,
     val fatherName: String? = null,
     val name: String = "",
-    val gender: String = Gender.UNKNOWN.toString(),
+    val gender: Gender = Gender.UNKNOWN,
     val breed: Breed = Breed.OTHER,
-    val status: String = Status.OTHER.toString(),
+    val status: Status = Status.OTHER,
     val weight: String = "0",
     val birthDate: String = LocalDate.now().toString(),
     val description: String = "",

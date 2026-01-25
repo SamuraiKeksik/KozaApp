@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="gender_male">Самец</string>
+    <string name="gender_female">Самка</string>
+    <string name="gender_unknown">Неизвестно</string>
+
+    <string name="status_milk">Молоко</string>
+    <string name="status_meat">Мясо</string>
+    <string name="status_wool">Шерсть</string>
+    <string name="status_breeding">Племя</string>
+    <string name="status_unknown">Неизвестно</string>
+
+    <string name="breed_zaanenskaya">Зааненская</string>
+    <string name="breed_nubian">Нубийская</string>
+    <string name="breed_la_mancha">Ла Манча</string>
+    <string name="breed_toggenburgskaya">Тоггенбургская</string>
+    <string name="breed_alpine">Альпийская</string>
+    <string name="breed_gornoaltayskaya">Горно-алтайская</string>
+    <string name="breed_orenburg">Оренбургская</string>
+    <string name="breed_angora">Ангорская</string>
+    <string name="breed_cameroonian">Камерунская</string>
+    <string name="breed_unknown">Неизвестно</string>
     //Sicknesses
     <string name="tempania_description">Тимпания рубца, острое вздутие рубца, тимпанит (от греч. τύμπανο — барабан) — вздутие рубца,
         болезнь жвачных, характеризующаяся скоплением большого количества газов главным образом в рубце. Чаще бывает острая тимпания рубца,

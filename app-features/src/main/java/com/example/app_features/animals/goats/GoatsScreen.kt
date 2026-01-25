@@ -186,16 +186,14 @@ fun GoatCard(
             Text(
                 text = stringResource(
                     R.string.gender_details_label,
-                    goatEntity.gender.toString()
-                   // stringResource(goat.gender.labelResId)
+                    stringResource(goatEntity.gender.valueRes)
                 ),
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
                 text = stringResource(
                     R.string.status_details_label,
-                    goatEntity.status.toString()
-                    //stringResource(goat.status.labelResId)
+                    stringResource(goatEntity.status.valueRes)
                 ),
                 style = MaterialTheme.typography.titleMedium
             )
