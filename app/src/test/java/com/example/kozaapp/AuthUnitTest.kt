@@ -1,9 +1,9 @@
 package com.example.kozaapp
 
-import com.example.kozaapp.auth.data.AuthViewModel
-import org.junit.Test
-
-import org.junit.Assert.*
+//import com.example.kozaapp.auth.data.AuthViewModel
+//import org.junit.Test
+//
+//import org.junit.Assert.*
 
 //
 //class AuthUnitTest {

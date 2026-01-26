@@ -95,7 +95,7 @@ fun GoatDetailsComposable(
                 )
                 GoatDetailsRow(
                     labelResID = R.string.goat_gender_label,
-                    goatDetail = goatDetails.gender.toString(),
+                    goatDetail = stringResource(goatDetails.gender.valueRes),
                     //goatDetail = stringResource(goat.gender.labelResId),
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(
@@ -117,7 +117,7 @@ fun GoatDetailsComposable(
                 )
                 GoatDetailsRow(
                     labelResID = R.string.status_label,
-                    goatDetail = goatDetails.status.toString(),
+                    goatDetail = stringResource(goatDetails.status.valueRes),
                     //goatDetail = stringResource(goat.status.labelResId),
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(id = R.dimen.padding_medium)
@@ -125,7 +125,7 @@ fun GoatDetailsComposable(
                 )
                 GoatDetailsRow(
                     labelResID = R.string.goat_weight_label,
-                    goatDetail = goatDetails.weight.toString(),
+                    goatDetail = goatDetails.weight.toString() + " кг",
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(id = R.dimen.padding_medium)
                     )

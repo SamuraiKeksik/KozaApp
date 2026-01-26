@@ -31,10 +31,10 @@ fun NavGraphBuilder.animalsNavGraph(
             AnimalsCardsScreen(
                 navigateToGoatsScreen = { navController.navigate(NavGraph.GOATS_NAV_GRAPH_ROUTE) },
                 navigateToCowsScreen = { navController.navigate(NavGraph.COWS_NAV_GRAPH_ROUTE) },
-                navigateToChickenScreen = {}
+                navigateToPigsScreen = { navController.navigate(NavGraph.COWS_NAV_GRAPH_ROUTE) },
+                navigateToChickenScreen = { navController.navigate(NavGraph.COWS_NAV_GRAPH_ROUTE) }
             )
         }
         goatsNavGraph(navController = navController)
     }
-
 }

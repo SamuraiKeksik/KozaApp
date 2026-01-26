@@ -50,6 +50,7 @@ fun AnimalsCardsScreen(
     modifier: Modifier = Modifier,
     navigateToGoatsScreen: () -> Unit,
     navigateToCowsScreen: () -> Unit,
+    navigateToPigsScreen: () -> Unit,
     navigateToChickenScreen: () -> Unit,
 ) {
     Scaffold(
