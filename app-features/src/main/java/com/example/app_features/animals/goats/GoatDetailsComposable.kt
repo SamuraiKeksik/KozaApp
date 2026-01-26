@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowRightAlt
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.filled.Mode
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -54,7 +56,7 @@ fun GoatDetailsComposable(
     Card(
         modifier = modifier
             .border(
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
                 shape = RoundedCornerShape(10.dp)
             )
             .animateContentSize(
@@ -96,7 +98,6 @@ fun GoatDetailsComposable(
                 GoatDetailsRow(
                     labelResID = R.string.goat_gender_label,
                     goatDetail = stringResource(goatDetails.gender.valueRes),
-                    //goatDetail = stringResource(goat.gender.labelResId),
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(
                             id = R.dimen
@@ -107,7 +108,6 @@ fun GoatDetailsComposable(
                 GoatDetailsRow(
                     labelResID = R.string.breed_label,
                     goatDetail = stringResource(goatDetails.breed.valueRes),
-                    //goatDetail = stringResource(goat.breed.labelResId),
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(
                             id = R.dimen
@@ -118,7 +118,6 @@ fun GoatDetailsComposable(
                 GoatDetailsRow(
                     labelResID = R.string.status_label,
                     goatDetail = stringResource(goatDetails.status.valueRes),
-                    //goatDetail = stringResource(goat.status.labelResId),
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(id = R.dimen.padding_medium)
                     )
@@ -144,7 +143,9 @@ fun GoatDetailsComposable(
                         horizontal = dimensionResource(id = R.dimen.padding_medium)
                     )
                 )
-                Row(modifier = modifier) {
+                Row(modifier = Modifier.padding(
+                    horizontal = dimensionResource(id = R.dimen.padding_medium)
+                )) {
                     Text(text = stringResource(R.string.mother))
                     Spacer(modifier = Modifier.weight(1f))
                     if (goatDetails.motherId != null) {
@@ -166,11 +167,12 @@ fun GoatDetailsComposable(
 
                     }
                 }
-                Row(modifier = modifier) {
+                Row(modifier = Modifier.padding(
+                    horizontal = dimensionResource(id = R.dimen.padding_medium)
+                )) {
                     Text(text = stringResource(R.string.father))
                     Spacer(modifier = Modifier.weight(1f))
                     if (goatDetails.fatherId != null) {
-                        //Text(text = goatEntity.mother.name, fontWeight = FontWeight.Bold
                         Text(goatDetails.fatherName!!)
                         IconButton(onClick = { onParentInfoClick(goatDetails.fatherId) })
                         {
@@ -188,7 +190,9 @@ fun GoatDetailsComposable(
 
                     }
                 }
-                Row(modifier = modifier) {
+                Row(modifier = Modifier.padding(
+                    horizontal = dimensionResource(id = R.dimen.padding_medium)
+                )) {
                     Text(text = stringResource(R.string.children))
                     Spacer(modifier = Modifier.weight(1f))
                     Button(onClick = { onChildrenInfoClick(goatDetails.id) }) {
@@ -209,7 +213,7 @@ private fun GoatDetailsRow(
 ) {
     Row(modifier = modifier) {
         Text(text = stringResource(labelResID))
-        Spacer(modifier = Modifier.weight(1f))
-        Text(text = goatDetail, fontWeight = FontWeight.Bold)
+        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.padding_small)))
+        Text(text = goatDetail,)
     }
 }

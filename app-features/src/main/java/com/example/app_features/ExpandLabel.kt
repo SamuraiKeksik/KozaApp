@@ -33,7 +33,7 @@ fun ExpandLabel(
 ) {
     Row(
         modifier = Modifier.fillMaxWidth().border(
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
             shape = RoundedCornerShape(10.dp, 10.dp, 0.dp, 0.dp)
         ),
         verticalAlignment = Alignment.CenterVertically,
