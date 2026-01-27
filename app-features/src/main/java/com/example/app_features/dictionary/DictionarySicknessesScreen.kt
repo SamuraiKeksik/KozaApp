@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Sick
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -31,7 +30,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -90,7 +88,7 @@ fun DictionarySicknessesScreen(
         onDismiss = { dialogRequired = false },
         title = stringResource(R.string.sickness_type_description),
         header = sicknessesUiState.selectedSicknessType?.name ?: "",
-        animalType = stringResource(R.string.animal_type_label, sicknessesUiState.selectedSicknessType?.animalType ?: ""),
+        animalType = stringResource(R.string.animal_type_label, stringResource(sicknessesUiState.selectedSicknessType?.animalType?.valueRes ?: R.string.empty_string) ),
         category = stringResource(R.string.category_label, stringResource(R.string.sickness_types)),
         text = sicknessesUiState.selectedSicknessType?.description ?: "",
     )

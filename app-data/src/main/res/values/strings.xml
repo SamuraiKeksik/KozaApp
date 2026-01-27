@@ -4,11 +4,24 @@
     <string name="gender_female">Самка</string>
     <string name="gender_unknown">Неизвестно</string>
 
+    <string name="category_unknown">Неизвестно</string>
+    <string name="category_all">Все</string>
+    <string name="category_feeding">Кормление</string>
+    <string name="category_breeding">Разведение</string>
+
     <string name="status_milk">Молоко</string>
     <string name="status_meat">Мясо</string>
     <string name="status_wool">Шерсть</string>
     <string name="status_breeding">Племя</string>
     <string name="status_unknown">Неизвестно</string>
+
+    <string name="animal_type_unknown">Неизвестно</string>
+    <string name="animal_type_all">Все</string>
+    <string name="animal_type_cow">Коровы</string>
+    <string name="animal_type_goat">Козы</string>
+    <string name="animal_type_chicken">Курицы</string>
+    <string name="animal_type_sheep">Овцы</string>
+    <string name="animal_type_pig">Свиньи</string>
 
     <string name="breed_zaanenskaya">Зааненская</string>
     <string name="breed_nubian">Нубийская</string>

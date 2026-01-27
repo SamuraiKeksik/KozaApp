@@ -81,17 +81,17 @@
     <string name="goat_edit_screen_label">Редактирование козы</string>
     <string name="goat_save_button_label">Сохранить</string>
     <string name="goat_delete_button_label">Удалить</string>
-    <string name="goat_name_label">Кличка</string>
-    <string name="goat_weight_label">Вес</string>
-    <string name="goat_gender_label">Пол</string>
-    <string name="goat_birth_date_label">Дата рождения</string>
-    <string name="goat_description_label">Описание</string>
+    <string name="goat_name_label">Кличка:</string>
+    <string name="goat_weight_label">Вес:</string>
+    <string name="goat_gender_label">Пол:</string>
+    <string name="goat_birth_date_label">Дата рождения:</string>
+    <string name="goat_description_label">Описание:</string>
     <string name="goat_required_fields_label">Заполните поля</string>
-    <string name="mother">Мать</string>
+    <string name="mother">Мать:</string>
     <string name="add_mother">Добавить мать</string>
-    <string name="father">Отец</string>
+    <string name="father">Отец:</string>
     <string name="add_father">Добавить отца</string>
-    <string name="children">Дети</string>
+    <string name="children">Дети:</string>
     <string name="children_count">Детей %d</string>
 
 
@@ -126,7 +126,7 @@
     <string name="unknown">Неизвестно</string>
 
     <!-- Породы коз -->
-    <string name="breed_label">Порода</string>
+    <string name="breed_label">Порода:</string>
     <string name="zaanenskaya">Зааненская</string>
     <string name="nubian">Нубийская</string>
     <string name="toggenburgskaya">Тоггенбургская</string>
@@ -139,7 +139,7 @@
     <string name="other">Другие</string>
 
     <!-- Статус коз -->
-    <string name="status_label">Статус</string>
+    <string name="status_label">Статус:</string>
     <string name="status_details_label">Статус: %s</string>
     <string name="status_milk">Молоко</string>
     <string name="status_meat">Мясо</string>

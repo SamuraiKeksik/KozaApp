@@ -1,8 +1,11 @@
 package com.example.kozaapp.navigation.navGraph
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -18,13 +21,22 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
@@ -45,6 +57,12 @@ import com.example.kozaapp.navigation.VaccinationsCalendarScreen
 import com.example.kozaapp.navigation.navGraph.animals.animalsNavGraph
 
 @Composable
+fun shouldHideNavigationBar(): Boolean {
+    val configuration = LocalConfiguration.current
+    return configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+}
+
+@Composable
 fun MainNavGraph() {
     val navController = rememberNavController()
 
@@ -53,15 +71,17 @@ fun MainNavGraph() {
             AppBar(navController)
         },
         bottomBar = {
-            BottomBar(navController)
+            if (!shouldHideNavigationBar())
+                BottomBar(navController)
         },
         contentWindowInsets = WindowInsets(0.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it)
-        ) {
+    ) { padding ->
+        Row(modifier = Modifier.padding(padding)) {
+            if (shouldHideNavigationBar())
+                MyNavigationRail(
+                    modifier = Modifier.padding(padding),
+                    navController = navController
+                )
             NavHost(
                 navController = navController,
                 route = NavGraph.MAIN_NAV_GRAPH_ROUTE,
@@ -75,8 +95,8 @@ fun MainNavGraph() {
                 //advertisementsNavGraph(navController)
                 //ProfileNavGraph(navController)
             }
-        }
 
+        }
     }
 }
 
@@ -99,7 +119,7 @@ fun AppBar(
         !mainScreensList.any() { it == currentDestination?.route } &&
         navController.previousBackStackEntry != null
     )
-        Column{
+        Column {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
                     titleContentColor = MaterialTheme.colorScheme.primary,
@@ -193,4 +213,49 @@ fun RowScope.AddItem(
             }
         }
     )
+}
+
+@Composable
+fun MyNavigationRail(modifier: Modifier, navController: NavHostController) {
+    val screens = listOf(
+        BottomBarScreen.Animals,
+        BottomBarScreen.VaccinationsCalendar,
+        BottomBarScreen.Dictionary,
+    )
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
+    val bottomBarDestination = screens.any { it.route == currentDestination?.route }
+    if (bottomBarDestination) {
+        NavigationRail(
+            modifier = modifier,
+            contentColor = MaterialTheme.colorScheme.primary,
+            containerColor = MaterialTheme.colorScheme.surface,
+        ) {
+            Spacer(modifier = Modifier.weight(1f))
+            screens.forEach { screen ->
+                NavigationRailItem(
+                    selected = currentDestination?.hierarchy?.any {
+                        it.route == screen.route
+                    } == true,
+                    onClick = {
+                        navController.navigate(route = screen.route)
+                    },
+                    icon = {
+                        Icon(
+                            screen.icon,
+                            contentDescription = null
+                        )
+                    },
+                    label = { Text(stringResource(screen.title)) },
+                    colors = NavigationRailItemDefaults.colors(
+                        unselectedIconColor = LocalContentColor.current.copy(alpha = 1f),
+                        unselectedTextColor = LocalContentColor.current.copy(alpha = 1f),
+                ),)
+            }
+            Spacer(modifier = Modifier.weight(1f))
+        }
+        VerticalDivider(color = MaterialTheme.colorScheme.primary, thickness = 1.dp)
+    }
+
 }

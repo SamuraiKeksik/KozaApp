@@ -17,7 +17,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fastfood
 import androidx.compose.material.icons.filled.QueryStats
 import androidx.compose.material.icons.filled.QuestionMark
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -33,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -93,8 +91,8 @@ fun DictionaryArticlesListScreen(
         onDismiss = { dialogRequired = false },
         title = stringResource(R.string.advice),
         header = articlesUiState.selectedArticle?.name ?: "",
-        animalType = stringResource(R.string.animal_type_label, articlesUiState.selectedArticle?.animalType ?: ""),
-        category = stringResource(R.string.category_label, articlesUiState.selectedArticle?.category ?: ""),
+        animalType = stringResource(R.string.animal_type_label, stringResource(articlesUiState.selectedArticle?.animalType?.valueRes ?: R.string.empty_string)),
+        category = stringResource(R.string.category_label, stringResource(articlesUiState.selectedArticle?.category?.valueRes ?: R.string.empty_string)),
         text = articlesUiState.selectedArticle?.description ?: "",
     )
 
@@ -140,7 +138,7 @@ fun ArticleItem(article: ArticleEntity, onClick: () -> Unit) {
                     )
                 )
                 Text(
-                    text = article.category.toString(),
+                    text = stringResource(article.category.valueRes),
                     color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.alpha(0.8f)
