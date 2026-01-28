@@ -29,5 +29,8 @@ class AnimalsLocalDataSource @Inject constructor(
     suspend fun insertMilkYield(milkYield: MilkYield) = animalsDao.insertMilkYield(milkYield)
     suspend fun deleteMilkYield(milkYield: MilkYield) = animalsDao.deleteMilkYield(milkYield)
     suspend fun updateMilkYield(milkYield: MilkYield) = animalsDao.updateMilkYield(milkYield)
+    fun getGoatsCount() = animalsDao.getGoatsCount()
+//    suspend fun getCowsCount() = animalsDao.getCowsCount()
+//    suspend fun getChickensCount() = animalsDao.getChickensCount()
 }
 

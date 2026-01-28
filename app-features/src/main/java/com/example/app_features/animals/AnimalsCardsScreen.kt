@@ -41,12 +41,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.app_features.R
 import com.example.app_features.theme.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AnimalsCardsScreen(
+    viewModel: AnimalsViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
     navigateToGoatsScreen: () -> Unit,
     navigateToCowsScreen: () -> Unit,
@@ -88,6 +90,7 @@ fun AnimalsCardsScreen(
                         AnimalInfoCard(
                             labelRes = R.string.goats_label,
                             backgroundRes = R.drawable.goats_background2,
+                            animalsCount = viewModel.uiState.goatsCount,
                             onButtonClick = { navigateToGoatsScreen() }
                         )
                     }
@@ -95,6 +98,7 @@ fun AnimalsCardsScreen(
                         AnimalInfoCard(
                             labelRes = R.string.cows_label,
                             backgroundRes = R.drawable.cows_background2,
+                            animalsCount = viewModel.uiState.cowsCount,
                             onButtonClick = { navigateToCowsScreen() }
                         )
 
@@ -103,6 +107,7 @@ fun AnimalsCardsScreen(
                         AnimalInfoCard(
                             labelRes = R.string.chickens_label,
                             backgroundRes = R.drawable.chickens_background2,
+                            animalsCount = viewModel.uiState.chickensCount,
                             onButtonClick = { navigateToChickenScreen() }
                         )
                     }
@@ -119,6 +124,7 @@ fun AnimalInfoCard(
     @StringRes labelRes: Int,
     @DrawableRes backgroundRes: Int,
     modifier: Modifier = Modifier,
+    animalsCount: Int = 0,
     onButtonClick: () -> Unit
 ) {
     OutlinedCard(
@@ -154,7 +160,7 @@ fun AnimalInfoCard(
                         color = MaterialTheme.colorScheme.primary
                     )
                     Text(
-                        text = stringResource(R.string.quantity_label, 0),
+                        text = stringResource(R.string.quantity_label, animalsCount),
                         modifier = Modifier.padding(10.dp, 0.dp,10.dp,10.dp,),
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.primary

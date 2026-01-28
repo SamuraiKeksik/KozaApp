@@ -176,4 +176,8 @@
     <string name="breeding">Разведение</string>
     <string name="category_label">Категория: %s</string>
     <string name="animal_type_label">Вид: %s</string>
+
+    <string name="empty_vaccination_calendar_header">Прививки отсутствуют</string>
+    <string name="empty_vaccination_calendar_text">Прививки отсутствуют в этом месяце</string>
+
 </resources>

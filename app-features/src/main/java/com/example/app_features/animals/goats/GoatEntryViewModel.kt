@@ -36,7 +36,7 @@ class GoatEntryViewModel @Inject constructor(
 
     private fun validateInput(uiState: GoatDetails = goatUiState.goatDetails): Boolean {
         return with(uiState) {
-            name.isNotBlank() && isValidDateFormat(birthDate)
+            name.isNotBlank() //&& isValidDateFormat(birthDate)
 
         }
     }
@@ -67,7 +67,7 @@ data class GoatDetails(
     val breed: Breed = Breed.OTHER,
     val status: Status = Status.OTHER,
     val weight: String = "0",
-    val birthDate: String = LocalDate.now().toString(),
+    val birthDate: LocalDate = LocalDate.now(),
     val description: String = "",
 
     val isEdited: Boolean = false,

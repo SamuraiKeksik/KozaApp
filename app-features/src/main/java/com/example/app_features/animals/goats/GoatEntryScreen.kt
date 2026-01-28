@@ -44,6 +44,8 @@ import com.example.app_features.R
 import com.example.app_features.theme.AppTheme
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 
@@ -116,6 +118,7 @@ fun GoatInputForm(
     onValueChange: (GoatDetails) -> Unit = {},
     enabled: Boolean = true
 ) {
+    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
@@ -169,8 +172,8 @@ fun GoatInputForm(
 
         DatePickerField(
             label = "Дата рождения",
-            date = goatDetails.birthDate ?: "",
-            onDateSelected = { onValueChange(goatDetails.copy(birthDate = it)) },
+            date = goatDetails.birthDate.format(formatter) ?: "",
+            onDateSelected = { onValueChange(goatDetails.copy(birthDate = LocalDate.parse(it, formatter))) },
             allowEmpty = false
         )
         OutlinedTextField(
@@ -383,7 +386,7 @@ private fun GoatEntryScreenPreview() {
             GoatDetails(
                 name = "Goat name",
                 gender = Gender.FEMALE,
-                birthDate = "01.05.2020",
+                birthDate = LocalDate.now(),
                 description = "Description"
             )
         ), onGoatValueChange = {}, onSaveClick = {})

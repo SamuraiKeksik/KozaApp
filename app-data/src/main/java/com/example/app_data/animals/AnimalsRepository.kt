@@ -1,6 +1,7 @@
 package com.example.app_data.animals
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import java.time.LocalDate
 import java.util.UUID
 import javax.inject.Inject
@@ -30,6 +31,8 @@ interface AnimalsRepository {
     suspend fun insertMilkYield(milkYield: MilkYield)
     suspend fun deleteMilkYield(milkYield: MilkYield)
     suspend fun updateMilkYield(milkYield: MilkYield)
+
+    fun getAnimalsCountStream(animalType: AnimalType): Flow<Int>
 }
 
 class DefaultAnimalsRepository @Inject constructor(
@@ -102,4 +105,13 @@ override suspend fun deleteMilkYield(milkYield: MilkYield) =
 
 override suspend fun updateMilkYield(milkYield: MilkYield) =
     animalsLocalDataSource.updateMilkYield(milkYield)
+
+    override fun getAnimalsCountStream(animalType: AnimalType): Flow<Int> {
+        return when (animalType) {
+            AnimalType.GOAT -> animalsLocalDataSource.getGoatsCount()
+//            AnimalType.COW -> animalsLocalDataSource.getCowsCount()
+//            AnimalType.CHICKEN -> animalsLocalDataSource.getChickensCount()
+            else -> flow { emit(0) }
+        }
+    }
 }

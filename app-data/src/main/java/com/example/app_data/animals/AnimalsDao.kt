@@ -55,4 +55,11 @@ interface AnimalsDao {
     suspend fun deleteMilkYield(milkYield: MilkYield)
     @Update
     suspend fun updateMilkYield(milkYield: MilkYield)
+
+    @Query("SELECT COUNT(*) FROM goats")
+    fun getGoatsCount(): Flow<Int>
+//    @Query("SELECT COUNT(*) FROM cows")
+//    suspend fun getCowsCount(): Flow<Int>
+//    @Query("SELECT COUNT(*) FROM chickens")
+//    suspend fun getChickensCount(): Flow<Int>
 }

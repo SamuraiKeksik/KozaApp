@@ -23,13 +23,13 @@ import androidx.compose.ui.unit.dp
 fun EmptyScreenFiller(
     @StringRes header: Int,
     @StringRes text: Int,
-    @DrawableRes image: Int
+    @DrawableRes image: Int,
 ) {
     Column(
         modifier = Modifier.fillMaxSize().padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.size(200.dp))
+        Spacer(modifier = Modifier.size(50.dp))
         Text(
             text = stringResource(header),
             style = MaterialTheme.typography.headlineSmall,

@@ -1,5 +1,7 @@
 package com.example.app_features.vaccinationsCalendar
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -20,6 +22,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import com.example.app_features.EmptyScreenFiller
+import com.example.app_features.R
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -35,7 +39,11 @@ fun CalendarEventsCards(
     ) {
         if (vaccinationEvents.firstOrNull() == null) {
           item{
-            Text("Пусто")
+              EmptyScreenFiller(
+                  header = R.string.empty_string,
+                  text = R.string.empty_vaccination_calendar_text,
+                  image = R.drawable.calendar,
+              )
           }
         }
       else{
@@ -121,10 +129,10 @@ private fun EventCardInternal(event:AnimalVaccinationEventDetails, isAccepted: B
                 style = vaccinationTextStyle(isAccepted),
             )
 
-            EventText(
-                text = event.animalType.name,
-                style = vaccinationTextStyle(isAccepted),
-            )
+//            EventText(
+//                text = event.animalType.name,
+//                style = vaccinationTextStyle(isAccepted),
+//            )
         }
     }
 }
@@ -133,7 +141,7 @@ private fun EventCardInternal(event:AnimalVaccinationEventDetails, isAccepted: B
 fun DateHeaderItem() {
     Column(Modifier.padding(4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = "Пон",
+            text = "",
             style = TextStyle.Default.copy(
                 MaterialTheme.colorScheme.onPrimaryContainer
             )

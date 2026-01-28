@@ -20,7 +20,6 @@ import androidx.compose.material.icons.filled.Mode
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,14 +32,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.app_data.animals.goats.Gender
-import com.example.app_data.animals.goats.GoatEntity
 import com.example.app_features.ExpandLabel
 import com.example.app_features.R
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.UUID
+
 
 @Composable
 fun GoatDetailsComposable(
@@ -53,6 +52,8 @@ fun GoatDetailsComposable(
     canEdit: Boolean,                   //Можно ли менять информацию
 ) {
     var expanded by remember { mutableStateOf(true) }
+    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+
     Card(
         modifier = modifier
             .border(
@@ -131,7 +132,7 @@ fun GoatDetailsComposable(
                 )
                 GoatDetailsRow(
                     labelResID = R.string.goat_birth_date_label,
-                    goatDetail = goatDetails.birthDate ?: "",
+                    goatDetail = goatDetails.birthDate.format(formatter) ?: "",
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(id = R.dimen.padding_medium)
                     )
@@ -214,6 +215,6 @@ private fun GoatDetailsRow(
     Row(modifier = modifier) {
         Text(text = stringResource(labelResID))
         Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.padding_small)))
-        Text(text = goatDetail,)
+        Text(text = goatDetail)
     }
 }

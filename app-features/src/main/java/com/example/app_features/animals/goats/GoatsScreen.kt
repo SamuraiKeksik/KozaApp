@@ -51,12 +51,6 @@ import com.example.app_features.theme.AppTheme
 import java.time.LocalDate
 import java.util.UUID
 
-//object GoatsDestination : NavigationDestination{
-//    override val route = "GoatsScreen"
-//    @StringRes
-//    override val titleRes = R.string.goats_label
-//    override val showBottomBar = false
-//}
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable
