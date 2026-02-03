@@ -40,6 +40,15 @@ sealed class Screen(
                 CowsScreen.CowParentInfo,
                 CowsScreen.CowChildren,
                 CowsScreen.CowChildInfo,
+                
+                ChickensScreen.Chickens,
+                ChickensScreen.ChickenCreation,
+                ChickensScreen.ChickenParentAdding,
+                ChickensScreen.ChickenDetails,
+                ChickensScreen.ChickenEdit,
+                ChickensScreen.ChickenParentInfo,
+                ChickensScreen.ChickenChildren,
+                ChickensScreen.ChickenChildInfo,
 
                 DictionaryScreen.Categories,
                 DictionaryScreen.Sicknesses,

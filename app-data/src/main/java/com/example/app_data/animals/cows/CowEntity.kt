@@ -29,15 +29,16 @@ data class CowEntity(
 enum class CowBreed(
     @StringRes val valueRes: Int
 ) {
-    ZAANENSKAYA(R.string.breed_zaanenskaya),
-    NUBIAN(R.string.breed_nubian),
-    LA_MANCHA(R.string.breed_la_mancha),
-    TOGGENBURGSKAYA(R.string.breed_toggenburgskaya),
-    ALPINE(R.string.breed_alpine),
-    GORNOALTAYSKAYA(R.string.breed_gornoaltayskaya),
-    ORENBURG(R.string.breed_orenburg),
-    ANGORA(R.string.breed_angora),
-    CAMEROONIAN(R.string.breed_cameroonian),
+    HOLSTEIN_FRIESIAN(R.string.cows_breed_holstein_friesian),
+    JERSEY(R.string.cows_breed_jersey),
+    AYRSHIRE(R.string.cows_breed_ayrshire),
+    SIMMENTAL(R.string.cows_breed_simmental),
+    BROWN_SWISS(R.string.cows_breed_brown_swiss),
+    HEREFORD(R.string.cows_breed_hereford),
+    ABERDEEN_ANGUS(R.string.cows_breed_aberdeen_angus),
+    CHAROLAIS(R.string.cows_breed_charolais),
+    SALERS(R.string.cows_breed_salers),
+    LIMOUSIN(R.string.cows_breed_limousin),
     OTHER(R.string.breed_unknown);
 
     companion object {
@@ -50,7 +51,7 @@ enum class Status(
 ){
     MILK(R.string.status_milk),
     MEAT(R.string.status_meat),
-    WOOL(R.string.status_wool),
+    HIDE(R.string.status_hide),
     BREEDING(R.string.status_breeding),
     OTHER(R.string.status_unknown);
 

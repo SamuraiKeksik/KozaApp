@@ -12,7 +12,9 @@
     <string name="status_milk">Молоко</string>
     <string name="status_meat">Мясо</string>
     <string name="status_wool">Шерсть</string>
+    <string name="status_hide">Кожа</string>
     <string name="status_breeding">Племя</string>
+    <string name="status_laying_hen">Несушка</string>
     <string name="status_unknown">Неизвестно</string>
 
     <string name="animal_type_unknown">Неизвестно</string>
@@ -23,16 +25,42 @@
     <string name="animal_type_sheep">Овцы</string>
     <string name="animal_type_pig">Свиньи</string>
 
-    <string name="breed_zaanenskaya">Зааненская</string>
-    <string name="breed_nubian">Нубийская</string>
-    <string name="breed_la_mancha">Ла Манча</string>
-    <string name="breed_toggenburgskaya">Тоггенбургская</string>
-    <string name="breed_alpine">Альпийская</string>
-    <string name="breed_gornoaltayskaya">Горно-алтайская</string>
-    <string name="breed_orenburg">Оренбургская</string>
-    <string name="breed_angora">Ангорская</string>
-    <string name="breed_cameroonian">Камерунская</string>
+    //Goats
+    <string name="goats_breed_zaanenskaya">Зааненская</string>
+    <string name="goats_breed_nubian">Нубийская</string>
+    <string name="goats_breed_la_mancha">Ла Манча</string>
+    <string name="goats_breed_toggenburgskaya">Тоггенбургская</string>
+    <string name="goats_breed_alpine">Альпийская</string>
+    <string name="goats_breed_gornoaltayskaya">Горно-алтайская</string>
+    <string name="goats_breed_orenburg">Оренбургская</string>
+    <string name="goats_breed_angora">Ангорская</string>
+    <string name="goats_breed_cameroonian">Камерунская</string>
     <string name="breed_unknown">Неизвестно</string>
+    
+    //Cows
+    <string name="cows_breed_holstein_friesian">Голштинская</string>
+    <string name="cows_breed_jersey">Джерсийская</string>
+    <string name="cows_breed_ayrshire">Айширская</string>
+    <string name="cows_breed_simmental">Симментальская</string>
+    <string name="cows_breed_brown_swiss">Коричневая швейцарская</string>
+    <string name="cows_breed_hereford">Герефордская</string>
+    <string name="cows_breed_aberdeen_angus">Абердин-ангусская</string>
+    <string name="cows_breed_charolais">Шароле</string>
+    <string name="cows_breed_salers">Салерская</string>
+    <string name="cows_breed_limousin">Лимузинская</string>
+
+    //Chickens
+    <string name="chickens_breed_leghorn">Леггорн</string>
+    <string name="chickens_breed_lohmann_brown">Ломан Браун</string>
+    <string name="chickens_breed_hysex_white">Хайсекс Белый</string>
+    <string name="chickens_breed_rhode_island_red">Род-Айланд Ред</string>
+    <string name="chickens_breed_minorca">Минорка</string>
+    <string name="chickens_breed_cobb_500">Кобб 500</string>
+    <string name="chickens_breed_ross_308">Росс 308</string>
+    <string name="chickens_breed_arbor_acres">Арбор Эйкрс</string>
+    <string name="chickens_breed_cornish_cross">Корниш-кросс</string>
+    <string name="chickens_breed_orpington">Орпингтон</string>
+
     //Sicknesses
     <string name="tempania_description">Тимпания рубца, острое вздутие рубца, тимпанит (от греч. τύμπανο — барабан) — вздутие рубца,
         болезнь жвачных, характеризующаяся скоплением большого количества газов главным образом в рубце. Чаще бывает острая тимпания рубца,

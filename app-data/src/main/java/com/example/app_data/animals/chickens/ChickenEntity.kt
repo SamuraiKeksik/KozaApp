@@ -29,15 +29,16 @@ data class ChickenEntity(
 enum class ChickenBreed(
     @StringRes val valueRes: Int
 ) {
-    ZAANENSKAYA(R.string.breed_zaanenskaya),
-    NUBIAN(R.string.breed_nubian),
-    LA_MANCHA(R.string.breed_la_mancha),
-    TOGGENBURGSKAYA(R.string.breed_toggenburgskaya),
-    ALPINE(R.string.breed_alpine),
-    GORNOALTAYSKAYA(R.string.breed_gornoaltayskaya),
-    ORENBURG(R.string.breed_orenburg),
-    ANGORA(R.string.breed_angora),
-    CAMEROONIAN(R.string.breed_cameroonian),
+    LEGHORN(R.string.chickens_breed_leghorn),
+    LOHMANN_BROWN(R.string.chickens_breed_lohmann_brown),
+    HYSEX_WHITE(R.string.chickens_breed_hysex_white),
+    RHODE_ISLAND_RED(R.string.chickens_breed_rhode_island_red),
+    MINORCA(R.string.chickens_breed_minorca),
+    COBB_500(R.string.chickens_breed_cobb_500),
+    ROSS_308(R.string.chickens_breed_ross_308),
+    ARBOR_ACRES(R.string.chickens_breed_arbor_acres),
+    CORNISH_CROSS(R.string.chickens_breed_cornish_cross),
+    ORPINGTON(R.string.chickens_breed_orpington),
     OTHER(R.string.breed_unknown);
 
     companion object {
@@ -48,10 +49,9 @@ enum class ChickenBreed(
 enum class Status(
     @StringRes val valueRes: Int
 ){
-    MILK(R.string.status_milk),
     MEAT(R.string.status_meat),
-    WOOL(R.string.status_wool),
     BREEDING(R.string.status_breeding),
+    LAYING_HEN(R.string.status_laying_hen),
     OTHER(R.string.status_unknown);
 
     companion object {

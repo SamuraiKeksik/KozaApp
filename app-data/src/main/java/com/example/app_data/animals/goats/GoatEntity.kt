@@ -28,15 +28,15 @@ data class GoatEntity(
 enum class GoatBreed(
     @StringRes val valueRes: Int
 ) {
-    ZAANENSKAYA(R.string.breed_zaanenskaya),
-    NUBIAN(R.string.breed_nubian),
-    LA_MANCHA(R.string.breed_la_mancha),
-    TOGGENBURGSKAYA(R.string.breed_toggenburgskaya),
-    ALPINE(R.string.breed_alpine),
-    GORNOALTAYSKAYA(R.string.breed_gornoaltayskaya),
-    ORENBURG(R.string.breed_orenburg),
-    ANGORA(R.string.breed_angora),
-    CAMEROONIAN(R.string.breed_cameroonian),
+    ZAANENSKAYA(R.string.goats_breed_zaanenskaya),
+    NUBIAN(R.string.goats_breed_nubian),
+    LA_MANCHA(R.string.goats_breed_la_mancha),
+    TOGGENBURGSKAYA(R.string.goats_breed_toggenburgskaya),
+    ALPINE(R.string.goats_breed_alpine),
+    GORNOALTAYSKAYA(R.string.goats_breed_gornoaltayskaya),
+    ORENBURG(R.string.goats_breed_orenburg),
+    ANGORA(R.string.goats_breed_angora),
+    CAMEROONIAN(R.string.goats_breed_cameroonian),
     OTHER(R.string.breed_unknown);
 
     companion object {
