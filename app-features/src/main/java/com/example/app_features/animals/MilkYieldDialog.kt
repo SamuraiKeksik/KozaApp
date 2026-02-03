@@ -30,9 +30,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.app_features.R
-import com.example.app_features.animals.goats.MilkYieldDetails
 import com.example.app_features.animals.goats.toLocalDate
-import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 
 @Composable

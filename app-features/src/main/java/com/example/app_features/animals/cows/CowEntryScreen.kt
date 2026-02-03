@@ -1,0 +1,394 @@
+package com.example.app_features.animals.cows
+
+import android.app.DatePickerDialog
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.app_data.animals.Gender
+import com.example.app_data.animals.cows.CowBreed
+import com.example.app_data.animals.cows.Status
+import com.example.app_features.R
+import com.example.app_features.theme.AppTheme
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
+import java.util.Locale
+
+//object CowEntryDestination : NavigationDestination{
+//    override val route = "CowEntryScreen"
+//    @StringRes
+//    override val titleRes = R.string.cow_entry_screen_label
+//    override val showBottomBar = false
+//}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CowEntryScreen(
+    navigateBack: () -> Unit,
+    onNavigateUp: () -> Unit,
+    canNavigateBack: Boolean = true,
+    viewModel: CowEntryViewModel = hiltViewModel()
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(scrollState),
+    ) {
+        CowEntryBody(
+            cowUiState = viewModel.cowUiState,
+            onCowValueChange = viewModel::updateUiState,
+            onSaveClick = {
+                coroutineScope.launch {
+                    viewModel.saveItem()
+                    navigateBack()
+                }
+            },
+        )
+    }
+}
+
+@Composable
+fun CowEntryBody(
+    cowUiState: CowUiState,
+    onCowValueChange: (CowDetails) -> Unit,
+    onSaveClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large))
+    ) {
+        CowInputForm(
+            cowDetails = cowUiState.cowDetails,
+            onValueChange = onCowValueChange,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Button(
+            onClick = { onSaveClick() },
+            enabled = cowUiState.isEntryValid,
+            shape = MaterialTheme.shapes.small,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = stringResource(R.string.cow_save_button_label))
+        }
+    }
+}
+
+@Composable
+fun CowInputForm(
+    cowDetails: CowDetails,
+    modifier: Modifier = Modifier,
+    onValueChange: (CowDetails) -> Unit = {},
+    enabled: Boolean = true
+) {
+    val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
+    ) {
+        OutlinedTextField(
+            value = cowDetails.name,
+            onValueChange = { onValueChange(cowDetails.copy(name = it)) },
+            label = { Text(stringResource(R.string.cow_name_label)) },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = enabled,
+            singleLine = true,
+        )
+        Row(){
+            GenderSelector(
+                modifier = Modifier.weight(1f),
+                selectedGender = cowDetails.toCow().gender,
+                onGenderSelected = { newGender ->
+                    onValueChange(cowDetails.copy(gender = newGender))
+                },
+            )
+            Spacer(Modifier.width(dimensionResource(id = R.dimen.padding_extra_small)))
+            BreedSelector(
+                modifier = Modifier.weight(1f),
+                selectedBreed = cowDetails.toCow().breed,
+                onBreedSelected = { newBreed ->
+                    onValueChange(cowDetails.copy(breed = newBreed))
+                },
+            )
+        }
+        Row(){
+            StatusSelector(
+                modifier = Modifier.weight(1f),
+                selectedStatus = cowDetails.toCow().status,
+                onStatusSelected = { newStatus ->
+                    onValueChange(cowDetails.copy(status = newStatus))
+                },
+            )
+            Spacer(Modifier.width(dimensionResource(id = R.dimen.padding_extra_small)))
+            OutlinedTextField(
+                value = cowDetails.weight,
+                onValueChange = { onValueChange(cowDetails.copy(weight = it)) },
+                label = { Text(stringResource(R.string.cow_weight_label)) },
+                modifier = Modifier.weight(1f),
+                enabled = enabled,
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number
+                )
+            )
+        }
+
+        DatePickerField(
+            label = "Дата рождения",
+            date = cowDetails.birthDate.format(formatter) ?: "",
+            onDateSelected = { onValueChange(cowDetails.copy(birthDate = LocalDate.parse(it, formatter))) },
+            allowEmpty = false
+        )
+        OutlinedTextField(
+            value = cowDetails.description,
+            onValueChange = { onValueChange(cowDetails.copy(description = it)) },
+            label = { Text(stringResource(R.string.cow_description_label)) },
+            modifier = Modifier.fillMaxWidth(),
+            enabled = enabled,
+        )
+        if (enabled) {
+            Text(
+                text = stringResource(R.string.cow_required_fields_label),
+                modifier = Modifier.padding(start = dimensionResource(id = R.dimen.padding_medium))
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun GenderSelector(
+    selectedGender: Gender,
+    onGenderSelected: (Gender) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+        modifier = modifier
+    ) {
+        OutlinedTextField(
+            value = stringResource(selectedGender.valueRes),
+            onValueChange = { /* Не изменяем вручную, только через меню */ },
+            readOnly = true,
+            singleLine = true,
+            label = { Text(stringResource(R.string.gender_label)) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier.menuAnchor()
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            Gender.valuesList().forEach { gender ->
+                DropdownMenuItem(
+                    text = { Text(stringResource(gender.valueRes)) },
+                    onClick = {
+                        onGenderSelected(gender)
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BreedSelector(
+    selectedBreed: CowBreed,
+    onBreedSelected: (CowBreed) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+        modifier = modifier
+    ) {
+        OutlinedTextField(
+            value = stringResource(selectedBreed.valueRes),
+            onValueChange = { /* Не изменяем вручную, только через меню */ },
+            readOnly = true,
+            singleLine = true,
+            label = { Text(stringResource(R.string.breed_label)) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier.menuAnchor()
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            CowBreed.valuesList().forEach { breed ->
+                DropdownMenuItem(
+                    text = { Text(stringResource(breed.valueRes)) },
+                    //text = { Text(stringResource(breed.labelResId)) },
+                    onClick = {
+                        onBreedSelected(breed)
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun StatusSelector(
+    selectedStatus: Status,
+    onStatusSelected: (Status) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+        modifier = modifier
+    ) {
+        OutlinedTextField(
+            value = stringResource(selectedStatus.valueRes),
+            onValueChange = { /* Не изменяем вручную, только через меню */ },
+            readOnly = true,
+            singleLine = true,
+            label = { Text(stringResource(R.string.status_label)) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier.menuAnchor()
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            Status.valuesList().forEach { status ->
+                DropdownMenuItem(
+                    text = { Text(stringResource(status.valueRes)) },
+                    onClick = {
+                        onStatusSelected(status)
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
+            }
+        }
+    }
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DatePickerField(
+    label: String,
+    date: String,
+    onDateSelected: (String) -> Unit,
+    allowEmpty: Boolean = false,
+) {
+    val context = LocalContext.current
+    val calendar = Calendar.getInstance()
+
+    if (date.isNotBlank()) {
+        try {
+            val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+            val parsedDate = sdf.parse(date)
+            if (parsedDate != null) calendar.time = parsedDate
+        } catch (_: Exception) {}
+    }
+
+    var showDialog by remember { mutableStateOf(false) }
+
+    OutlinedTextField(
+        value = date,
+        onValueChange = {},
+        label = { Text(label) },
+        readOnly = true,
+        trailingIcon = {
+            Icon(
+                imageVector = Icons.Default.DateRange,
+                contentDescription = "Выбрать дату",
+                modifier = Modifier.clickable { showDialog = true }
+            )
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { showDialog = true }
+    )
+
+    if (showDialog) {
+        DatePickerDialog(
+            context,
+            { _, year: Int, month: Int, dayOfMonth: Int ->
+                val selectedCal = calendar
+                selectedCal.set(year, month, dayOfMonth)
+                val formattedDate = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(selectedCal.time)
+                onDateSelected(formattedDate)
+                showDialog = false
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).apply {
+            if (allowEmpty) {
+                setButton(DatePickerDialog.BUTTON_NEGATIVE, "Очистить") { _, _ ->
+                    onDateSelected("")
+                    showDialog = false
+                }
+            }
+            setButton(DatePickerDialog.BUTTON_NEUTRAL, "Отмена") { _, _ ->
+                showDialog = false
+            }
+            show()
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun CowEntryScreenPreview() {
+    AppTheme {
+        CowEntryBody(cowUiState = CowUiState(
+            CowDetails(
+                name = "Cow name",
+                gender = Gender.FEMALE,
+                birthDate = LocalDate.now(),
+                description = "Description"
+            )
+        ), onCowValueChange = {}, onSaveClick = {})
+    }
+}

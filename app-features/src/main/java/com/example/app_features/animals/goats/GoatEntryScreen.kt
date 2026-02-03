@@ -37,8 +37,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.app_data.animals.goats.Breed
-import com.example.app_data.animals.goats.Gender
+import com.example.app_data.animals.Gender
+import com.example.app_data.animals.goats.GoatBreed
 import com.example.app_data.animals.goats.Status
 import com.example.app_features.R
 import com.example.app_features.theme.AppTheme
@@ -235,8 +235,8 @@ fun GenderSelector(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BreedSelector(
-    selectedBreed: Breed,
-    onBreedSelected: (Breed) -> Unit,
+    selectedBreed: GoatBreed,
+    onBreedSelected: (GoatBreed) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -258,7 +258,7 @@ fun BreedSelector(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            Breed.valuesList().forEach { breed ->
+            GoatBreed.valuesList().forEach { breed ->
                 DropdownMenuItem(
                     text = { Text(stringResource(breed.valueRes)) },
                     //text = { Text(stringResource(breed.labelResId)) },

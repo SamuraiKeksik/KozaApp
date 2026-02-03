@@ -1,6 +1,12 @@
 package com.example.app_data.animals
 
 import android.content.Context
+import com.example.app_data.animals.chickens.ChickenLocalDataSource
+import com.example.app_data.animals.chickens.ChickenRepository
+import com.example.app_data.animals.chickens.DefaultChickenRepository
+import com.example.app_data.animals.cows.CowLocalDataSource
+import com.example.app_data.animals.cows.CowRepository
+import com.example.app_data.animals.cows.DefaultCowRepository
 import com.example.app_data.animals.goats.DefaultGoatRepository
 import com.example.app_data.animals.goats.GoatLocalDataSource
 import com.example.app_data.animals.goats.GoatRemoteDataSource
@@ -22,27 +28,60 @@ object AnimalsModule {
         val goatDao = AppDatabase.getDatabase(context).goatDao()
         return GoatLocalDataSource(goatDao)
     }
-
     @Provides
     @Singleton
-    fun provideGoatRemoteDataSource(
-        //apiService: ApiService,
-    ): GoatRemoteDataSource {
-        //return GoatRemoteDataSource(apiService)
-        return GoatRemoteDataSource()
+    fun provideCowLocalDataSource(@ApplicationContext context: Context): CowLocalDataSource {
+        val cowDao = AppDatabase.getDatabase(context).cowDao()
+        return CowLocalDataSource(cowDao)
     }
+    @Provides
+    @Singleton
+    fun provideChickenLocalDataSource(@ApplicationContext context: Context): ChickenLocalDataSource {
+        val chickenDao = AppDatabase.getDatabase(context).chickenDao()
+        return ChickenLocalDataSource(chickenDao)
+    }
+//    @Provides
+//    @Singleton
+//    fun provideGoatRemoteDataSource(
+//        //apiService: ApiService,
+//    ): GoatRemoteDataSource {
+//        //return GoatRemoteDataSource(apiService)
+//        return GoatRemoteDataSource()
+//    }
 
     @Provides
     @Singleton
     fun provideGoatRepository(
         goatLocalDataSource: GoatLocalDataSource,
-        goatRemoteDataSource: GoatRemoteDataSource,
+        //goatRemoteDataSource: GoatRemoteDataSource,
         animalsRepository: AnimalsRepository
     ): GoatRepository {
         return DefaultGoatRepository(
             animalsRepository,
             goatLocalDataSource,
-            goatRemoteDataSource,
+            //goatRemoteDataSource,
+        )
+    }
+    @Provides
+    @Singleton
+    fun provideCowsRepository(
+        cowLocalDataSource: CowLocalDataSource,
+        animalsRepository: AnimalsRepository
+    ): CowRepository {
+        return DefaultCowRepository(
+            animalsRepository,
+            cowLocalDataSource,
+        )
+    }
+    @Provides
+    @Singleton
+    fun provideChickensRepository(
+        chickenLocalDataSource: ChickenLocalDataSource,
+        animalsRepository: AnimalsRepository
+    ): ChickenRepository {
+        return DefaultChickenRepository(
+            animalsRepository,
+            chickenLocalDataSource,
         )
     }
 

@@ -4,8 +4,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.app_data.animals.goats.Breed
-import com.example.app_data.animals.goats.Gender
+import com.example.app_data.animals.Gender
+import com.example.app_data.animals.goats.GoatBreed
 import com.example.app_data.animals.goats.GoatRepository
 import com.example.app_data.animals.goats.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,7 +14,6 @@ import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
 import kotlin.Boolean
-import kotlin.toString
 
 @HiltViewModel
 class GoatEntryViewModel @Inject constructor(
@@ -64,7 +63,7 @@ data class GoatDetails(
     val fatherName: String? = null,
     val name: String = "",
     val gender: Gender = Gender.UNKNOWN,
-    val breed: Breed = Breed.OTHER,
+    val breed: GoatBreed = GoatBreed.OTHER,
     val status: Status = Status.OTHER,
     val weight: String = "0",
     val birthDate: LocalDate = LocalDate.now(),

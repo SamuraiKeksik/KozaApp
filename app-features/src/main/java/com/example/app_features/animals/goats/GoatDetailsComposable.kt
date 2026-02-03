@@ -34,7 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.app_data.animals.goats.Gender
+import com.example.app_data.animals.Gender
 import com.example.app_features.ExpandLabel
 import com.example.app_features.R
 import java.time.LocalDate

@@ -14,12 +14,15 @@ import com.example.app_data.animals.Sickness
 import com.example.app_data.animals.SicknessType
 import com.example.app_data.animals.Vaccination
 import com.example.app_data.animals.Weight
+import com.example.app_data.animals.chickens.ChickenDao
+import com.example.app_data.animals.chickens.ChickenEntity
+import com.example.app_data.animals.cows.CowDao
+import com.example.app_data.animals.cows.CowEntity
 import com.example.app_data.animals.goats.GoatDao
 import com.example.app_data.animals.goats.GoatEntity
 import com.example.app_data.dictionary.ArticleCategory
 import com.example.app_data.dictionary.ArticleEntity
 import com.example.app_data.dictionary.DictionaryDao
-import com.example.database.Converters
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -29,17 +32,21 @@ import kotlinx.coroutines.launch
 @Database(
     entities = [
         GoatEntity::class,
+        CowEntity::class,
+        ChickenEntity::class,
         MilkYield::class,
         SicknessType::class,
         Sickness::class,
         Vaccination::class,
         Weight::class,
         ArticleEntity::class
-    ], version = 19, exportSchema = false
+    ], version = 21, exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun goatDao(): GoatDao
+    abstract fun cowDao(): CowDao
+    abstract fun chickenDao(): ChickenDao
     abstract fun animalsDao(): AnimalsDao
     abstract fun dictionaryDao(): DictionaryDao
 

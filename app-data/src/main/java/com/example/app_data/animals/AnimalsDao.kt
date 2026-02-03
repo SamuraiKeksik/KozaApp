@@ -58,8 +58,8 @@ interface AnimalsDao {
 
     @Query("SELECT COUNT(*) FROM goats")
     fun getGoatsCount(): Flow<Int>
-//    @Query("SELECT COUNT(*) FROM cows")
-//    suspend fun getCowsCount(): Flow<Int>
-//    @Query("SELECT COUNT(*) FROM chickens")
-//    suspend fun getChickensCount(): Flow<Int>
+    @Query("SELECT COUNT(*) FROM cows")
+    fun getCowsCount(): Flow<Int>
+    @Query("SELECT COUNT(*) FROM chickens")
+    fun getChickensCount(): Flow<Int>
 }

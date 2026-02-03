@@ -12,13 +12,24 @@ import com.example.app_data.animals.Sickness
 import com.example.app_data.animals.SicknessType
 import com.example.app_data.animals.Vaccination
 import com.example.app_data.animals.goats.GoatRepository
+import com.example.app_features.animals.MilkYieldDetails
+import com.example.app_features.animals.MilkYieldUiState
+import com.example.app_features.animals.SicknessDetails
+import com.example.app_features.animals.SicknessUiState
+import com.example.app_features.animals.VaccinationDetails
+import com.example.app_features.animals.VaccinationUiState
+import com.example.app_features.animals.toMilkYield
+import com.example.app_features.animals.toMilkYieldDetails
+import com.example.app_features.animals.toSickness
+import com.example.app_features.animals.toSicknessDetails
+import com.example.app_features.animals.toVaccination
+import com.example.app_features.animals.toVaccinationDetails
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import java.time.LocalDate
 import java.util.UUID
 import javax.inject.Inject
 
@@ -58,11 +69,23 @@ class GoatDetailsViewModel @Inject constructor(
                 initialValue = GoatDetailsUiState()
             )
 
-    var vaccinationUiState by mutableStateOf(VaccinationUiState(vaccinationDetails = VaccinationDetails(goatId = goatId)))
+    var vaccinationUiState by mutableStateOf(
+        VaccinationUiState(
+            vaccinationDetails = VaccinationDetails(
+                animalId = goatId
+            )
+        )
+    )
         private set
-    var sicknessUiState by mutableStateOf(SicknessUiState(sicknessDetails = SicknessDetails(goatId = goatId)))
+    var sicknessUiState by mutableStateOf(SicknessUiState(sicknessDetails = SicknessDetails(animalId = goatId)))
         private set
-    var milkYieldUiState by mutableStateOf(MilkYieldUiState(milkYieldDetails = MilkYieldDetails(goatId = goatId)))
+    var milkYieldUiState by mutableStateOf(
+        MilkYieldUiState(
+            milkYieldDetails = MilkYieldDetails(
+                animalId = goatId
+            )
+        )
+    )
         private set
 
     suspend fun deleteGoat() {
@@ -115,7 +138,7 @@ class GoatDetailsViewModel @Inject constructor(
     }
 
     fun clearVaccinationUiState() =
-        updateVaccinationUiState(vaccinationDetails = VaccinationDetails(goatId = goatId))
+        updateVaccinationUiState(vaccinationDetails = VaccinationDetails(animalId = goatId))
 
 
     //Sicknesses
@@ -162,7 +185,7 @@ class GoatDetailsViewModel @Inject constructor(
     }
 
     fun clearSicknessUiState() =
-        updateSicknessUiState(sicknessDetails = SicknessDetails(goatId = goatId))
+        updateSicknessUiState(sicknessDetails = SicknessDetails(animalId = goatId))
 
 
     //MilkYields
@@ -201,7 +224,7 @@ class GoatDetailsViewModel @Inject constructor(
         clearMilkYieldUiState()
     }
 
-    fun clearMilkYieldUiState() = updateMilkYieldUiState(milkYieldDetails = MilkYieldDetails(goatId = goatId))
+    fun clearMilkYieldUiState() = updateMilkYieldUiState(milkYieldDetails = MilkYieldDetails(animalId = goatId))
 
     //------------------------------------\\
 
@@ -221,92 +244,3 @@ data class GoatDetailsUiState(
 
 data class SicknessTypesUiState(val sicknessTypesList: List<SicknessType> = emptyList())
 
-//Vaccinations
-data class VaccinationUiState(
-    val vaccinationDetails: VaccinationDetails = VaccinationDetails(),
-    val isEntryValid: Boolean = false
-)
-
-data class VaccinationDetails(
-    val id: UUID = UUID.randomUUID(),
-    val date: Long = LocalDate.now().toEpochDay(),
-    val sicknessName: String = "",
-    val goatId: UUID = UUID.randomUUID(),
-    val sicknessTypeId: Int = 0,
-    val medication: String = "",
-)
-
-fun VaccinationDetails.toVaccination() = Vaccination(
-    id = id,
-    sicknessTypeId = sicknessTypeId,
-    animalId = goatId,
-    medication = medication,
-    date = date,
-    isPlanned = false,
-)
-
-fun Vaccination.toVaccinationDetails() = VaccinationDetails(
-    id = id,
-    sicknessTypeId = sicknessTypeId,
-    goatId = animalId,
-    medication = medication,
-    date = date
-)
-
-//Sicknesses
-data class SicknessUiState(
-    val sicknessDetails: SicknessDetails = SicknessDetails(),
-    val isEntryValid: Boolean = false
-)
-
-data class SicknessDetails(
-    val id: UUID = UUID.randomUUID(),
-    val startDate: Long = LocalDate.now().toEpochDay(),
-    val endDate: Long? = null,
-    val sicknessName: String = "",
-    val goatId: UUID = UUID.randomUUID(),
-    val sicknessTypeId: Int = 0,
-)
-
-fun SicknessDetails.toSickness() = Sickness(
-    id = id,
-    startDate = startDate,
-    endDate = endDate,
-    sicknessTypeId = sicknessTypeId,
-    animalId = goatId,
-)
-
-fun Sickness.toSicknessDetails() = SicknessDetails(
-    id = id,
-    startDate = startDate,
-    endDate = endDate,
-    sicknessTypeId = sicknessTypeId,
-    goatId = animalId,
-)
-
-//MilkYields
-data class MilkYieldUiState(
-    val milkYieldDetails: MilkYieldDetails = MilkYieldDetails(),
-    val isEntryValid: Boolean = false
-)
-
-data class MilkYieldDetails(
-    val id: UUID = UUID.randomUUID(),
-    val goatId: UUID = UUID.randomUUID(),
-    val amount: String? = "0",
-    val date: Long = LocalDate.now().toEpochDay(),
-)
-
-fun MilkYieldDetails.toMilkYield() = MilkYield(
-    id = id,
-    animalId = goatId,
-    amount = amount?.toDouble() ?: 0.0,
-    date = date,
-)
-
-fun MilkYield.toMilkYieldDetails() = MilkYieldDetails(
-    id = id,
-    goatId = animalId,
-    amount = amount.toString(),
-    date = date,
-)

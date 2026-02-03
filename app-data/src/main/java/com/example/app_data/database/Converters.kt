@@ -1,10 +1,10 @@
-package com.example.database
+package com.example.app_data.database
 
 import androidx.room.TypeConverter
 import com.example.advertisements.AdvertisementType
 import com.example.app_data.animals.AnimalType
-import com.example.app_data.animals.goats.Breed
-import com.example.app_data.animals.goats.Gender
+import com.example.app_data.animals.Gender
+import com.example.app_data.animals.goats.GoatBreed
 import com.example.app_data.animals.goats.Status
 import java.util.Date
 
@@ -22,12 +22,12 @@ class Converters {
         return Gender.valueOf(genderString)
     }
     @TypeConverter
-    fun fromBreed(breed: Breed): String {
+    fun fromBreed(breed: GoatBreed): String {
         return breed.name
     }
     @TypeConverter
-    fun toBreed(breedString: String): Breed {
-        return Breed.valueOf(breedString)
+    fun toBreed(breedString: String): GoatBreed {
+        return GoatBreed.valueOf(breedString)
     }
     @TypeConverter
     fun fromStatus(status: Status): String {

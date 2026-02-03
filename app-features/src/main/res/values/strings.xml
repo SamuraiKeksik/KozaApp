@@ -94,6 +94,30 @@
     <string name="children">Список потомства</string>
     <string name="children_count">Детей %d</string>
 
+    <string name="cow_creation_screen_label">Добавление коровы</string>
+    <string name="cow_details_screen_label">Информация о корове</string>
+    <string name="cow_edit_screen_label">Редактирование коровы</string>
+    <string name="cow_save_button_label">Сохранить</string>
+    <string name="cow_delete_button_label">Удалить</string>
+    <string name="cow_name_label">Кличка:</string>
+    <string name="cow_weight_label">Вес:</string>
+    <string name="cow_gender_label">Пол:</string>
+    <string name="cow_birth_date_label">Дата рождения:</string>
+    <string name="cow_description_label">Описание:</string>
+    <string name="cow_required_fields_label">Заполните поля</string>
+
+    <string name="chicken_creation_screen_label">Добавление курицы</string>
+    <string name="chicken_details_screen_label">Информация о курице</string>
+    <string name="chicken_edit_screen_label">Редактирование курицы</string>
+    <string name="chicken_save_button_label">Сохранить</string>
+    <string name="chicken_delete_button_label">Удалить</string>
+    <string name="chicken_name_label">Кличка:</string>
+    <string name="chicken_weight_label">Вес:</string>
+    <string name="chicken_gender_label">Пол:</string>
+    <string name="chicken_birth_date_label">Дата рождения:</string>
+    <string name="chicken_description_label">Описание:</string>
+    <string name="chicken_required_fields_label">Заполните поля</string>
+
 
     <string name="missing">Отсутствует</string>
     <string name="yes">Да</string>

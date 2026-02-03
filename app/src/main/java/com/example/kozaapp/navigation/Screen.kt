@@ -2,7 +2,7 @@ package com.example.kozaapp.navigation
 
 import androidx.annotation.StringRes
 import com.example.app_data.animals.AnimalType
-import com.example.app_data.animals.goats.Gender
+import com.example.app_data.animals.Gender
 import com.example.app_data.dictionary.ArticleCategory
 import com.example.kozaapp.R
 import java.util.UUID
@@ -31,6 +31,15 @@ sealed class Screen(
                 GoatsScreen.GoatParentInfo,
                 GoatsScreen.GoatChildren,
                 GoatsScreen.GoatChildInfo,
+                
+                CowsScreen.Cows,
+                CowsScreen.CowCreation,
+                CowsScreen.CowParentAdding,
+                CowsScreen.CowDetails,
+                CowsScreen.CowEdit,
+                CowsScreen.CowParentInfo,
+                CowsScreen.CowChildren,
+                CowsScreen.CowChildInfo,
 
                 DictionaryScreen.Categories,
                 DictionaryScreen.Sicknesses,
@@ -206,6 +215,144 @@ sealed class GoatsScreen(
     }
 
 }
+sealed class CowsScreen(
+    val route: String,
+    @StringRes val title: Int
+) {
+    object Cows : Screen(
+        route = "animals/cows",
+        title = R.string.cows_label,
+    )
+
+    object CowDetails : Screen(
+        route = "animals/cows/details/{id}",
+        title = R.string.cow_details_screen_label,
+    ) {
+        fun passId(id: UUID): String {
+            return "animals/cows/details/${id}"
+        }
+    }
+
+    object CowEdit : Screen(
+        route = "animals/cows/edit/{id}",
+        title = R.string.cow_edit_screen_label,
+    ) {
+        fun passId(id: UUID): String {
+            return "animals/cows/edit/${id}"
+        }
+    }
+
+    object CowCreation : Screen(
+        route = "animals/cows/creation",
+        title = R.string.cow_creation_screen_label
+    )
+
+    object CowParentAdding : Screen(
+        route = "animals/cows/parent_Adding/{id}/{parent_gender}",
+        title = R.string.cow_adding_parent_screen_label
+    ) {
+        fun passIdWithGender(id: UUID, parentGender: Gender): String {
+            return "animals/cows/parent_Adding/${id}/${parentGender}"
+        }
+    }
+
+    object CowParentInfo : Screen(
+        route = "animals/cows/parent_info/{id}",
+        title = R.string.cow_parent_info_screen_label,
+    ) {
+        fun passId(id: UUID): String {
+            return "animals/cows/parent_info/${id}"
+        }
+    }
+
+    object CowChildren : Screen(
+        route = "animals/cows/cow_children/{id}",
+        title = R.string.cow_children_screen_label,
+    ) {
+        fun passId(id: UUID): String {
+            return "animals/cows/cow_children/${id}"
+        }
+    }
+
+    object CowChildInfo : Screen(
+        route = "animals/cows/cow_child_info/{id}",
+        title = R.string.cow_child_info_screen_label,
+    ) {
+        fun passId(id: UUID): String {
+            return "animals/cows/cow_child_info/${id}"
+        }
+    }
+
+}
+sealed class ChickensScreen(
+    val route: String,
+    @StringRes val title: Int
+) {
+    object Chickens : Screen(
+        route = "animals/chickens",
+        title = R.string.chickens_label,
+    )
+
+    object ChickenDetails : Screen(
+        route = "animals/chickens/details/{id}",
+        title = R.string.chicken_details_screen_label,
+    ) {
+        fun passId(id: UUID): String {
+            return "animals/chickens/details/${id}"
+        }
+    }
+
+    object ChickenEdit : Screen(
+        route = "animals/chickens/edit/{id}",
+        title = R.string.chicken_edit_screen_label,
+    ) {
+        fun passId(id: UUID): String {
+            return "animals/chickens/edit/${id}"
+        }
+    }
+
+    object ChickenCreation : Screen(
+        route = "animals/chickens/creation",
+        title = R.string.chicken_creation_screen_label
+    )
+
+    object ChickenParentAdding : Screen(
+        route = "animals/chickens/parent_Adding/{id}/{parent_gender}",
+        title = R.string.chicken_adding_parent_screen_label
+    ) {
+        fun passIdWithGender(id: UUID, parentGender: Gender): String {
+            return "animals/chickens/parent_Adding/${id}/${parentGender}"
+        }
+    }
+
+    object ChickenParentInfo : Screen(
+        route = "animals/chickens/parent_info/{id}",
+        title = R.string.chicken_parent_info_screen_label,
+    ) {
+        fun passId(id: UUID): String {
+            return "animals/chickens/parent_info/${id}"
+        }
+    }
+
+    object ChickenChildren : Screen(
+        route = "animals/chickens/chicken_children/{id}",
+        title = R.string.chicken_children_screen_label,
+    ) {
+        fun passId(id: UUID): String {
+            return "animals/chickens/chicken_children/${id}"
+        }
+    }
+
+    object ChickenChildInfo : Screen(
+        route = "animals/chickens/chicken_child_info/{id}",
+        title = R.string.chicken_child_info_screen_label,
+    ) {
+        fun passId(id: UUID): String {
+            return "animals/chickens/chicken_child_info/${id}"
+        }
+    }
+
+}
 
 sealed class DictionaryScreen(
     val route: String,
@@ -247,9 +394,3 @@ sealed class DictionaryScreen(
     }
 }
 
-sealed class CowsScreen(val route: String) {
-    object Cows : CowsScreen(route = "animals/goats")
-    object CowDetails : CowsScreen(route = "animals/cows/details/{id}")
-    object CowEdit : CowsScreen(route = "animals/cows/edit/{id}")
-    object CowCreation : CowsScreen(route = "animals/cows/creation")
-}

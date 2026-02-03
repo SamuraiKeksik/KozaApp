@@ -29,7 +29,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.app_data.animals.SicknessType
 import com.example.app_features.R
-import com.example.app_features.animals.goats.SicknessDetails
 import com.example.app_features.animals.goats.toLocalDate
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter

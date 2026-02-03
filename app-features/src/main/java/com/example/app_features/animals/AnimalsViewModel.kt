@@ -15,20 +15,29 @@ import javax.inject.Inject
 @HiltViewModel
 class AnimalsViewModel @Inject constructor(
     private val repository: AnimalsRepository
-): ViewModel() {
+) : ViewModel() {
     var uiState by mutableStateOf(AnimalsUiState())
         private set
-
-    init{
+    init {
         viewModelScope.launch {
             repository.getAnimalsCountStream(AnimalType.GOAT).collect {
                 uiState = uiState.copy(goatsCount = it)
             }
         }
-
+        viewModelScope.launch {
+            repository.getAnimalsCountStream(AnimalType.COW).collect {
+                uiState = uiState.copy(cowsCount = it)
+            }
+        }
+            viewModelScope.launch {
+                repository.getAnimalsCountStream(AnimalType.CHICKEN).collect {
+                    uiState = uiState.copy(chickensCount = it)
+                }
+            }
+        }
     }
 
-}
+
 
 data class AnimalsUiState(
     val goatsCount: Int = 0,

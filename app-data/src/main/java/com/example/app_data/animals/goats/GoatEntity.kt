@@ -1,11 +1,11 @@
 package com.example.app_data.animals.goats
 
 import androidx.annotation.StringRes
-import androidx.compose.ui.res.stringResource
 import java.util.UUID
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.app_data.R
+import com.example.app_data.animals.Gender
 
 @Entity(tableName = "goats")
 data class GoatEntity(
@@ -15,7 +15,7 @@ data class GoatEntity(
     val fatherId: UUID?,
     val name: String,
     val gender: Gender,
-    val breed: Breed,
+    val breed: GoatBreed,
     val status: Status,
     val weight: Int,
     val birthDate: Long,
@@ -25,19 +25,7 @@ data class GoatEntity(
     val isDeleted: Boolean = false,
 )
 
-enum class Gender(
-    @StringRes val valueRes: Int
-) {
-    MALE(R.string.gender_male),
-    FEMALE(R.string.gender_female),
-    UNKNOWN(R.string.gender_unknown);
-
-    companion object {
-        fun valuesList(): List<Gender> = entries
-    }
-}
-
-enum class Breed(
+enum class GoatBreed(
     @StringRes val valueRes: Int
 ) {
     ZAANENSKAYA(R.string.breed_zaanenskaya),
@@ -52,7 +40,7 @@ enum class Breed(
     OTHER(R.string.breed_unknown);
 
     companion object {
-        fun valuesList(): List<Breed> = entries
+        fun valuesList(): List<GoatBreed> = entries
     }
 }
 

@@ -1,9 +1,6 @@
 package com.example.app_features.animals.goats
 
-import com.example.app_data.animals.goats.Breed
-import com.example.app_data.animals.goats.Gender
 import com.example.app_data.animals.goats.GoatEntity
-import com.example.app_data.animals.goats.Status
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

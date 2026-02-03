@@ -109,8 +109,8 @@ override suspend fun updateMilkYield(milkYield: MilkYield) =
     override fun getAnimalsCountStream(animalType: AnimalType): Flow<Int> {
         return when (animalType) {
             AnimalType.GOAT -> animalsLocalDataSource.getGoatsCount()
-//            AnimalType.COW -> animalsLocalDataSource.getCowsCount()
-//            AnimalType.CHICKEN -> animalsLocalDataSource.getChickensCount()
+            AnimalType.COW -> animalsLocalDataSource.getCowsCount()
+            AnimalType.CHICKEN -> animalsLocalDataSource.getChickensCount()
             else -> flow { emit(0) }
         }
     }

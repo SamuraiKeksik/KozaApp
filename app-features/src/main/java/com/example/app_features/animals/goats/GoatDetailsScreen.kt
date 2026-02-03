@@ -23,7 +23,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.app_data.animals.goats.Gender
+import com.example.app_data.animals.Gender
 import com.example.app_features.DatePickerModal
 import com.example.app_features.R
 import com.example.app_features.animals.AnimalMilkYields
