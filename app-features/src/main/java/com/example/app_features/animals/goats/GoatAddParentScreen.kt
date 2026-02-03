@@ -18,8 +18,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.app_features.R
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -64,7 +66,7 @@ fun GoatAddParentScreen(
                     }
                     navigateBack()
                 },
-                modifier = modifier.fillMaxSize(),
+                modifier = modifier.fillMaxSize().padding(dimensionResource(R.dimen.padding_medium)),
             )
         }
     }

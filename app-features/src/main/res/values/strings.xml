@@ -91,7 +91,7 @@
     <string name="add_mother">Добавить мать</string>
     <string name="father">Отец:</string>
     <string name="add_father">Добавить отца</string>
-    <string name="children">Дети:</string>
+    <string name="children">Список потомства</string>
     <string name="children_count">Детей %d</string>
 
 

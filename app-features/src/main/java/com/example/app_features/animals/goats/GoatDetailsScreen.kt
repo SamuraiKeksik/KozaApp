@@ -167,7 +167,7 @@ private fun GoatDetailsBody(
             dateFormat = dateFormat,
             canEdit = canEdit
         )
-
+    if (uiState.goatDetails.gender == Gender.FEMALE){
         AnimalMilkYields(
             milkYieldsList = uiState.goatMilkYields,
             onAddClick = {
@@ -189,6 +189,7 @@ private fun GoatDetailsBody(
             dateFormat = dateFormat,
             canEdit = canEdit
         )
+    }
         if(canEdit) {
             OutlinedButton(
                 onClick = { deleteConfirmationRequired = true },

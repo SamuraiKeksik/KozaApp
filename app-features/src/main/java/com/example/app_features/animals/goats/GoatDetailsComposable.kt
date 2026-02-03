@@ -29,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -87,7 +88,7 @@ fun GoatDetailsComposable(
                 verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
             ) {
                 GoatDetailsRow(
-                    labelResID = R.string.goat_name_label,
+                    label = "Кличка:",
                     goatDetail = goatDetails.name,
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(
@@ -97,7 +98,7 @@ fun GoatDetailsComposable(
                     )
                 )
                 GoatDetailsRow(
-                    labelResID = R.string.goat_gender_label,
+                    label = "Пол:",
                     goatDetail = stringResource(goatDetails.gender.valueRes),
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(
@@ -107,7 +108,7 @@ fun GoatDetailsComposable(
                     )
                 )
                 GoatDetailsRow(
-                    labelResID = R.string.breed_label,
+                    label = "Порода:",
                     goatDetail = stringResource(goatDetails.breed.valueRes),
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(
@@ -117,40 +118,40 @@ fun GoatDetailsComposable(
                     )
                 )
                 GoatDetailsRow(
-                    labelResID = R.string.status_label,
+                    label = "Статус:",
                     goatDetail = stringResource(goatDetails.status.valueRes),
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(id = R.dimen.padding_medium)
                     )
                 )
                 GoatDetailsRow(
-                    labelResID = R.string.goat_weight_label,
+                    label = "Вес:",
                     goatDetail = goatDetails.weight.toString() + " кг",
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(id = R.dimen.padding_medium)
                     )
                 )
                 GoatDetailsRow(
-                    labelResID = R.string.goat_birth_date_label,
+                    label = "Дата рождения:",
                     goatDetail = goatDetails.birthDate.format(formatter) ?: "",
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(id = R.dimen.padding_medium)
                     )
                 )
                 GoatDetailsRow(
-                    labelResID = R.string.goat_description_label,
+                    label = "Описание:",
                     goatDetail = goatDetails.description ?: "",
                     modifier = Modifier.padding(
                         horizontal = dimensionResource(id = R.dimen.padding_medium)
                     )
                 )
-                Row(modifier = Modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_medium)
-                )) {
+                Row(
+                    modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_medium)),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(text = stringResource(R.string.mother))
-                    Spacer(modifier = Modifier.weight(1f))
                     if (goatDetails.motherId != null) {
-                        //Text(text = goatEntity.mother.name, fontWeight = FontWeight.Bold
+                        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.padding_small)))
                         Text(goatDetails.motherName!!)
                         IconButton(onClick = { onParentInfoClick(goatDetails.motherId) })
                         {
@@ -158,22 +159,28 @@ fun GoatDetailsComposable(
                         }
                     } else {
                         if(canEdit){
-                            Button(onClick = { onParentAddClick(goatDetails.id, Gender.FEMALE) }) {
+                            Spacer(modifier = Modifier.weight(1f))
+                            Button(
+                                onClick = { onParentAddClick(goatDetails.id, Gender.FEMALE)
+                                }) {
                                 Text(text = stringResource(R.string.add_mother))
                             }
+                            Spacer(modifier = Modifier.weight(1f))
                         }
                         else{
-                            Text(text = stringResource(R.string.missing))
+                            Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.padding_small)))
+                            Text(text = stringResource(R.string.unknown))
                         }
 
                     }
                 }
-                Row(modifier = Modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_medium)
-                )) {
+                Row(
+                    modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_medium)),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Text(text = stringResource(R.string.father))
-                    Spacer(modifier = Modifier.weight(1f))
                     if (goatDetails.fatherId != null) {
+                        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.padding_small)))
                         Text(goatDetails.fatherName!!)
                         IconButton(onClick = { onParentInfoClick(goatDetails.fatherId) })
                         {
@@ -181,25 +188,28 @@ fun GoatDetailsComposable(
                         }
                     } else {
                         if(canEdit){
+                            Spacer(modifier = Modifier.weight(1f))
                             Button(onClick = { onParentAddClick(goatDetails.id, Gender.MALE) }) {
                                 Text(text = stringResource(R.string.add_father))
                             }
+                            Spacer(modifier = Modifier.weight(1f))
                         }
                         else{
-                            Text(text = stringResource(R.string.missing))
+                            Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.padding_small)))
+                            Text(text = stringResource(R.string.unknown))
                         }
 
                     }
                 }
-                Row(modifier = Modifier.padding(
-                    horizontal = dimensionResource(id = R.dimen.padding_medium)
-                )) {
-                    Text(text = stringResource(R.string.children))
+                Row(
+                    modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_medium)),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
                     Spacer(modifier = Modifier.weight(1f))
                     Button(onClick = { onChildrenInfoClick(goatDetails.id) }) {
-                        Text(text = stringResource(R.string.children_count, 0))
+                        Text(text = stringResource(R.string.children))
                     }
-
+                    Spacer(modifier = Modifier.weight(1f))
                 }
             }
         }
@@ -208,12 +218,12 @@ fun GoatDetailsComposable(
 
 @Composable
 private fun GoatDetailsRow(
-    @StringRes labelResID: Int,
+    label: String,
     goatDetail: String,
     modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier) {
-        Text(text = stringResource(labelResID))
+        Text(text = label)
         Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.padding_small)))
         Text(text = goatDetail)
     }

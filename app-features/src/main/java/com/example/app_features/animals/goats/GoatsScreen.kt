@@ -89,6 +89,7 @@ fun GoatsScreen(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(dimensionResource(R.dimen.padding_extra_large))
+                    .padding(0.dp,0.dp,0.dp,dimensionResource(R.dimen.padding_medium))
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -176,6 +177,7 @@ fun GoatCard(
             Text(
                 text = goatEntity.name,
                 style = MaterialTheme.typography.displaySmall,
+                maxLines = 1
             )
             Text(
                 text = stringResource(
