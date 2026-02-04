@@ -12,6 +12,8 @@ import com.example.app_data.animals.goats.GoatLocalDataSource
 import com.example.app_data.animals.goats.GoatRemoteDataSource
 import com.example.app_data.animals.goats.GoatRepository
 import com.example.app_data.database.AppDatabase
+import com.example.app_data.dictionary.DictionaryRemoteDataSource
+import com.example.app_data.network.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,14 +42,6 @@ object AnimalsModule {
         val chickenDao = AppDatabase.getDatabase(context).chickenDao()
         return ChickenLocalDataSource(chickenDao)
     }
-//    @Provides
-//    @Singleton
-//    fun provideGoatRemoteDataSource(
-//        //apiService: ApiService,
-//    ): GoatRemoteDataSource {
-//        //return GoatRemoteDataSource(apiService)
-//        return GoatRemoteDataSource()
-//    }
 
     @Provides
     @Singleton

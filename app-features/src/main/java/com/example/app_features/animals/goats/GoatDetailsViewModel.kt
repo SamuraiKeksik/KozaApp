@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.app_data.animals.AnimalsRepository
 import com.example.app_data.animals.MilkYield
-import com.example.app_data.animals.Sickness
+import com.example.app_data.animals.SicknessEntity
 import com.example.app_data.animals.SicknessType
 import com.example.app_data.animals.Vaccination
 import com.example.app_data.animals.goats.GoatRepository
@@ -236,7 +236,7 @@ class GoatDetailsViewModel @Inject constructor(
 data class GoatDetailsUiState(
     val goatDetails: GoatDetails = GoatDetails(),
     val goatVaccinations: List<Vaccination> = emptyList(),
-    val goatSicknesses: List<Sickness> = emptyList(),
+    val goatSicknesses: List<SicknessEntity> = emptyList(),
     val goatMilkYields: List<MilkYield> = emptyList(),
     val selectedVaccinationId: UUID = UUID.randomUUID(),
     val selectedSicknessId: UUID = UUID.randomUUID()

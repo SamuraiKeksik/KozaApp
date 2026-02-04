@@ -2,7 +2,6 @@ package com.example.app_data.animals
 
 import androidx.room.Dao
 import androidx.room.Delete
-import androidx.room.Ignore
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -38,13 +37,13 @@ interface AnimalsDao {
     //Sickness
 
     @Query("SELECT * FROM sicknesses WHERE id = :id")
-    suspend fun getSickness(id: UUID): Sickness?
+    suspend fun getSickness(id: UUID): SicknessEntity?
     @Insert
-    suspend fun insertSickness(sickness: Sickness)
+    suspend fun insertSickness(sickness: SicknessEntity)
     @Delete
-    suspend fun deleteSickness(sickness: Sickness)
+    suspend fun deleteSickness(sickness: SicknessEntity)
     @Update
-    suspend fun updateSickness(sickness: Sickness)
+    suspend fun updateSickness(sickness: SicknessEntity)
 
     //MilkYield
     @Query("SELECT * FROM milk_yields WHERE id = :id")

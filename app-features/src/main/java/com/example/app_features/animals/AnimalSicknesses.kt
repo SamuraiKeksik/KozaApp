@@ -40,18 +40,17 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.app_data.animals.Sickness
+import com.example.app_data.animals.SicknessEntity
 import com.example.app_data.animals.SicknessType
 import com.example.app_features.ExpandLabel
 import com.example.app_features.R
 import com.example.app_features.animals.goats.toLocalDate
-import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 @Composable
 fun AnimalSicknesses(
-    sicknessesList: List<Sickness>,
+    sicknessesList: List<SicknessEntity>,
     sicknessTypesList: List<SicknessType>,
     onAddClick: () -> Unit,
     onEditClick: (UUID) -> Unit,

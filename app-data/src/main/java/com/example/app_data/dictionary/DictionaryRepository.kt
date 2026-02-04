@@ -12,7 +12,8 @@ interface DictionaryRepository {
 }
 
 class DefaultDictionaryRepository @Inject constructor(
-    private val dictionaryLocalDataSource: DictionaryLocalDataSource
+    private val dictionaryLocalDataSource: DictionaryLocalDataSource,
+    private val dictionaryRemoteDataSource: DictionaryRemoteDataSource
 ) : DictionaryRepository {
     override fun getArticlesByCategoryAndAnimalType(animalType: AnimalType, articleCategory: ArticleCategory): Flow<List<ArticleEntity>> {
         if (animalType == AnimalType.ALL && articleCategory != ArticleCategory.ALL) {

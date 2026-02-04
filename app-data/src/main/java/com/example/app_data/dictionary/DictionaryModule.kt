@@ -2,6 +2,7 @@ package com.example.app_data.dictionary
 
 import android.content.Context
 import com.example.app_data.database.AppDatabase
+import com.example.app_data.network.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,10 +22,23 @@ object DictionaryModule {
 
     @Provides
     @Singleton
+    fun provideDictionaryRemoteDataSource(
+        apiService: ApiService,
+    ): DictionaryRemoteDataSource {
+        return DictionaryRemoteDataSource(apiService)
+    }
+
+    @Provides
+    @Singleton
     fun provideDictionaryRepository(
         dictionaryLocalDataSource: DictionaryLocalDataSource,
+        dictionaryRemoteDataSource: DictionaryRemoteDataSource,
     ): DictionaryRepository {
-        return DefaultDictionaryRepository(dictionaryLocalDataSource)
+        return DefaultDictionaryRepository(dictionaryLocalDataSource, dictionaryRemoteDataSource)
     }
+
+
+
+
 
 }

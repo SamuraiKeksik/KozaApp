@@ -19,10 +19,10 @@ class AnimalsLocalDataSource @Inject constructor(
     suspend fun updateVaccination(vaccination: Vaccination) = animalsDao.updateVaccination(vaccination)
 
     //Sickness
-    suspend fun getSickness(id: UUID): Sickness? = animalsDao.getSickness(id)
-    suspend fun insertSickness(sickness: Sickness) = animalsDao.insertSickness(sickness)
-    suspend fun deleteSickness(sickness: Sickness) = animalsDao.deleteSickness(sickness)
-    suspend fun updateSickness(sickness: Sickness) = animalsDao.updateSickness(sickness)
+    suspend fun getSickness(id: UUID): SicknessEntity? = animalsDao.getSickness(id)
+    suspend fun insertSickness(sickness: SicknessEntity) = animalsDao.insertSickness(sickness)
+    suspend fun deleteSickness(sickness: SicknessEntity) = animalsDao.deleteSickness(sickness)
+    suspend fun updateSickness(sickness: SicknessEntity) = animalsDao.updateSickness(sickness)
 
     //MilkYield
     suspend fun getMilkYield(id: UUID): MilkYield? = animalsDao.getMilkYield(id)

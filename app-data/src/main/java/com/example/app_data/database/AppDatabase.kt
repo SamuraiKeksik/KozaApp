@@ -10,7 +10,7 @@ import com.example.app_data.R
 import com.example.app_data.animals.AnimalType
 import com.example.app_data.animals.AnimalsDao
 import com.example.app_data.animals.MilkYield
-import com.example.app_data.animals.Sickness
+import com.example.app_data.animals.SicknessEntity
 import com.example.app_data.animals.SicknessType
 import com.example.app_data.animals.Vaccination
 import com.example.app_data.animals.Weight
@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
         ChickenEntity::class,
         MilkYield::class,
         SicknessType::class,
-        Sickness::class,
+        SicknessEntity::class,
         Vaccination::class,
         Weight::class,
         ArticleEntity::class

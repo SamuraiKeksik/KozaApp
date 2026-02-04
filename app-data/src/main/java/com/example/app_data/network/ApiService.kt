@@ -1,20 +1,40 @@
-//package com.example.network
-//
-//import com.example.kozaapp.features.advertisements.data.model.Advertisement
-//import com.example.kozaapp.features.animals.goats.data.schemas.GoatDeletionResponse
-//import com.example.kozaapp.features.animals.goats.data.schemas.GoatRequest
-//import com.example.kozaapp.features.animals.goats.data.schemas.GoatResponse
-//import com.example.kozaapp.features.auth.data.model.User
-//import retrofit2.Response
-//import retrofit2.http.Body
-//import retrofit2.http.DELETE
-//import retrofit2.http.GET
-//import retrofit2.http.POST
-//import retrofit2.http.PUT
-//import retrofit2.http.Path
-//import retrofit2.http.Query
-//
-//interface ApiService {
+package com.example.app_data.network
+
+import com.example.app_data.animals.AnimalType
+import com.example.app_data.animals.SicknessEntity
+import com.example.app_data.dictionary.ArticleCategory
+import com.example.app_data.dictionary.ArticleEntity
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
+
+interface ApiService {
+    @GET("/dictionary/articles")
+    suspend fun getArticles(
+        @Query("animal_type") animalType: AnimalType?,
+        @Query("category") category: ArticleCategory?,
+        @Query("limit") limit: Int? = null,
+        @Query("offset") offset: Int? = null,
+    ): Response<List<ArticleEntity>>
+
+    @GET("/dictionary/articles/{article_id}")
+    suspend fun getArticleById(
+        @Path("article_id") articleId: String
+    ): Response<ArticleEntity>
+
+    @GET("/dictionary/sicknesses")
+    suspend fun getSicknesses(
+        @Query("animal_type") animalType: AnimalType?,
+        @Query("limit") limit: Int? = null,
+        @Query("offset") offset: Int? = null,
+    ): Response<List<SicknessEntity>>
+
+    @GET("/dictionary/sicknesses/{sickness_id}")
+    suspend fun getSicknessById(
+        @Path("sickness_id") sicknessId: String
+    ): Response<SicknessEntity>
+}
 //    @GET("/users/me")
 //    suspend fun getCurrentUser(): Response<User>
 //

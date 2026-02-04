@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.app_data.animals.AnimalsRepository
 import com.example.app_data.animals.MilkYield
-import com.example.app_data.animals.Sickness
+import com.example.app_data.animals.SicknessEntity
 import com.example.app_data.animals.SicknessType
 import com.example.app_data.animals.Vaccination
 import com.example.app_data.animals.cows.CowRepository
@@ -30,7 +30,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import java.time.LocalDate
 import java.util.UUID
 import javax.inject.Inject
 
@@ -237,7 +236,7 @@ class CowDetailsViewModel @Inject constructor(
 data class CowDetailsUiState(
     val cowDetails: CowDetails = CowDetails(),
     val cowVaccinations: List<Vaccination> = emptyList(),
-    val cowSicknesses: List<Sickness> = emptyList(),
+    val cowSicknesses: List<SicknessEntity> = emptyList(),
     val cowMilkYields: List<MilkYield> = emptyList(),
     val selectedVaccinationId: UUID = UUID.randomUUID(),
     val selectedSicknessId: UUID = UUID.randomUUID()

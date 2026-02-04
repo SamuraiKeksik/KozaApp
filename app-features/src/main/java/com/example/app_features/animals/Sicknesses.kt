@@ -1,6 +1,6 @@
 package com.example.app_features.animals
 
-import com.example.app_data.animals.Sickness
+import com.example.app_data.animals.SicknessEntity
 import java.time.LocalDate
 import java.util.UUID
 
@@ -18,7 +18,7 @@ data class SicknessDetails(
     val sicknessTypeId: Int = 0,
 )
 
-fun SicknessDetails.toSickness() = Sickness(
+fun SicknessDetails.toSickness() = SicknessEntity(
     id = id,
     startDate = startDate,
     endDate = endDate,
@@ -26,7 +26,7 @@ fun SicknessDetails.toSickness() = Sickness(
     animalId = animalId,
 )
 
-fun Sickness.toSicknessDetails() = SicknessDetails(
+fun SicknessEntity.toSicknessDetails() = SicknessDetails(
     id = id,
     startDate = startDate,
     endDate = endDate,

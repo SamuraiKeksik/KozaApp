@@ -21,10 +21,10 @@ interface AnimalsRepository {
     suspend fun updateVaccination(vaccination: Vaccination)
 
     //Sickness
-    suspend fun getSickness(id: UUID): Sickness?
-    suspend fun insertSickness(sickness: Sickness)
-    suspend fun deleteSickness(sickness: Sickness)
-    suspend fun updateSickness(sickness: Sickness)
+    suspend fun getSickness(id: UUID): SicknessEntity?
+    suspend fun insertSickness(sickness: SicknessEntity)
+    suspend fun deleteSickness(sickness: SicknessEntity)
+    suspend fun updateSickness(sickness: SicknessEntity)
 
     //MilkYields
     suspend fun getMilkYield(id: UUID): MilkYield?
@@ -85,14 +85,14 @@ override suspend fun updateVaccination(vaccination: Vaccination) =
     animalsLocalDataSource.updateVaccination(vaccination)
 
 //Sickness
-override suspend fun getSickness(id: UUID): Sickness? = animalsLocalDataSource.getSickness(id)
-override suspend fun insertSickness(sickness: Sickness) =
+override suspend fun getSickness(id: UUID): SicknessEntity? = animalsLocalDataSource.getSickness(id)
+override suspend fun insertSickness(sickness: SicknessEntity) =
     animalsLocalDataSource.insertSickness(sickness)
 
-override suspend fun deleteSickness(sickness: Sickness) =
+override suspend fun deleteSickness(sickness: SicknessEntity) =
     animalsLocalDataSource.deleteSickness(sickness)
 
-override suspend fun updateSickness(sickness: Sickness) =
+override suspend fun updateSickness(sickness: SicknessEntity) =
     animalsLocalDataSource.updateSickness(sickness)
 
 //MilkYield
