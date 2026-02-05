@@ -47,6 +47,8 @@ dependencies {
     //Hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.hilt.common)
+    implementation("androidx.hilt:hilt-work:1.3.0")
     ksp(libs.hilt.android.compiler)
     ksp(libs.androidx.hilt.compiler)
 
@@ -55,6 +57,9 @@ dependencies {
     implementation ("com.squareup.retrofit2:converter-gson:3.0.0")
     // Retrofit with Scalar Converter
     implementation("com.squareup.retrofit2:converter-scalars:3.0.0")
+
+    // WorkManager
+    implementation("androidx.work:work-runtime-ktx:2.11.1")
 
     //test
 //    testImplementation(libs.junit)
