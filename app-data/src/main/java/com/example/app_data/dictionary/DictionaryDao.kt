@@ -25,7 +25,16 @@ interface DictionaryDao {
     @Query("SELECT * FROM sickness_types WHERE animalType = :animalType")
     fun getSicknessesTypesByAnimalType(animalType: AnimalType): Flow<List<SicknessType>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Query("SELECT id FROM articles ORDER BY id DESC LIMIT 1")
+    suspend fun getLastArticleId() : Int
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertArticle(article: ArticleEntity)
+
+    @Query("SELECT id FROM sickness_types ORDER BY id DESC LIMIT 1")
+    suspend fun getLastSicknessTypeId() : Int
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSicknessType(sicknessType: SicknessType)
+
+
 
 }

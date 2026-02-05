@@ -2,6 +2,7 @@ package com.example.app_data.dictionary
 
 import com.example.app_data.animals.AnimalType
 import com.example.app_data.animals.SicknessEntity
+import com.example.app_data.animals.SicknessType
 import com.example.app_data.network.ApiService
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -30,7 +31,7 @@ class DictionaryRemoteDataSource @Inject constructor(
 
     suspend fun getArticleById(
         articleId: Int,
-    ): ArticleEntity {
+    ): ArticleEntity? {
         val response = apiService.getArticleById(
             articleId = articleId.toString(),
         )
@@ -41,12 +42,12 @@ class DictionaryRemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun getSicknessesList(
+    suspend fun getSicknessTypesList(
         animalType: AnimalType? = null,
         limit: Int? = null,
         offset: Int? = null
-    ): List<SicknessEntity> {
-        val response = apiService.getSicknesses(
+    ): List<SicknessType> {
+        val response = apiService.getSicknessTypes(
             animalType = animalType,
             limit = limit,
             offset = offset,
@@ -58,11 +59,11 @@ class DictionaryRemoteDataSource @Inject constructor(
         }
     }
 
-    suspend fun getSicknessById(
-        sicknessId: Int,
-    ): SicknessEntity {
-        val response = apiService.getSicknessById(
-            sicknessId = sicknessId.toString(),
+    suspend fun getSicknessTypeById(
+        sicknessTypeId: Int,
+    ): SicknessType {
+        val response = apiService.getSicknessTypeById(
+            sicknessTypeId = sicknessTypeId.toString(),
         )
         if (response.isSuccessful) {
             return response.body()!!

@@ -1,7 +1,7 @@
 package com.example.app_data.network
 
 import com.example.app_data.animals.AnimalType
-import com.example.app_data.animals.SicknessEntity
+import com.example.app_data.animals.SicknessType
 import com.example.app_data.dictionary.ArticleCategory
 import com.example.app_data.dictionary.ArticleEntity
 import retrofit2.Response
@@ -23,17 +23,17 @@ interface ApiService {
         @Path("article_id") articleId: String
     ): Response<ArticleEntity>
 
-    @GET("/dictionary/sicknesses")
-    suspend fun getSicknesses(
+    @GET("/dictionary/sickness_types")
+    suspend fun getSicknessTypes(
         @Query("animal_type") animalType: AnimalType?,
         @Query("limit") limit: Int? = null,
         @Query("offset") offset: Int? = null,
-    ): Response<List<SicknessEntity>>
+    ): Response<List<SicknessType>>
 
-    @GET("/dictionary/sicknesses/{sickness_id}")
-    suspend fun getSicknessById(
-        @Path("sickness_id") sicknessId: String
-    ): Response<SicknessEntity>
+    @GET("/dictionary/sickness_types/{sickness_type_id}")
+    suspend fun getSicknessTypeById(
+        @Path("sickness_type_id") sicknessTypeId: String
+    ): Response<SicknessType>
 }
 //    @GET("/users/me")
 //    suspend fun getCurrentUser(): Response<User>

@@ -20,5 +20,12 @@ class DictionaryLocalDataSource @Inject constructor(
         dictionaryDao.getAllSicknessesTypes()
     fun getSicknessesTypesByAnimalTypeFlow(animalType: AnimalType): Flow<List<SicknessType>> =
         dictionaryDao.getSicknessesTypesByAnimalType(animalType)
+
+    suspend fun getLastArticleId(): Int = dictionaryDao.getLastArticleId()
+    suspend fun getLastSicknessTypeId(): Int = dictionaryDao.getLastSicknessTypeId()
+    suspend fun insertArticle(articleEntity: ArticleEntity) =
+        dictionaryDao.insertArticle(articleEntity)
+    suspend fun insertASicknessType(sicknessType: SicknessType) =
+        dictionaryDao.insertSicknessType(sicknessType)
 }
 
