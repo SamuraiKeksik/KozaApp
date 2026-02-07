@@ -48,8 +48,8 @@ class MainActivity : ComponentActivity() {
             .build()
         val periodicWorkRequest = PeriodicWorkRequest.Builder(
                 DictionaryWorker::class.java,
-                15,
-            TimeUnit.MINUTES
+                1,
+            TimeUnit.HOURS
         ).setConstraints(constraints).build()
 
         WorkManager.getInstance(applicationContext).enqueue(
