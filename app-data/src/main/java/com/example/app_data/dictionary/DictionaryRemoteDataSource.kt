@@ -11,8 +11,8 @@ class DictionaryRemoteDataSource @Inject constructor(
     private val apiService: ApiService
 ) {
     suspend fun getArticlesList(
-        animalType: AnimalType? = null,
-        category: ArticleCategory? = null,
+        animalType: AnimalType? = AnimalType.ALL,
+        category: ArticleCategory? = ArticleCategory.ALL,
         limit: Int? = null,
         offset: Int? = null
     ): List<ArticleEntity> {
@@ -36,14 +36,14 @@ class DictionaryRemoteDataSource @Inject constructor(
             articleId = articleId.toString(),
         )
         if (response.isSuccessful) {
-            return response.body()!!
+            return response.body()
         } else {
             throw HttpException(response)
         }
     }
 
     suspend fun getSicknessTypesList(
-        animalType: AnimalType? = null,
+        animalType: AnimalType? = AnimalType.ALL,
         limit: Int? = null,
         offset: Int? = null
     ): List<SicknessType> {

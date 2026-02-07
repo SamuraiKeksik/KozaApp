@@ -16,8 +16,8 @@ interface DictionaryRepository {
 
     fun getSicknessesTypesByAnimalType(animalType: AnimalType): Flow<List<SicknessType>>
 
-    suspend fun synchronizeArticlesWithServer()
-    suspend fun synchronizeSicknessTypesWithServer()
+    suspend fun synchronizeArticlesWithServer(): Int
+    suspend fun synchronizeSicknessTypesWithServer(): Int
 
 }
 
@@ -49,7 +49,8 @@ class DefaultDictionaryRepository @Inject constructor(
     }
 
     //Retrofit
-    override suspend fun synchronizeArticlesWithServer() {
+    override suspend fun synchronizeArticlesWithServer(): Int {
+        var articlesCount = 0
         try {
             while (checkNewArticle()) {
                 val lastArticleId = dictionaryLocalDataSource.getLastArticleId()
@@ -60,13 +61,17 @@ class DefaultDictionaryRepository @Inject constructor(
                 articlesList.forEach {
                     dictionaryLocalDataSource.insertArticle(it)
                 }
+                articlesCount += articlesList.count()
             }
+            return articlesCount
         } catch (e: HttpException) {
             Log.w("ApiService", e.message.toString())
+            return articlesCount
         }
         catch (e: Exception) {
             Log.e("ApiService","ApiService unexpected Error")
             Log.e("ApiService", e.message.toString())
+            return articlesCount
         }
     }
 
@@ -80,7 +85,8 @@ class DefaultDictionaryRepository @Inject constructor(
     }
 
     //Retrofit
-    override suspend fun synchronizeSicknessTypesWithServer() {
+    override suspend fun synchronizeSicknessTypesWithServer(): Int {
+        var sicknessTypesCount = 0
         try{
             while (checkNewSicknessType()) {
                 val lastSicknessTypeId = dictionaryLocalDataSource.getLastSicknessTypeId()
@@ -91,21 +97,25 @@ class DefaultDictionaryRepository @Inject constructor(
                 sicknessTypesList.forEach {
                     dictionaryLocalDataSource.insertASicknessType(it)
                 }
+                sicknessTypesCount += sicknessTypesList.count()
             }
+            return sicknessTypesCount
         }
         catch (e: HttpException) {
             Log.w("ApiService", e.message.toString())
+            return sicknessTypesCount
         }
         catch (e: Exception) {
             Log.e("ApiService","ApiService unexpected Error")
             Log.e("ApiService", e.message.toString())
+            return sicknessTypesCount
         }
     }
 
     private suspend fun checkNewSicknessType(): Boolean {
-        val lastArticleId = dictionaryLocalDataSource.getLastArticleId()
-        val newArticle = dictionaryRemoteDataSource.getArticleById(lastArticleId + 1)
-        if (newArticle != null)
+        val lastSicknessTypeId = dictionaryLocalDataSource.getLastSicknessTypeId()
+        val newSicknessType = dictionaryRemoteDataSource.getSicknessTypeById(lastSicknessTypeId + 1)
+        if (newSicknessType != null)
             return true
         else
             return false

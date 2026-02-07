@@ -14,8 +14,9 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    //private val BASE_URL = "http://192.168.1.231:8000"
-    private val BASE_URL = "http://192.168.1.179:8000"
+    private const val BASE_URL = "http://144.31.70.140:8000"
+    //private const val BASE_URL = "http://192.168.1.231:8000"
+    //private const val BASE_URL = "http://192.168.1.179:8000"
 
     @Provides
     @Singleton

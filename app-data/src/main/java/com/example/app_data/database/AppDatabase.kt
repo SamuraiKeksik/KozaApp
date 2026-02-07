@@ -90,7 +90,7 @@ abstract class AppDatabase : RoomDatabase() {
                         animalsDao.insertSicknessType(
                             SicknessType(
                                 id = 2,
-                                name = "Бешенство",
+                                name = "Тимпания рубца",
                                 description = context.resources.getString(R.string.tempania_description),
                                 animalType = AnimalType.GOAT,
                                 isVaccinationMandatory = true,
@@ -109,20 +109,20 @@ abstract class AppDatabase : RoomDatabase() {
                                 minimalAgeInDays = 90,
                             )
                         )
+//                        animalsDao.insertSicknessType(
+//                            SicknessType(
+//                                id = 4,
+//                                name = "Бруцеллёз",
+//                                description = context.resources.getString(R.string.brucellosis_description),
+//                                animalType = AnimalType.GOAT,
+//                                isVaccinationMandatory = true,
+//                                revaccinationPeriodInDays = 365,
+//                                minimalAgeInDays = 120,
+//                            )
+//                        )
                         animalsDao.insertSicknessType(
                             SicknessType(
                                 id = 4,
-                                name = "Бруцеллёз",
-                                description = context.resources.getString(R.string.brucellosis_description),
-                                animalType = AnimalType.GOAT,
-                                isVaccinationMandatory = true,
-                                revaccinationPeriodInDays = 365,
-                                minimalAgeInDays = 120,
-                            )
-                        )
-                        animalsDao.insertSicknessType(
-                            SicknessType(
-                                id = 5,
                                 name = "Инфекционный мастит",
                                 description = context.resources.getString(R.string.infectious_mastitis_description),
                                 animalType = AnimalType.GOAT,
