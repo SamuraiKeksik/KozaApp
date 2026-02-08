@@ -24,6 +24,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.example.app_features.EmptyScreenFiller
 import com.example.app_features.R
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.util.Locale
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -95,7 +98,7 @@ private fun CalendarCardHeader(
         verticalAlignment = Alignment.Top
     ) {
         Box(Modifier.alpha(if (showDate) 1f else 0f)) {
-            DateHeaderItem()
+            DateHeaderItem(event.date)
         }
         EventCardInternal(
             event,
@@ -138,10 +141,12 @@ private fun EventCardInternal(event:AnimalVaccinationEventDetails, isAccepted: B
 }
 
 @Composable
-fun DateHeaderItem() {
+fun DateHeaderItem(date: LocalDate) {
     Column(Modifier.padding(4.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = "",
+            text = date.dayOfWeek.getDisplayName(
+                java.time.format.TextStyle.SHORT,
+                Locale.getDefault() ) ,
             style = TextStyle.Default.copy(
                 MaterialTheme.colorScheme.onPrimaryContainer
             )
@@ -153,7 +158,7 @@ fun DateHeaderItem() {
                 .background(MaterialTheme.colorScheme.primaryContainer)
         ) {
             Text(
-                text = "1",
+                text = date.dayOfMonth.toString(),
                 style = TextStyle.Default.copy(
                     MaterialTheme.colorScheme.onPrimaryContainer
                 ),
