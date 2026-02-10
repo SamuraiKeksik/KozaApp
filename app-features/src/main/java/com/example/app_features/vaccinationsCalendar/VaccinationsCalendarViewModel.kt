@@ -18,6 +18,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.util.UUID
 
 @HiltViewModel
 class VaccinationsCalendarViewModel @Inject constructor(
@@ -52,10 +53,12 @@ class VaccinationsCalendarViewModel @Inject constructor(
             }.map { vaccination ->
                 AnimalVaccinationEventDetails(
                     date = LocalDate.ofEpochDay(vaccination.date),
+                    animalId = goatModel.goat.id,
                     animalName = goatModel.goat.name,
                     animalType = AnimalType.GOAT,
                     sicknessTypeName = animalsRepository.getSicknessType(vaccination.sicknessTypeId)?.name ?:
                         animalsRepository.getSicknessType(0)!!.name,
+                    vaccinationId = vaccination.id
                 )
             }
         }.sortedBy {
@@ -75,10 +78,12 @@ class VaccinationsCalendarViewModel @Inject constructor(
             }.map { vaccination ->
                 AnimalVaccinationEventDetails(
                     date = LocalDate.ofEpochDay(vaccination.date),
+                    animalId = cowModel.cow.id,
                     animalName = cowModel.cow.name,
                     animalType = AnimalType.COW,
                     sicknessTypeName = animalsRepository.getSicknessType(vaccination.sicknessTypeId)?.name ?:
                         animalsRepository.getSicknessType(0)!!.name,
+                    vaccinationId = vaccination.id
                 )
             }
         }.sortedBy {
@@ -94,7 +99,6 @@ class VaccinationsCalendarViewModel @Inject constructor(
             currentMonth = JetMonth.current(currentMonth.startDate.plusMonths(1))
         )
     }
-
     fun previousMonth() {
         val currentMonth = uiState.currentMonth
         uiState = uiState.copy(
@@ -102,13 +106,23 @@ class VaccinationsCalendarViewModel @Inject constructor(
         )
     }
 
+    fun updateCurrentMonth(month: JetMonth) {
+        uiState = uiState.copy(currentMonth = month)
+    }
 
+    fun updateSelectedDate(selectedDate: LocalDate) {
+        uiState = uiState.copy(selectedDay = selectedDate)
+    }
+
+    fun findEventIndexByDate(targetDate: LocalDate): Int {
+        return uiState.vaccinationsEvents.indexOfFirst { it.date == targetDate }
+    }
 
     //private fun getVaccinations() = animalsRepository.getVaccinations()
 }
 
 data class VaccinationsCalendarUiState(
-    val selectedDay: String = "",
+    val selectedDay: LocalDate = LocalDate.now(),
     val currentMonth: JetMonth = JetMonth.current(),
     val vaccinationsEvents: List<AnimalVaccinationEventDetails> = emptyList(),
     val selectedAnimalTypes: List<AnimalType> = listOf(AnimalType.ALL),
@@ -117,7 +131,9 @@ data class VaccinationsCalendarUiState(
 
 data class AnimalVaccinationEventDetails(
     val date: LocalDate,
+    val animalId: UUID,
     val animalName: String,
     val animalType: AnimalType,
     val sicknessTypeName: String,
+    val vaccinationId: UUID
 )

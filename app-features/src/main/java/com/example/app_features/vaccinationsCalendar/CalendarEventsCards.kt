@@ -7,6 +7,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,11 +37,11 @@ import java.util.Locale
 )
 @Composable
 fun CalendarEventsCards(
-    vaccinationEvents: List<AnimalVaccinationEventDetails>
+    vaccinationEvents: List<AnimalVaccinationEventDetails>,
+    lazyListState: LazyListState = rememberLazyListState(),
 ) {
-    val listState = rememberLazyListState()
     LazyColumn(
-        state = listState
+        state = lazyListState
     ) {
         if (vaccinationEvents.firstOrNull() == null) {
           item{
@@ -53,26 +55,41 @@ fun CalendarEventsCards(
       else{
           var currentDate = LocalDate.MIN
           var iterator = 0
-          vaccinationEvents.forEach { event ->
-            if (currentDate != event.date) {
-              stickyHeader {
-                CalendarCardHeader(
-                  isAccepted = iterator++ % 2 == 0,
-                  showDate = true,
-                  event = event,
-                )
-              }
+            items(vaccinationEvents, key = { it.vaccinationId }){ event ->
+                if (currentDate != event.date) {
+                    CalendarCardHeader(
+                        isAccepted = iterator++ % 2 == 0,
+                        showDate = true,
+                        event = event,
+                    )
+                }else{
+                    CalendarCardHeader(
+                        isAccepted = iterator++ % 2 == 0,
+                        showDate = false,
+                        event = event,
+                    )
+                }
                 currentDate = event.date
-            } else {
-              item {
-                CalendarCardHeader(
-                  isAccepted = iterator++ % 2 == 0,
-                  showDate = false,
-                  event = event,
-                )
-              }
             }
-          }
+//            if (currentDate != event.date) {
+//              stickyHeader {
+//                CalendarCardHeader(
+//                  isAccepted = iterator++ % 2 == 0,
+//                  showDate = true,
+//                  event = event,
+//                )
+//              }
+//                currentDate = event.date
+//            } else {
+//              item {
+//                CalendarCardHeader(
+//                  isAccepted = iterator++ % 2 == 0,
+//                  showDate = false,
+//                  event = event,
+//                )
+//              }
+//            }
+
         }
 
     }

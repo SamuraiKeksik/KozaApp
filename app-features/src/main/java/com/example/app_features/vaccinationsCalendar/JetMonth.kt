@@ -43,6 +43,7 @@ class JetMonth private constructor(
       month.monthWeeks = month.weeks(firstDayOfWeek)
       return month
     }
+
   }
 
   private fun weeks(firstDayOfWeek: DayOfWeek): List<JetWeek> {

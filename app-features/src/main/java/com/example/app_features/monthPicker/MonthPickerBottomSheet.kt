@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun MonthPickerBottomSheet(
     showYear: Boolean = false,
-    title: String = if (showYear) "Select a month and a year" else "Select a month",
-    cancelButtonText: String = "Cancel",
+    title: String = if (showYear) "Выберите месяц и год" else "Select a month",
+    cancelButtonText: String = "Отменить",
     okButtonText: String = "Ok",
     description: String = "",
     onDismiss: () -> Unit,

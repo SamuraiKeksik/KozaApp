@@ -15,6 +15,7 @@ import java.time.LocalDate
 fun DashboardMonthView(
   modifier: Modifier,
   jetMonth: JetMonth,
+  onDateSelect: (LocalDate) -> Unit
 
 ) {
   GoogleCalendarSurface(modifier = modifier) {
@@ -27,6 +28,7 @@ fun DashboardMonthView(
         jetMonth = jetMonth,
         onDateSelected = {
           selectedDates.value = it
+          onDateSelect(it.date)
         },
         selectedDate = selectedDates.value
       )

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -22,7 +23,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.app_features.R
 import com.example.app_features.monthPicker.MonthPickerBottomSheet
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.temporal.TemporalAdjusters
+import java.time.temporal.WeekFields
 import java.util.Calendar
+import java.util.Locale
 
 
 @OptIn(
@@ -34,6 +39,7 @@ fun DashboardUI(
     viewModel: VaccinationsCalendarViewModel = hiltViewModel(),
 ) {
     var monthPickerRequired by remember { mutableStateOf(false) }
+    val lazyListState = rememberLazyListState()
 
     Scaffold(
         topBar = {
@@ -67,9 +73,16 @@ fun DashboardUI(
                         monthPickerRequired = false
                     },
                     onUpdateMonth = { month, year ->
-                        val calendar = Calendar.getInstance()
-                        calendar.set(Calendar.MONTH, month)
-                        calendar.set(Calendar.YEAR, year)
+                        val date = LocalDate.of(year, month+1, 1)
+                        val jetMonth = JetMonth.current(date)
+                        viewModel.updateCurrentMonth(jetMonth)
+                        viewModel.viewModelScope.launch {
+                            viewModel.getVaccinations()
+                        }
+
+//                        val calendar = Calendar.getInstance()
+//                        calendar.set(Calendar.MONTH, month)
+//                        calendar.set(Calendar.YEAR, year)
 //                    monthValue = " ${
 //                        SimpleDateFormat("MMMM").format(calendar.time)
 //                    } - $year"
@@ -84,11 +97,20 @@ fun DashboardUI(
                     Modifier
                         .fillMaxWidth()
                         .padding(dimensionResource(R.dimen.padding_medium)),
-                    jetMonth = viewModel.uiState.currentMonth
+                    jetMonth = viewModel.uiState.currentMonth,
+                    onDateSelect = {
+                        viewModel.updateSelectedDate(it)
+                        viewModel.viewModelScope.launch {
+                            val index = viewModel.findEventIndexByDate(viewModel.uiState.selectedDay)
+                            if (index != -1)
+                                lazyListState.scrollToItem(index)
+                        }
+                    }
                 )
                 Box {
                     CalendarEventsCards(
-                        vaccinationEvents = viewModel.uiState.vaccinationsEvents
+                        vaccinationEvents = viewModel.uiState.vaccinationsEvents,
+                        lazyListState = lazyListState
                     )
                 }
             }

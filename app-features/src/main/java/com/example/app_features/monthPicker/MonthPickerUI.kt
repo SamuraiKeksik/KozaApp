@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.app_features.R
+import java.time.LocalDate
 
 @Composable
 fun MonthPickerUI(
@@ -49,11 +50,11 @@ fun MonthPickerUI(
         "Декабрь",
     )
     val currentMonth = rememberSaveable {
-        mutableStateOf(0)
+        mutableStateOf(LocalDate.now().monthValue-1)
     }
 
     val currentYear = rememberSaveable {
-        mutableStateOf(2023)
+        mutableStateOf(LocalDate.now().year)
     }
     Column(
         modifier = Modifier
