@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -30,6 +31,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -62,10 +64,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.app_data.animals.AnimalType
 import com.example.app_features.ExpandButton
 import com.example.app_features.R
+import com.example.app_features.animals.DeleteConfirmationDialog
 import com.example.app_features.animals.VaccinationDetails
 import com.example.app_features.monthPicker.MonthPickerBottomSheet
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAdjusters
 import java.time.temporal.WeekFields
 import java.util.Calendar
@@ -89,6 +93,7 @@ fun DashboardUI(
     var monthPickerRequired by remember { mutableStateOf(false) }
     var filterRequired by remember { mutableStateOf(false) }
     var vaccinationDetailsRequired by remember { mutableStateOf(false) }
+    var vaccinationDeletionConfirmation by remember { mutableStateOf(false) }
     val lazyListState = rememberLazyListState()
 
     Scaffold(
@@ -138,9 +143,23 @@ fun DashboardUI(
                 VaccinationDetailsDialog(
                     onDismiss = { vaccinationDetailsRequired = false },
                     vaccinationEventDetails = viewModel.uiState.selectedVaccinationDetails!!,
-                    showDialog = vaccinationDetailsRequired
+                    showDialog = vaccinationDetailsRequired,
+                    onDelete = { vaccinationDeletionConfirmation = !vaccinationDeletionConfirmation}
 
                 )
+            }
+            if (vaccinationDeletionConfirmation) {
+                DeleteConfirmationDialog(
+                    onDeleteConfirm = {
+                        viewModel.viewModelScope.launch {
+                            viewModel.deleteSelectedVaccinationEvent()
+                        }
+                        vaccinationDeletionConfirmation = !vaccinationDeletionConfirmation
+                        vaccinationDetailsRequired = !vaccinationDetailsRequired
+                                      },
+                    onDeleteCancel = {vaccinationDeletionConfirmation = !vaccinationDeletionConfirmation},
+                    warningText = "Вы уверены что хотите удалить планируемую вакцинацию?",
+                    )
             }
             if (shouldUseVertical()) {
                 Column(
@@ -295,6 +314,7 @@ fun FilterChipRow(
 fun VaccinationDetailsDialog(
     showDialog: Boolean,
     onDismiss: () -> Unit,
+    onDelete: () -> Unit,
     vaccinationEventDetails: AnimalVaccinationEventDetails
 ) {
     val animalTypeText = when (vaccinationEventDetails.animalType) {
@@ -303,8 +323,9 @@ fun VaccinationDetailsDialog(
         AnimalType.CHICKEN -> " у курицы '"
         else -> " у животного '"
     }
+    val dateFormat = DateTimeFormatter.ofPattern("dd.MM.yyyy")
     val text =
-        vaccinationEventDetails.date.toString() + animalTypeText + vaccinationEventDetails.animalName + "' планируется вакцинация от болезни '" + vaccinationEventDetails.sicknessTypeName + "'."
+        vaccinationEventDetails.date.format(dateFormat) + animalTypeText + vaccinationEventDetails.animalName + "' планируется вакцинация от болезни '" + vaccinationEventDetails.sicknessTypeName + "'."
     if (showDialog) {
         Dialog(
             onDismissRequest = { onDismiss() },
@@ -366,26 +387,28 @@ fun VaccinationDetailsDialog(
                         color = MaterialTheme.colorScheme.primary
                     )
                     var expanded by remember { mutableStateOf(false) }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
 
-                        ExpandButton(
-                            expanded = expanded,
-                            onClick = { expanded = !expanded}
-                        )
-                        Text(
-                            text = "Описание",
-                            color = MaterialTheme.colorScheme.primary,
-                            fontSize = 16.sp
-                        )
-                        HorizontalDivider(
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(10.dp, 0.dp, 10.dp, 0.dp)
-                        )
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = { expanded = !expanded }
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            ExpandButton(
+                                expanded = expanded,
+                                onClick = { }
+                            )
+                            Text(
+                                text = "Описание",
+                                color = MaterialTheme.colorScheme.primary,
+                                fontSize = 16.sp
+                            )
+                        }
+
                     }
-                    if (expanded){
+                    if (expanded) {
                         Text(
                             modifier = Modifier.padding(
                                 0.dp,
@@ -393,23 +416,26 @@ fun VaccinationDetailsDialog(
                                 0.dp,
                                 dimensionResource(id = R.dimen.padding_small),
                             ),
-                            text = vaccinationEventDetails.sicknessTypeDescription, fontSize = 16.sp,
+                            text = vaccinationEventDetails.sicknessTypeDescription,
+                            fontSize = 16.sp,
                             fontWeight = FontWeight.Normal,
                             color = MaterialTheme.colorScheme.primary
                         )
                     }
 
-                    Row {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
                         Button(onClick = onDismiss) {
                             Text(stringResource(R.string.close))
                         }
+                        Spacer(Modifier.width(4.dp))
                         Button(
-                            onClick = onDismiss,
-                            modifier = Modifier.background(MaterialTheme.colorScheme.errorContainer)
+                            onClick = onDelete,
                         ) {
                             Text(
                                 "Удалить",
-                                color = MaterialTheme.colorScheme.onErrorContainer
                             )
                         }
                     }

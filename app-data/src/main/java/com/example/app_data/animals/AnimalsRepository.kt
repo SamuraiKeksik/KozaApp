@@ -18,6 +18,7 @@ interface AnimalsRepository {
     suspend fun insertVaccination(vaccination: Vaccination)
     suspend fun createInitialVaccinations(animalId: UUID, animalAgeInDays: Int, animalType: AnimalType)
     suspend fun deleteVaccination(vaccination: Vaccination)
+    suspend fun deleteVaccinationById(vaccinationId: UUID)
     suspend fun updateVaccination(vaccination: Vaccination)
 
     //Sickness
@@ -80,6 +81,13 @@ class DefaultAnimalsRepository @Inject constructor(
 
 override suspend fun deleteVaccination(vaccination: Vaccination) =
     animalsLocalDataSource.deleteVaccination(vaccination)
+override suspend fun deleteVaccinationById(vaccinationId: UUID) {
+    val vaccination = animalsLocalDataSource.getVaccination(vaccinationId)
+    if(vaccination != null){
+        deleteVaccination(vaccination = vaccination)
+    }
+}
+
 
 override suspend fun updateVaccination(vaccination: Vaccination) =
     animalsLocalDataSource.updateVaccination(vaccination)

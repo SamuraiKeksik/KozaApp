@@ -155,8 +155,10 @@ private fun EventCardInternal(
                 AnimalType.CHICKEN -> "У курицы '"
                 else -> "У животного '"
             }
+            val text = if(event.date < LocalDate.now()) "' была сделана прививка от болезни '"
+            else "' планируется прививка от болезни '"
             EventText(
-                text = animalTypeText + event.animalName + "' планируется прививка от болезни '" + event.sicknessTypeName + "'",
+                text = animalTypeText + event.animalName + text + event.sicknessTypeName + "'",
                 style = vaccinationTextStyle(isAccepted),
             )
 

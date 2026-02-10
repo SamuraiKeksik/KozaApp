@@ -180,6 +180,13 @@ class VaccinationsCalendarViewModel @Inject constructor(
         uiState = uiState.copy(selectedVaccinationDetails = vaccinationEventDetails)
     }
 
+    suspend fun deleteSelectedVaccinationEvent(){
+        val currentVaccinationId = uiState.selectedVaccinationDetails?.vaccinationId!!
+        animalsRepository.deleteVaccinationById(currentVaccinationId)
+        uiState = uiState.copy(selectedVaccinationDetails = null)
+        getVaccinations()
+    }
+
 }
 
 data class VaccinationsCalendarUiState(
