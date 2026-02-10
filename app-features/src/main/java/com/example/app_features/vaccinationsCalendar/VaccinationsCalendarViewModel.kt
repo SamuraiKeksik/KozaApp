@@ -38,8 +38,8 @@ class VaccinationsCalendarViewModel @Inject constructor(
     }
     suspend fun getVaccinations() {
         uiState = uiState.copy(vaccinationsEvents = emptyList(), isLoading = true)
-        getGoatsVaccinations()
-        getCowsVaccinations()
+        if(uiState.selectedAnimalTypes.contains(AnimalType.GOAT)) getGoatsVaccinations()
+        if(uiState.selectedAnimalTypes.contains(AnimalType.COW)) getCowsVaccinations()
     }
 
     suspend fun getGoatsVaccinations() {
@@ -118,14 +118,23 @@ class VaccinationsCalendarViewModel @Inject constructor(
         return uiState.vaccinationsEvents.indexOfFirst { it.date == targetDate }
     }
 
-    //private fun getVaccinations() = animalsRepository.getVaccinations()
+    suspend fun updateSelectedAnimalTypes(animalType: AnimalType) {
+        if (uiState.selectedAnimalTypes.contains(animalType)) {
+            uiState = uiState.copy(selectedAnimalTypes = uiState.selectedAnimalTypes - animalType)
+        }
+        else {
+            uiState = uiState.copy(selectedAnimalTypes = uiState.selectedAnimalTypes + animalType)
+        }
+        getVaccinations()
+    }
+
 }
 
 data class VaccinationsCalendarUiState(
     val selectedDay: LocalDate = LocalDate.now(),
     val currentMonth: JetMonth = JetMonth.current(),
     val vaccinationsEvents: List<AnimalVaccinationEventDetails> = emptyList(),
-    val selectedAnimalTypes: List<AnimalType> = listOf(AnimalType.ALL),
+    val selectedAnimalTypes: List<AnimalType> = AnimalType.entries.toList(),
     val isLoading: Boolean = false,
 )
 
