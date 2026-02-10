@@ -1,5 +1,6 @@
 package com.example.app_features.vaccinationsCalendar
 
+import android.accessibilityservice.GestureDescription
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -69,7 +70,9 @@ class VaccinationsCalendarViewModel @Inject constructor(
                     animalType = AnimalType.GOAT,
                     sicknessTypeName = animalsRepository.getSicknessType(vaccination.sicknessTypeId)?.name ?:
                         animalsRepository.getSicknessType(0)!!.name,
-                    vaccinationId = vaccination.id
+                    vaccinationId = vaccination.id,
+                    sicknessTypeDescription = animalsRepository.getSicknessType(vaccination.sicknessTypeId)?.description ?:
+                    animalsRepository.getSicknessType(0)!!.description,
                 )
             }
         }.sortedBy {
@@ -96,8 +99,10 @@ class VaccinationsCalendarViewModel @Inject constructor(
                     animalName = cowModel.cow.name,
                     animalType = AnimalType.COW,
                     sicknessTypeName = animalsRepository.getSicknessType(vaccination.sicknessTypeId)?.name ?:
-                        animalsRepository.getSicknessType(0)!!.name,
-                    vaccinationId = vaccination.id
+                    animalsRepository.getSicknessType(0)!!.name,
+                    sicknessTypeDescription = animalsRepository.getSicknessType(vaccination.sicknessTypeId)?.description ?:
+                    animalsRepository.getSicknessType(0)!!.description,
+                    vaccinationId = vaccination.id,
                 )
             }
         }.sortedBy {
@@ -125,7 +130,9 @@ class VaccinationsCalendarViewModel @Inject constructor(
                     animalType = AnimalType.CHICKEN,
                     sicknessTypeName = animalsRepository.getSicknessType(vaccination.sicknessTypeId)?.name ?:
                         animalsRepository.getSicknessType(0)!!.name,
-                    vaccinationId = vaccination.id
+                    vaccinationId = vaccination.id,
+                    sicknessTypeDescription = animalsRepository.getSicknessType(vaccination.sicknessTypeId)?.description ?:
+                    animalsRepository.getSicknessType(0)!!.description,
                 )
             }
         }.sortedBy {
@@ -169,6 +176,9 @@ class VaccinationsCalendarViewModel @Inject constructor(
         }
         getVaccinations()
     }
+    suspend fun updateSelectedVaccination(vaccinationEventDetails: AnimalVaccinationEventDetails) {
+        uiState = uiState.copy(selectedVaccinationDetails = vaccinationEventDetails)
+    }
 
 }
 
@@ -178,6 +188,7 @@ data class VaccinationsCalendarUiState(
     val currentMonth: JetMonth = JetMonth.current(),
     val vaccinationsEvents: List<AnimalVaccinationEventDetails> = emptyList(),
     val selectedAnimalTypes: List<AnimalType> = AnimalType.entries.toList(),
+    val selectedVaccinationDetails: AnimalVaccinationEventDetails? = null,
     val isLoading: Boolean = false,
 )
 
@@ -187,5 +198,7 @@ data class AnimalVaccinationEventDetails(
     val animalName: String,
     val animalType: AnimalType,
     val sicknessTypeName: String,
+    val sicknessTypeDescription: String,
     val vaccinationId: UUID
 )
+

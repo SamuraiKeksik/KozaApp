@@ -30,6 +30,7 @@ import com.example.app_features.R
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.util.Locale
+import java.util.UUID
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -39,6 +40,7 @@ import java.util.Locale
 fun CalendarEventsCards(
     vaccinationEvents: List<AnimalVaccinationEventDetails>,
     lazyListState: LazyListState = rememberLazyListState(),
+    onEventClick: (vaccinationEventDetails: AnimalVaccinationEventDetails) -> Unit = {}
 ) {
     LazyColumn(
         state = lazyListState
@@ -55,18 +57,20 @@ fun CalendarEventsCards(
       else{
           var currentDate = LocalDate.MIN
           var iterator = 0
-            items(vaccinationEvents, key = { it.vaccinationId }){ event ->
+          items(vaccinationEvents, key = { it.vaccinationId }){ event ->
                 if (currentDate != event.date) {
                     CalendarCardHeader(
                         isAccepted = iterator++ % 2 == 0,
                         showDate = true,
                         event = event,
+                        onClick = onEventClick
                     )
                 }else{
                     CalendarCardHeader(
                         isAccepted = iterator++ % 2 == 0,
                         showDate = false,
                         event = event,
+                        onClick = onEventClick
                     )
                 }
                 currentDate = event.date
@@ -101,7 +105,8 @@ fun CalendarEventsCards(
 private fun CalendarCardHeader(
     event: AnimalVaccinationEventDetails,
     isAccepted: Boolean,
-    showDate: Boolean
+    showDate: Boolean,
+    onClick: (vaccinationEventDetails: AnimalVaccinationEventDetails) -> Unit = {}
 ) {
     Row(
         modifier = Modifier
@@ -112,17 +117,22 @@ private fun CalendarCardHeader(
             DateHeaderItem(event.date)
         }
         EventCardInternal(
-            event,
-            isAccepted,
-            Modifier.weight(1f),
-
+            event = event,
+            isAccepted = isAccepted,
+            modifier = Modifier.weight(1f),
+            onClick = onClick,
         )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun EventCardInternal(event:AnimalVaccinationEventDetails, isAccepted: Boolean, modifier: Modifier = Modifier) {
+private fun EventCardInternal(
+    event:AnimalVaccinationEventDetails,
+    isAccepted: Boolean,
+    modifier: Modifier = Modifier,
+    onClick: (vaccinationEventDetails: AnimalVaccinationEventDetails) -> Unit = {}
+) {
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -134,7 +144,8 @@ private fun EventCardInternal(event:AnimalVaccinationEventDetails, isAccepted: B
         ),
         colors = CardDefaults.cardColors(
             containerColor = if (isAccepted) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primaryContainer,
-        )
+        ),
+        onClick = { onClick(event) }
 
     ) {
         Column(Modifier.padding(8.dp)) {
