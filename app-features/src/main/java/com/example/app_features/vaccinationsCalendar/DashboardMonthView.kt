@@ -14,7 +14,8 @@ import java.time.LocalDate
 @Composable
 fun DashboardMonthView(
   modifier: Modifier,
-  jetMonth: JetMonth
+  jetMonth: JetMonth,
+
 ) {
   GoogleCalendarSurface(modifier = modifier) {
     val selectedDates = rememberSaveable(stateSaver = JetDaySaver) {

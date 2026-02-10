@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import com.example.app_data.animals.AnimalType
 import com.example.app_features.EmptyScreenFiller
 import com.example.app_features.R
 import java.time.DayOfWeek
@@ -50,34 +51,27 @@ fun CalendarEventsCards(
           }
         }
       else{
-          var lastEvent = vaccinationEvents.first()
+          var currentDate = LocalDate.MIN
           var iterator = 0
-          stickyHeader {
-            CalendarCardHeader(
-              event = lastEvent,
-              isAccepted = iterator++ % 2 == 0,
-              showDate = true,
-            )
-          }
-          vaccinationEvents.drop(1).forEach { event ->
-            if (event.date == lastEvent.date) {
+          vaccinationEvents.forEach { event ->
+            if (currentDate != event.date) {
               stickyHeader {
-                CalendarCardHeader(
-                  isAccepted = iterator++ % 2 == 0,
-                  showDate = false,
-                  event = event,
-                )
-              }
-            } else {
-              item {
                 CalendarCardHeader(
                   isAccepted = iterator++ % 2 == 0,
                   showDate = true,
                   event = event,
                 )
               }
+                currentDate = event.date
+            } else {
+              item {
+                CalendarCardHeader(
+                  isAccepted = iterator++ % 2 == 0,
+                  showDate = false,
+                  event = event,
+                )
+              }
             }
-            lastEvent = event
           }
         }
 
@@ -127,8 +121,14 @@ private fun EventCardInternal(event:AnimalVaccinationEventDetails, isAccepted: B
 
     ) {
         Column(Modifier.padding(8.dp)) {
+            val animalTypeText = when (event.animalType) {
+                AnimalType.COW -> "У коровы '"
+                AnimalType.GOAT -> "У козы '"
+                AnimalType.CHICKEN -> "У курицы '"
+                else -> "У животного '"
+            }
             EventText(
-                text = "У козы " + event.animalName + " планируется прививка от болезни " + event.sicknessTypeName,
+                text = animalTypeText + event.animalName + "' планируется прививка от болезни '" + event.sicknessTypeName + "'",
                 style = vaccinationTextStyle(isAccepted),
             )
 

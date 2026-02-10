@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.app_data.animals.AnimalType
 import com.example.app_data.animals.AnimalsRepository
 import com.example.app_data.animals.Vaccination
+import com.example.app_data.animals.chickens.ChickenRepository
+import com.example.app_data.animals.cows.CowRepository
 import com.example.app_data.animals.goats.GoatRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -21,6 +23,8 @@ import java.time.ZoneOffset
 class VaccinationsCalendarViewModel @Inject constructor(
     private val animalsRepository: AnimalsRepository,
     private val goatsRepository: GoatRepository,
+    private val cowsRepository: CowRepository,
+    private val chickensRepository: ChickenRepository,
 ) : ViewModel() {
 
     var uiState by mutableStateOf(VaccinationsCalendarUiState())
@@ -31,20 +35,23 @@ class VaccinationsCalendarViewModel @Inject constructor(
             getVaccinations()
         }
     }
-
     suspend fun getVaccinations() {
+        uiState = uiState.copy(vaccinationsEvents = emptyList(), isLoading = true)
+        getGoatsVaccinations()
+        getCowsVaccinations()
+    }
+
+    suspend fun getGoatsVaccinations() {
         val currentMonth = uiState.currentMonth
         val goatsModelsList = goatsRepository.getGoatsModelsList()
-        val vaccinationsEvents = goatsModelsList.flatMap { goatModel ->
+        val vaccinationsEventsGoats = goatsModelsList.flatMap { goatModel ->
             goatModel.vaccinations.filter {
                 val start = currentMonth.startDate.toEpochDay()
                 val end = currentMonth.endDate.toEpochDay()
                 it.date in start..end
             }.map { vaccination ->
                 AnimalVaccinationEventDetails(
-                    date = Instant.ofEpochMilli(vaccination.date)
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate(),
+                    date = LocalDate.ofEpochDay(vaccination.date),
                     animalName = goatModel.goat.name,
                     animalType = AnimalType.GOAT,
                     sicknessTypeName = animalsRepository.getSicknessType(vaccination.sicknessTypeId)?.name ?:
@@ -54,7 +61,31 @@ class VaccinationsCalendarViewModel @Inject constructor(
         }.sortedBy {
             it.date
         }
-        uiState = uiState.copy(vaccinationsEvents = vaccinationsEvents, isLoading = false)
+        val currentVaccinations = uiState.vaccinationsEvents
+        uiState = uiState.copy(vaccinationsEvents = currentVaccinations + vaccinationsEventsGoats, isLoading = false)
+    }
+    suspend fun getCowsVaccinations() {
+        val currentMonth = uiState.currentMonth
+        val cowsModelsList = cowsRepository.getCowsModelsList()
+        val vaccinationsEventsCows = cowsModelsList.flatMap { cowModel ->
+            cowModel.vaccinations.filter {
+                val start = currentMonth.startDate.toEpochDay()
+                val end = currentMonth.endDate.toEpochDay()
+                it.date in start..end
+            }.map { vaccination ->
+                AnimalVaccinationEventDetails(
+                    date = LocalDate.ofEpochDay(vaccination.date),
+                    animalName = cowModel.cow.name,
+                    animalType = AnimalType.COW,
+                    sicknessTypeName = animalsRepository.getSicknessType(vaccination.sicknessTypeId)?.name ?:
+                        animalsRepository.getSicknessType(0)!!.name,
+                )
+            }
+        }.sortedBy {
+            it.date
+        }
+        val currentVaccinations = uiState.vaccinationsEvents
+        uiState = uiState.copy(vaccinationsEvents = currentVaccinations + vaccinationsEventsCows, isLoading = false)
     }
 
     fun nextMonth() {
@@ -70,6 +101,8 @@ class VaccinationsCalendarViewModel @Inject constructor(
             currentMonth = JetMonth.current(currentMonth.startDate.minusMonths(1))
         )
     }
+
+
 
     //private fun getVaccinations() = animalsRepository.getVaccinations()
 }
