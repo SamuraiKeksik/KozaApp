@@ -40,6 +40,7 @@ class VaccinationsCalendarViewModel @Inject constructor(
         uiState = uiState.copy(vaccinationsEvents = emptyList(), isLoading = true)
         if(uiState.selectedAnimalTypes.contains(AnimalType.GOAT)) getGoatsVaccinations()
         if(uiState.selectedAnimalTypes.contains(AnimalType.COW)) getCowsVaccinations()
+        if(uiState.selectedAnimalTypes.contains(AnimalType.CHICKEN)) getChickensVaccinations()
     }
 
     suspend fun getGoatsVaccinations() {
@@ -91,6 +92,31 @@ class VaccinationsCalendarViewModel @Inject constructor(
         }
         val currentVaccinations = uiState.vaccinationsEvents
         uiState = uiState.copy(vaccinationsEvents = currentVaccinations + vaccinationsEventsCows, isLoading = false)
+    }
+    suspend fun getChickensVaccinations() {
+        val currentMonth = uiState.currentMonth
+        val chickensModelsList = chickensRepository.getChickensModelsList()
+        val vaccinationsEventsChickens = chickensModelsList.flatMap { chickenModel ->
+            chickenModel.vaccinations.filter {
+                val start = currentMonth.startDate.toEpochDay()
+                val end = currentMonth.endDate.toEpochDay()
+                it.date in start..end
+            }.map { vaccination ->
+                AnimalVaccinationEventDetails(
+                    date = LocalDate.ofEpochDay(vaccination.date),
+                    animalId = chickenModel.chicken.id,
+                    animalName = chickenModel.chicken.name,
+                    animalType = AnimalType.CHICKEN,
+                    sicknessTypeName = animalsRepository.getSicknessType(vaccination.sicknessTypeId)?.name ?:
+                        animalsRepository.getSicknessType(0)!!.name,
+                    vaccinationId = vaccination.id
+                )
+            }
+        }.sortedBy {
+            it.date
+        }
+        val currentVaccinations = uiState.vaccinationsEvents
+        uiState = uiState.copy(vaccinationsEvents = currentVaccinations + vaccinationsEventsChickens, isLoading = false)
     }
 
     fun nextMonth() {
