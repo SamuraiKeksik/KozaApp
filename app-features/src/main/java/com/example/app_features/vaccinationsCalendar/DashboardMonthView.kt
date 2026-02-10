@@ -15,8 +15,8 @@ import java.time.LocalDate
 fun DashboardMonthView(
   modifier: Modifier,
   jetMonth: JetMonth,
-  onDateSelect: (LocalDate) -> Unit
-
+  onDateSelect: (LocalDate) -> Unit,
+  vaccinationDays: List<LocalDate> = emptyList(),
 ) {
   GoogleCalendarSurface(modifier = modifier) {
     val selectedDates = rememberSaveable(stateSaver = JetDaySaver) {
@@ -30,7 +30,8 @@ fun DashboardMonthView(
           selectedDates.value = it
           onDateSelect(it.date)
         },
-        selectedDate = selectedDates.value
+        selectedDate = selectedDates.value,
+        vaccinationDays = vaccinationDays
       )
     }
   }

@@ -1,6 +1,7 @@
 package com.example.app_features.vaccinationsCalendar
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -16,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import java.time.LocalDate
 
 @Composable
 fun JetCalendarWeekView(
@@ -23,6 +25,7 @@ fun JetCalendarWeekView(
   week: JetWeek,
   onDateSelected: (JetDay) -> Unit,
   selectedDates: JetDay,
+  vaccinationDays: List<LocalDate>
 ) {
   LazyRow(
     modifier = modifier
@@ -34,6 +37,7 @@ fun JetCalendarWeekView(
       Box(
         modifier = Modifier
           .clip(CircleShape)
+          .border(1.dp, borderColor(vaccinationDays, date), CircleShape)
           .size(40.dp)
           .clickable {
             if (date.isPartOfMonth) {
@@ -52,7 +56,11 @@ fun JetCalendarWeekView(
     }
   }
 }
-
+@Composable
+private fun borderColor(
+  vaccinationDays: List<LocalDate>,
+  date: JetDay
+) = if (vaccinationDays.contains(date.date)) MaterialTheme.colorScheme.onPrimaryContainer else Color.Transparent
 @Composable
 private fun bgColor(
   selectedDates: JetDay,

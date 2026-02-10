@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -14,12 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import java.time.DayOfWeek
+import java.time.LocalDate
 
 @Composable
 fun JetCalendarMonthlyView(
   jetMonth: JetMonth,
   onDateSelected: (JetDay) -> Unit,
   selectedDate: JetDay,
+  vaccinationDays: List<LocalDate>
 ) {
   Column(
     modifier = Modifier
@@ -33,8 +36,10 @@ fun JetCalendarMonthlyView(
         modifier = Modifier.fillMaxWidth(),
         week = week,
         onDateSelected = onDateSelected,
-        selectedDates = selectedDate
+        selectedDates = selectedDate,
+        vaccinationDays = vaccinationDays,
       )
+      Spacer(modifier = Modifier.padding(vertical = 2.dp))
     }
   }
 }

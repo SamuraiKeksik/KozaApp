@@ -37,7 +37,10 @@ class VaccinationsCalendarViewModel @Inject constructor(
         }
     }
     suspend fun getVaccinations() {
-        uiState = uiState.copy(vaccinationsEvents = emptyList(), isLoading = true)
+        uiState = uiState.copy(
+            vaccinationsEvents = emptyList(),
+            vaccinationDays = emptyList(),
+            isLoading = true)
         if(uiState.selectedAnimalTypes.contains(AnimalType.GOAT)) getGoatsVaccinations()
         if(uiState.selectedAnimalTypes.contains(AnimalType.COW)) getCowsVaccinations()
         if(uiState.selectedAnimalTypes.contains(AnimalType.CHICKEN)) getChickensVaccinations()
@@ -56,6 +59,9 @@ class VaccinationsCalendarViewModel @Inject constructor(
                 val end = currentMonth.endDate.toEpochDay()
                 it.date in start..end
             }.map { vaccination ->
+                if(!uiState.vaccinationDays.contains(LocalDate.ofEpochDay(vaccination.date))) {
+                    uiState = uiState.copy(vaccinationDays = uiState.vaccinationDays + LocalDate.ofEpochDay(vaccination.date))
+                }
                 AnimalVaccinationEventDetails(
                     date = LocalDate.ofEpochDay(vaccination.date),
                     animalId = goatModel.goat.id,
@@ -81,6 +87,9 @@ class VaccinationsCalendarViewModel @Inject constructor(
                 val end = currentMonth.endDate.toEpochDay()
                 it.date in start..end
             }.map { vaccination ->
+                if(!uiState.vaccinationDays.contains(LocalDate.ofEpochDay(vaccination.date))) {
+                    uiState = uiState.copy(vaccinationDays = uiState.vaccinationDays + LocalDate.ofEpochDay(vaccination.date))
+                }
                 AnimalVaccinationEventDetails(
                     date = LocalDate.ofEpochDay(vaccination.date),
                     animalId = cowModel.cow.id,
@@ -106,6 +115,9 @@ class VaccinationsCalendarViewModel @Inject constructor(
                 val end = currentMonth.endDate.toEpochDay()
                 it.date in start..end
             }.map { vaccination ->
+                if(!uiState.vaccinationDays.contains(LocalDate.ofEpochDay(vaccination.date))) {
+                    uiState = uiState.copy(vaccinationDays = uiState.vaccinationDays + LocalDate.ofEpochDay(vaccination.date))
+                }
                 AnimalVaccinationEventDetails(
                     date = LocalDate.ofEpochDay(vaccination.date),
                     animalId = chickenModel.chicken.id,
@@ -162,6 +174,7 @@ class VaccinationsCalendarViewModel @Inject constructor(
 
 data class VaccinationsCalendarUiState(
     val selectedDay: LocalDate = LocalDate.now(),
+    val vaccinationDays: List<LocalDate> = emptyList(),
     val currentMonth: JetMonth = JetMonth.current(),
     val vaccinationsEvents: List<AnimalVaccinationEventDetails> = emptyList(),
     val selectedAnimalTypes: List<AnimalType> = AnimalType.entries.toList(),

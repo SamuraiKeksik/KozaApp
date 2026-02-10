@@ -149,7 +149,8 @@ fun DashboardUI(
                                 if (index != -1)
                                     lazyListState.scrollToItem(index)
                             }
-                        }
+                        },
+                        vaccinationDays = viewModel.uiState.vaccinationDays
                     )
                     Box {
                         CalendarEventsCards(
