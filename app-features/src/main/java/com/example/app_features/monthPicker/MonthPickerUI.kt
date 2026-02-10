@@ -5,6 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
@@ -60,7 +63,9 @@ fun MonthPickerUI(
         modifier = Modifier
             .width(400.dp)
             .background(if (isDialog)MaterialTheme.colorScheme.background else Color.Transparent)
-            .padding(10.dp),
+            .padding(10.dp)
+            .fillMaxWidth()
+        ,
         horizontalAlignment = Alignment.CenterHorizontally,
 
     ) {

@@ -41,6 +41,10 @@ class VaccinationsCalendarViewModel @Inject constructor(
         if(uiState.selectedAnimalTypes.contains(AnimalType.GOAT)) getGoatsVaccinations()
         if(uiState.selectedAnimalTypes.contains(AnimalType.COW)) getCowsVaccinations()
         if(uiState.selectedAnimalTypes.contains(AnimalType.CHICKEN)) getChickensVaccinations()
+        uiState = uiState.copy(
+            vaccinationsEvents = uiState.vaccinationsEvents.sortedBy { it.date },
+            isLoading = false
+        )
     }
 
     suspend fun getGoatsVaccinations() {

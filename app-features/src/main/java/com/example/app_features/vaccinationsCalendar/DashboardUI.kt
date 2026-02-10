@@ -1,5 +1,6 @@
 package com.example.app_features.vaccinationsCalendar
 
+import android.content.res.Configuration
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -37,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,6 +55,12 @@ import java.time.temporal.WeekFields
 import java.util.Calendar
 import java.util.Locale
 
+
+@Composable
+fun shouldUseVertical(): Boolean {
+    val configuration = LocalConfiguration.current
+    return configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+}
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -106,56 +114,96 @@ fun DashboardUI(
                         viewModel.viewModelScope.launch {
                             viewModel.getVaccinations()
                         }
-
-//                        val calendar = Calendar.getInstance()
-//                        calendar.set(Calendar.MONTH, month)
-//                        calendar.set(Calendar.YEAR, year)
-//                    monthValue = " ${
-//                        SimpleDateFormat("MMMM").format(calendar.time)
-//                    } - $year"
                     },
                 )
             }
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                AnimatedVisibility(
-                    visible = filterRequired,
-                    enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
-                    exit = shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
+            if(shouldUseVertical()){
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
                 ) {
-                    FilterChipRow(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = {
+                    AnimatedVisibility(
+                        visible = filterRequired,
+                        enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
+                        exit = shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
+                    ) {
+                        FilterChipRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                viewModel.viewModelScope.launch {
+                                    viewModel.updateSelectedAnimalTypes(it)
+                                }
+                            }
+                        )
+                    }
+                    DashboardMonthView(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(dimensionResource(R.dimen.padding_medium)),
+                        jetMonth = viewModel.uiState.currentMonth,
+                        onDateSelect = {
+                            viewModel.updateSelectedDate(it)
                             viewModel.viewModelScope.launch {
-                                viewModel.updateSelectedAnimalTypes(it)
+                                val index =
+                                    viewModel.findEventIndexByDate(viewModel.uiState.selectedDay)
+                                if (index != -1)
+                                    lazyListState.scrollToItem(index)
                             }
                         }
                     )
-                }
-                DashboardMonthView(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(dimensionResource(R.dimen.padding_medium)),
-                    jetMonth = viewModel.uiState.currentMonth,
-                    onDateSelect = {
-                        viewModel.updateSelectedDate(it)
-                        viewModel.viewModelScope.launch {
-                            val index =
-                                viewModel.findEventIndexByDate(viewModel.uiState.selectedDay)
-                            if (index != -1)
-                                lazyListState.scrollToItem(index)
-                        }
+                    Box {
+                        CalendarEventsCards(
+                            vaccinationEvents = viewModel.uiState.vaccinationsEvents,
+                            lazyListState = lazyListState
+                        )
                     }
-                )
-                Box {
-                    CalendarEventsCards(
-                        vaccinationEvents = viewModel.uiState.vaccinationsEvents,
-                        lazyListState = lazyListState
-                    )
                 }
             }
+            else{
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        AnimatedVisibility(
+                            visible = filterRequired,
+                            enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
+                            exit = shrinkVertically(shrinkTowards = Alignment.Top) + fadeOut()
+                        ) {
+                            FilterChipRow(
+                                modifier = Modifier.fillMaxWidth(),
+                                onClick = {
+                                    viewModel.viewModelScope.launch {
+                                        viewModel.updateSelectedAnimalTypes(it)
+                                    }
+                                }
+                            )
+                        }
+                        DashboardMonthView(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(dimensionResource(R.dimen.padding_medium)),
+                            jetMonth = viewModel.uiState.currentMonth,
+                            onDateSelect = {
+                                viewModel.updateSelectedDate(it)
+                                viewModel.viewModelScope.launch {
+                                    val index =
+                                        viewModel.findEventIndexByDate(viewModel.uiState.selectedDay)
+                                    if (index != -1)
+                                        lazyListState.scrollToItem(index)
+                                }
+                            }
+                        )
+                    }
+                    Column(modifier = Modifier.weight(1f)) {
+                        CalendarEventsCards(
+                            vaccinationEvents = viewModel.uiState.vaccinationsEvents,
+                            lazyListState = lazyListState
+                        )
+                    }
+                }
+            }
+
         }
     }
 
